@@ -1,9 +1,16 @@
 import React from 'react';
 import AppRoutes from './routes/routes';
 import './App.css';
+import { useTheme } from './context/ThemeContext';
 
 function App() {
-  return <AppRoutes />;
+  const { theme } = useTheme();
+
+  return (
+    <div className={`app-container ${theme}`}>
+      <AppRoutes />
+    </div>
+  );
 }
 
 export default App;
