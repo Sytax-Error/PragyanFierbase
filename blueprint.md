@@ -58,6 +58,28 @@ The initial setup involved creating the basic folder structure for the React app
 *   **Chart Styling:** Basic styling has been added for the charts.
 *   **App Integration:** The `Charts` component has been integrated into the main `App` component.
 
+## Plugin Generator System
+
+To streamline the creation of new chart plugins and ensure consistency, a plugin generator system has been implemented using `plop`.
+
+### Usage
+
+To create a new chart plugin, run the following command:
+
+```bash
+npm run create-plugin
+```
+
+You will be prompted to enter the name of the plugin. The generator will then create a new directory for the plugin in `src/features/charts/plugins/` with the following files:
+
+*   `metadata.ts`
+*   `controlPanel.ts`
+*   `transformProps.ts`
+*   `Chart.tsx`
+*   `index.ts`
+
+These files will be pre-populated with boilerplate code, ready for you to customize.
+
 ## Completed Plan: Scalable API Service Architecture
 
 The user requested to build a scalable API service architecture for the analytics dashboard. This has been completed with the following steps:
