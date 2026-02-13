@@ -1,16 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { ThemeProvider } from './context/ThemeContext'; // Reverted import path
+import { store } from './store';
 import App from './App';
 import './index.css';
-import { ThemeProvider } from './context/ThemeContext';
 
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+console.log('main.tsx: Rendering React app with all providers...');
+
+ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <BrowserRouter>
-      <ThemeProvider>
-        <App />
-      </ThemeProvider>
+      <Provider store={store}>
+        <ThemeProvider>
+          <App />
+        </ThemeProvider>
+      </Provider>
     </BrowserRouter>
-  </React.StrictMode>,
+  </React.StrictMode>
 );

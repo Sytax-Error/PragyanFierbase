@@ -1,7 +1,7 @@
 import React from 'react';
 import AppRoutes from './routes/routes';
 import './App.css';
-import { useTheme } from './context/ThemeContext';
+import { useTheme } from './context/ThemeContext'; // Reverted import
 
 function App() {
   const { theme } = useTheme();
