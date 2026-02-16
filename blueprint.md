@@ -55,8 +55,9 @@ The initial setup involved creating the basic folder structure for the React app
 ### Charts and Visualization
 
 *   **Chart Component:** A `Charts` component has been created to display visualizations.
-*   **Chart Styling:** Basic styling has been added for the charts.
+*   **Chart Styling:** The `Charts` component has been styled with a modern, card-based design, complete with icons, improved typography, and a cleaner layout.
 *   **App Integration:** The `Charts` component has been integrated into the main `App` component.
+*   **View Toggle:** The "Charts" page now features a view toggle that allows users to switch between a grid view and a list view.
 
 ### Dataset Table
 
