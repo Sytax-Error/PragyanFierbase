@@ -1,9 +1,18 @@
 .layout {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden; /* Prevents the whole page from scrolling */
 }
 
 .content {
   flex-grow: 1;
+  overflow-y: auto; /* Allows only the content area to scroll */
+  padding: 1.5rem;
+}
+
+/* Ensures Header and Footer have a fixed height and don't shrink */
+.layout > header,
+.layout > footer {
+  flex-shrink: 0;
 }

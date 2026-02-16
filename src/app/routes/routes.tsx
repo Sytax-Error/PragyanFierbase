@@ -2,8 +2,8 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import MainLayout from '../../shared/layouts/MainLayout';
 import Dashboard from '../../features/dashboard/Dashboard';
-import ChartsPage from '../../features/charts/pages/ChartsPage/ChartsPage';
-import AddChartPage from '../../features/charts/pages/AddChartPage/AddChartPage';
+import ChartsPage from '../../features/charts/ChartsPage/ChartsPage';
+import AddChartPage from '../../features/charts/AddChartPage/AddChartPage';
 import DatasetTable from '../../features/datasets/DatasetTable.tsx'
 
 const AppRoutes: React.FC = () => {

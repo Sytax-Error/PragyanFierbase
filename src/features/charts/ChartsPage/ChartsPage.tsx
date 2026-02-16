@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import './ChartsPage.css';
 import { FaTh, FaList, FaUpload } from 'react-icons/fa';
-import ChartCard from '../../components/ChartCard/ChartCard';
-import ChartRow from '../../components/ChartRow/ChartRow';
+import ChartCard from '../../../components/ChartCard/ChartCard';
+import ChartRow from '../../../components/ChartRow/ChartRow';
+import { addChart, selectCharts } from '../../../store/slices/chartSlice';
 
 const chartsData = [
   {
+    id: '1',
     name: 'Category - Amount Distributed(in Cr)',
     type: 'Drill Down',
     dataset: 'PM_Kisan_12Dec2025',
@@ -16,6 +19,7 @@ const chartsData = [
     lastModified: '4 days ago',
   },
   {
+    id: '2',
     name: 'Gender - Amount Distributed(in Cr)',
     type: 'Drill Down',
     dataset: 'PM_Kisan_12Dec2025',
@@ -25,6 +29,7 @@ const chartsData = [
     lastModified: '4 days ago',
   },
   {
+    id: '3',
     name: 'Category - Beneficiaries Distributions',
     type: 'Drill Down',
     dataset: 'PM_Kisan_12Dec2025',
@@ -34,6 +39,7 @@ const chartsData = [
     lastModified: '4 days ago',
   },
   {
+    id: '4',
     name: 'Gender - Beneficiaries Distribution',
     type: 'Drill Down',
     dataset: 'PM_Kisan_12Dec2025',
@@ -43,6 +49,7 @@ const chartsData = [
     lastModified: '4 days ago',
   },
   {
+    id: '5',
     name: 'State - Ward Pending Applications',
     type: 'Table Hierarchy',
     dataset: 'pmmvy_urban_table',
@@ -52,6 +59,7 @@ const chartsData = [
     lastModified: '4 days ago',
   },
   {
+    id: '6',
     name: 'Extent of District Coverage (%)',
     type: 'Drill Down',
     dataset: 'PM-KISAN_SAMMAN_NIDHI_10thFEB',
@@ -65,6 +73,14 @@ const chartsData = [
 const ChartsPage: React.FC = () => {
   const [isGridView, setIsGridView] = useState(true);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const charts = useSelector(selectCharts);
+
+  useEffect(() => {
+    if (charts.length === 0) {
+      chartsData.forEach(chart => dispatch(addChart(chart)));
+    }
+  }, [charts.length, dispatch]);
 
   const toggleView = () => {
     setIsGridView(!isGridView);
@@ -98,13 +114,13 @@ const ChartsPage: React.FC = () => {
       </div>
       {isGridView ? (
         <div className="charts-grid">
-          {chartsData.map((chart, index) => (
+          {charts.map((chart, index) => (
             <ChartCard key={index} chart={chart} />
           ))}
         </div>
       ) : (
         <div className="charts-list">
-          {chartsData.map((chart, index) => (
+          {charts.map((chart, index) => (
             <ChartRow key={index} chart={chart} />
           ))}
         </div>

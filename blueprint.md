@@ -1,3 +1,4 @@
+
 # Project Blueprint
 
 ## Overview
@@ -80,4 +81,10 @@ To streamline the creation of new chart plugins and ensure consistency, a plugin
 
 *   **Charts Feature:** The `charts` feature has been restructured to improve organization. Each page (`ChartsPage`, `AddChartPage`) is now located in its own directory within `src/features/charts/pages/`, along with its associated styles and component logic.
 *   **Dashboard Feature:** The user's original `Dashboard.tsx` component and its corresponding route have been restored, and the incorrectly generated dashboard files have been removed.
+
+### "Add Chart" Page UI/UX Refinements
+
+*   **Sticky Layout:** Corrected the application's main layout to ensure the header and footer are always visible (sticky), while the content area scrolls independently. This required updating `MainLayout.css` to be the source of truth for the layout and removing conflicting styles from page-specific CSS files.
+*   **Button Placement:** The "Create new chart" button on the "Add Chart" page has been moved to the bottom of the "Step 2: Choose chart type" card. This places the primary action in a more intuitive and contextually relevant location for the user.
+*   **Search Functionality:** The chart gallery includes a working search bar that filters the list of available chart types in real-time as the user types.
 

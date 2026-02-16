@@ -1,11 +1,10 @@
 import React from "react";
 
 interface Props {
-  chartData: any[];
-  color: string;
+  chartData: Record<string, unknown>[];
 }
 
-const PieChart = ({ chartData, color }: Props) => {
+const PieChart = ({ chartData }: Props) => {
   return (
     <div>
       <h3>Pie Chart</h3>

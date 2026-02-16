@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchDatasets } from '../datasets/datasetSlice';
+import { fetchDatasets } from '../../store/slices/datasetSlice';
 import type { AppDispatch, RootState } from '../../store';
 import './Dashboard.css';
 

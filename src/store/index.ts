@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
-import datasetReducer from '../features/datasets/datasetSlice';
+import datasetReducer from './slices/datasetSlice';
+import chartReducer from './slices/chartSlice';
 
 console.log('Store: Configuring Redux store...');
 
 export const store = configureStore({
   reducer: {
     datasets: datasetReducer,
+    charts: chartReducer,
   },
 });
 
