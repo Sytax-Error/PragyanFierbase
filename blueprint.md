@@ -129,3 +129,19 @@ The user requested to build a scalable API service architecture for the analytic
 
 9.  **Redux Store:**
     *   Created `src/store/index.ts` to configure the Redux store.
+
+## Current Plan: Header Cleanup and UI Enhancements
+
+This plan focuses on cleaning up the header by removing the "SQL Lab" option and enhancing the UI with icons and improved styling.
+
+### Steps
+
+1.  **Remove "SQL Lab" Feature:**
+    *   The "SQL Lab" link has been removed from the header (`src/shared/components/Header.tsx`).
+    *   The corresponding route has been removed from `src/app/routes/routes.tsx`.
+    *   The `SqlLab.tsx` component and its directory (`src/features/sqlLab`) have been deleted.
+
+2.  **UI Enhancements:**
+    *   Installed `react-icons` for icon support.
+    *   Updated `Header.tsx` to include a placeholder logo and icons for the "Settings" and theme toggle buttons.
+    *   Refined the CSS in `Header.css` to improve the header's appearance, including spacing, alignment, and icon styling.

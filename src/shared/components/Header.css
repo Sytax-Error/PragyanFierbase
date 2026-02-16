@@ -1,146 +1,141 @@
 .header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 2rem;
-  transition: background-color 0.3s ease;
-}
-
-.header.light {
-  background-color: #fff;
-  border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
+    height: 60px;
 }
 
 .header.dark {
-  background-color: #2c2c2c;
-  border-bottom: 1px solid #444;
+    background-color: #1a1a1a;
+    border-bottom: 1px solid #333;
 }
 
 .logo a {
-  text-decoration: none;
-  font-size: 1.5rem;
-  font-weight: bold;
-}
-
-.header.light .logo a {
-  color: #333;
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #333;
+    text-decoration: none;
 }
 
 .header.dark .logo a {
-  color: #f0f2f5;
+    color: #fff;
+}
+
+.nav-links {
+    display: flex;
 }
 
 .nav-links a {
-  margin: 0 1rem;
-  text-decoration: none;
-  font-size: 1rem;
-}
-
-.header.light .nav-links a {
-  color: #555;
+    margin: 0 15px;
+    text-decoration: none;
+    color: #555;
+    padding: 22px 0;
+    font-weight: 500;
+    border-bottom: 3px solid transparent;
+    transition: color 0.3s ease, border-bottom-color 0.3s ease;
 }
 
 .header.dark .nav-links a {
-  color: #bbb;
+    color: #ccc;
 }
 
-.nav-links a:hover {
-  text-decoration: underline;
+.nav-links a.active {
+    border-bottom: 3px solid #007bff;
+    color: #007bff;
 }
 
 .header-actions {
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
+}
+
+.action-button {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    margin-left: 20px;
+    cursor: pointer;
+    color: #555;
+    transition: color 0.3s ease;
+}
+
+.header.dark .action-button {
+    color: #ccc;
+}
+
+.action-button:hover {
+    color: #007bff;
 }
 
 .theme-toggle {
-  padding: 0.5rem 1rem;
-  border: 1px solid;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  margin-left: 1rem;
-}
-
-.header.light .theme-toggle {
-  background-color: #333;
-  color: #fff;
-  border-color: #333;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    margin-left: 20px;
+    cursor: pointer;
+    color: #555;
+    transition: color 0.3s ease;
 }
 
 .header.dark .theme-toggle {
-  background-color: #f0f2f5;
-  color: #333;
-  border-color: #f0f2f5;
+    color: #ccc;
+}
+
+.theme-toggle:hover {
+    color: #007bff;
 }
 
 .menu-toggle {
-  display: none;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  margin-left: 1rem;
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
 }
 
 .hamburger {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  width: 24px;
-  height: 24px;
+    width: 25px;
+    height: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .hamburger span {
-  display: block;
-  width: 100%;
-  height: 2px;
-  background-color: #333;
-  transition: all 0.3s ease-in-out;
+    display: block;
+    width: 100%;
+    height: 3px;
+    background-color: #333;
+    transition: all 0.3s ease;
 }
 
 .header.dark .hamburger span {
-  background-color: #f0f2f5;
-}
-
-.hamburger.open span:nth-child(1) {
-  transform: rotate(45deg) translate(5px, 5px);
-}
-
-.hamburger.open span:nth-child(2) {
-  opacity: 0;
-}
-
-.hamburger.open span:nth-child(3) {
-  transform: rotate(-45deg) translate(7px, -6px);
+    background-color: #fff;
 }
 
 @media (max-width: 768px) {
-  .nav-links {
-    display: none;
-    position: absolute;
-    top: 60px;
-    left: 0;
-    width: 100%;
-    background-color: #fff;
-    flex-direction: column;
-    align-items: center;
-    padding: 1rem 0;
-  }
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        background-color: #fff;
+        z-index: 1000;
+    }
 
-  .header.dark .nav-links {
-    background-color: #2c2c2c;
-  }
+    .header.dark .nav-links {
+        background-color: #1a1a1a;
+    }
 
-  .nav-links.open {
-    display: flex;
-  }
+    .nav-links.open {
+        display: flex;
+    }
 
-  .nav-links a {
-    margin: 1rem 0;
-  }
-
-  .menu-toggle {
-    display: block;
-  }
+    .menu-toggle {
+        display: block;
+    }
 }

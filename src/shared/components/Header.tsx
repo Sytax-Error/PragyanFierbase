@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { useTheme } from '../../hooks/theme/useTheme';
+import { FiSettings, FiSun, FiMoon } from 'react-icons/fi';
 import './Header.css';
 
 const Header: React.FC = () => {
@@ -14,15 +15,20 @@ const Header: React.FC = () => {
   return (
     <header className={`header ${theme}`}>
       <div className="logo">
-        <Link to="/">DataViz</Link>
+        <NavLink to="/">Logo</NavLink>
       </div>
       <nav className={`nav-links ${isMenuOpen ? 'open' : ''}`}>
-        <Link to="/charts">Charts</Link>
-        <Link to="/datasets">Datasets</Link>
+        <NavLink to="/" end>Home</NavLink>
+        <NavLink to="/dashboards">Dashboards</NavLink>
+        <NavLink to="/charts">Charts</NavLink>
+        <NavLink to="/datasets">Datasets</NavLink>
       </nav>
       <div className="header-actions">
+        <button className="action-button">
+          <FiSettings />
+        </button>
         <button onClick={toggleTheme} className="theme-toggle">
-          {theme === 'light' ? 'Dark' : 'Light'} Mode
+          {theme === 'light' ? <FiMoon /> : <FiSun />}
         </button>
         <button className="menu-toggle" onClick={toggleMenu}>
           <div className={`hamburger ${isMenuOpen ? 'open' : ''}`}>

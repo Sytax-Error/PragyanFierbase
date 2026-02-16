@@ -10,6 +10,7 @@ const AppRoutes: React.FC = () => {
     <Routes>
       <Route path="/" element={<MainLayout />}>
         <Route index element={<Dashboard />} />
+        <Route path="dashboards" element={<Dashboard />} />
         <Route path="charts" element={<Charts />} />
         <Route path="datasets" element={<Datasets />} />
       </Route>

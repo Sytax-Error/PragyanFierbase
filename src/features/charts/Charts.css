@@ -1,3 +1,104 @@
 .charts-container {
-  
+    padding: 20px;
+}
+
+.charts-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.charts-actions button {
+    margin-left: 10px;
+}
+
+.filter-section {
+    background-color: #e3f2fd;
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.dark .filter-section {
+    background-color: #1e3a5f;
+}
+
+.view-toggle {
+    margin-bottom: 15px;
+}
+
+.filters {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.filter-item label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.filter-item input,
+.filter-item select {
+    width: 100%;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.charts-table-container {
+    overflow-x: auto;
+}
+
+.charts-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.charts-table th,
+.charts-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.dark .charts-table th,
+.dark .charts-table td {
+    border-bottom: 1px solid #444;
+}
+
+.charts-table th {
+    background-color: #f5f5f5;
+}
+
+.dark .charts-table th {
+    background-color: #2c2c2c;
+}
+
+.star-icon {
+    color: #ffd700;
+    margin-right: 5px;
+}
+
+.owner-initials {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #ccc;
+    color: #fff;
+    text-align: center;
+    line-height: 30px;
+}
+
+.action-icons svg {
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .filters {
+        grid-template-columns: 1fr;
+    }
 }
