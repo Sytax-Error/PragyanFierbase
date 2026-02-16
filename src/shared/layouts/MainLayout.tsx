@@ -1,7 +1,9 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import Header from '../components/Header';
+import Footer from '../components/Footer';
 import { useTheme } from '../../hooks/theme/useTheme';
+import './MainLayout.css';
 
 const MainLayout: React.FC = () => {
   const { theme } = useTheme();
@@ -12,6 +14,7 @@ const MainLayout: React.FC = () => {
       <main className="content">
         <Outlet />
       </main>
+      <Footer />
     </div>
   );
 };

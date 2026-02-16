@@ -64,6 +64,14 @@ The initial setup involved creating the basic folder structure for the React app
 *   **Styling:** A corresponding CSS file, `DatasetTable.css`, was created to style the table, including dark theme support.
 *   **Integration:** The `DatasetTable` component is now rendered on the "Datasets" page, which is accessible via the `/datasets` route.
 
+### Footer
+
+*   **Footer Component:** A `Footer` component has been created and is located at `src/shared/components/Footer.tsx`.
+*   **Styling:** Basic styling, including dark mode support, is provided in `src/shared/components/Footer.css`.
+*   **Responsiveness:** The footer is now responsive and will stack vertically on screens smaller than 768px.
+*   **Sticky Footer:** The layout has been adjusted to ensure the footer "sticks" to the bottom of the viewport, regardless of content height.
+*   **Integration:** The `Footer` is included in the `MainLayout`, making it visible on all pages.
+
 ## Plugin Generator System
 
 To streamline the creation of new chart plugins and ensure consistency, a plugin generator system has been implemented using `plop`.
