@@ -1,0 +1,17 @@
+import React from "react";
+
+interface Props {
+  chartData: any[];
+  color: string;
+}
+
+const {{pascalCase name}} = ({ chartData, color }: Props) => {
+  return (
+    <div>
+      <h3>{{titleCase name}}</h3>
+      <pre>{JSON.stringify(chartData, null, 2)}</pre>
+    </div>
+  );
+};
+
+export default {{pascalCase name}};

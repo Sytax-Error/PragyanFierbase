@@ -2,14 +2,14 @@ import { createVizPlugin, registerVizPlugin } from '../../createPlugin';
 import { metadata } from './metadata';
 import { controlPanel } from './controlPanel';
 import { transformProps } from './transformProps';
-import Chart from './Chart';
+import {{pascalCase name}} from './{{pascalCase name}}';
 
 const {{camelCase name}}Plugin = createVizPlugin({
   type: 'custom-plugin-{{kebabCase name}}',
   metadata,
   controlPanel,
   transformProps,
-  Component: Chart,
+  Component: {{pascalCase name}},
 });
 
 registerVizPlugin({{camelCase name}}Plugin);

@@ -5,13 +5,13 @@ interface Props {
   color: string;
 }
 
-const {{properCase name}}Chart = ({ chartData, color }: Props) => {
+const PieChart = ({ chartData, color }: Props) => {
   return (
     <div>
-      <h3>{{properCase name}} Chart</h3>
+      <h3>Pie Chart</h3>
       <pre>{JSON.stringify(chartData, null, 2)}</pre>
     </div>
   );
 };
 
-export default {{properCase name}}Chart;
+export default PieChart;
