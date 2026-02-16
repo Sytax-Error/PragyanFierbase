@@ -1,11 +1,10 @@
 import React from "react";
 
 interface Props {
-  chartData: any[];
-  color: string;
+  chartData: unknown[];
 }
 
-const BarChartChart = ({ chartData, color }: Props) => {
+const BarChartChart = ({ chartData }: Props) => {
   return (
     <div>
       <h3>BarChart Chart</h3>
