@@ -1,135 +1,97 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { FaSearch } from 'react-icons/fa';
-import { addChart } from '../../../store/slices/chartSlice';
-import { useSubHeader } from '../../../hooks/subHeader/useSubHeader';
+import { useTheme } from '../../../hooks/theme/useTheme';
+import { FiSearch, FiPlus, FiBarChart2, FiPieChart, FiTrendingUp } from 'react-icons/fi';
 import './AddChartPage.css';
 
-// Mock data for datasets and chart plugins
-const datasets = [
-  { id: '1', name: 'PM_Kisan_12Dec2025' },
-  { id: '2', name: 'PMMVY_Urban_Table' },
-  { id: '3', name: 'Sales_Data_2023' },
-];
-
 const chartPlugins = [
-  { id: 'big-number-quarters', name: 'Big Number (Quarters)', thumbnail: '/path/to/big-number-quarters.png' },
-  { id: 'bignumber-category', name: 'Bignumber (Category)', thumbnail: '/path/to/bignumber-category.png' },
-  { id: 'bignumber-line-bar', name: 'Bignumber (Line/Bar)', thumbnail: '/path/to/bignumber-line-bar.png' },
-  { id: 'custom-pie', name: 'Custom Pie', thumbnail: '/path/to/custom-pie.png' },
-  { id: 'drill-down', name: 'Drill Down', thumbnail: '/path/to/drill-down.png' },
-  { id: 'india-map-hierarchy', name: 'India Map Hierarchy', thumbnail: '/path/to/india-map-hierarchy.png' },
-  { id: 'multi-charts', name: 'Multi Charts', thumbnail: '/path/to/multi-charts.png' },
-  { id: 'table-hierarchy', name: 'Table Hierarchy', thumbnail: '/path/to/table-hierarchy.png' },
+  { id: 'bar', name: 'Bar Chart', icon: <FiBarChart2 /> },
+  { id: 'pie', name: 'Pie Chart', icon: <FiPieChart /> },
+  { id: 'line', name: 'Line Chart', icon: <FiTrendingUp /> },
+  { id: 'area', name: 'Area Chart', icon: <FiBarChart2 /> }, // Example, replace with specific icon
+  { id: 'scatter', name: 'Scatter Plot', icon: <FiTrendingUp /> }, // Example, replace with specific icon
+  { id: 'radar', name: 'Radar Chart', icon: <FiPieChart /> }, // Example, replace with specific icon
 ];
 
 const AddChartPage: React.FC = () => {
-  const [selectedDataset, setSelectedDataset] = useState<string>('');
-  const [selectedChartType, setSelectedChartType] = useState<string>('');
-  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [selectedDataset, setSelectedDataset] = useState('');
+  const [selectedChart, setSelectedChart] = useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const { theme } = useTheme();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const { setSubHeaderContent } = useSubHeader();
 
-  const handleCreateChart = () => {
-    if (selectedDataset && selectedChartType) {
-      const newChart = {
-        id: Date.now().toString(),
-        name: `${selectedChartType} of ${selectedDataset}`,
-        type: selectedChartType,
-        dataset: selectedDataset,
-        onDashboards: '',
-        tags: '',
-        owners: 'PA',
-        lastModified: 'Now',
-      };
-      dispatch(addChart(newChart));
-      navigate('/charts');
+  const handleAddChart = () => {
+    if (selectedChart && selectedDataset) {
+      navigate(`/dashboard/add-chart-success?dataset=${selectedDataset}&chart=${selectedChart}`);
     }
   };
 
-  useEffect(() => {
-    setSubHeaderContent(
-      <>
-        <h1>Create a new chart</h1>
-      </>
-    );
-
-    return () => {
-      setSubHeaderContent(null);
-    };
-  }, [setSubHeaderContent]);
+  const filteredCharts = chartPlugins.filter(chart =>
+    chart.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
-    <div className="add-chart-page-container">
-      <main className="add-chart-main">
-        <div className="chart-creation-steps">
-          <div className="step">
-            <div className="step-number">1</div>
-            <div className="step-content">
-              <h2>Choose a dataset</h2>
-              <div className="dataset-selection">
-                <select
-                  value={selectedDataset}
-                  onChange={(e) => setSelectedDataset(e.target.value)}
-                >
-                  <option value="" disabled>Choose a dataset</option>
-                  {datasets.map((dataset) => (
-                    <option key={dataset.id} value={dataset.name}>
-                      {dataset.name}
-                    </option>
-                  ))}
-                </select>
+    <div className={`add-chart-page-container ${theme}`}>
+      <div className="add-chart-content-wrapper">
+        <main className="add-chart-main">
+          <div className="chart-creation-steps">
+            {/* Step 1: Select Dataset (Fixed Height) */}
+            <div className="step">
+              <div className="step-number">1</div>
+              <div className="step-content">
+                <h2>Select a Dataset</h2>
+                <div className="dataset-selection">
+                  <select onChange={(e) => setSelectedDataset(e.target.value)} value={selectedDataset}>
+                    <option value="" disabled>Choose a dataset...</option>
+                    <option value="sales_data">Sales Data</option>
+                    <option value="user_analytics">User Analytics</option>
+                  </select>
+                </div>
               </div>
             </div>
-          </div>
-          <div className="step">
-            <div className="step-number">2</div>
-            <div className="step-content">
-              <h2>Choose chart type</h2>
-              <div className="chart-gallery-container">
+
+            {/* Step 2: Choose Chart (Flexible Height with Internal Scroll) */}
+            <div className="step">
+              <div className="step-number">2</div>
+              <div className="step-content">
                 <div className="chart-gallery-header">
+                  <h2>Choose a Chart Type</h2>
                   <div className="search-bar">
-                    <FaSearch />
+                    <FiSearch className="search-icon" />
                     <input
                       type="text"
-                      placeholder="Search all charts"
+                      placeholder="Search charts..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
                     />
                   </div>
                 </div>
                 <div className="chart-gallery">
-                  {chartPlugins
-                    .filter((plugin) =>
-                      plugin.name.toLowerCase().includes(searchTerm.toLowerCase())
-                    )
-                    .map((plugin) => (
-                      <div
-                        key={plugin.id}
-                        className={`chart-plugin-card ${selectedChartType === plugin.name ? 'selected' : ''}`}
-                        onClick={() => setSelectedChartType(plugin.name)}
-                      >
-                        <div className="chart-thumbnail"></div>
-                        <p>{plugin.name}</p>
-                      </div>
-                    ))}
+                  {filteredCharts.map(chart => (
+                    <div
+                      key={chart.id}
+                      className={`chart-plugin-card ${selectedChart === chart.id ? 'selected' : ''}`}
+                      onClick={() => setSelectedChart(chart.id)}
+                    >
+                      <div className="chart-thumbnail">{chart.icon}</div>
+                      <h3>{chart.name}</h3>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </main>
-      <div className="add-chart-footer">
-        <p>Please select both a Dataset and a Chart type to proceed</p>
-        <button
-          onClick={handleCreateChart}
-          disabled={!selectedDataset || !selectedChartType}
-        >
-          Create new chart
-        </button>
+        </main>
       </div>
+
+      <footer className="add-chart-footer">
+        <div className="footer-content">
+          <button onClick={handleAddChart} disabled={!selectedChart || !selectedDataset}>
+            <FiPlus />
+            Add Chart to Dashboard
+          </button>
+        </div>
+      </footer>
     </div>
   );
 };

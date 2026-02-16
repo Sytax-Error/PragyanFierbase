@@ -94,3 +94,11 @@ To streamline the creation of new chart plugins and ensure consistency, a plugin
 *   **SubHeader Context:** A `SubHeaderContext` (`src/context/SubHeaderContext.tsx`) and a `useSubHeader` hook (`src/hooks/useSubHeader.ts`) have been implemented to allow pages to dynamically set the content of the `SubHeader`.
 *   **Integration:** The `SubHeader` is integrated into the `MainLayout` and its content is controlled by the current page using the `useSubHeader` hook.
 *   **Charts Page Integration:** The "Charts" page (`src/features/charts/ChartsPage/ChartsPage.tsx`) has been refactored to use the `SubHeader` to display the page title and action buttons.
+
+### "Add Chart" Page Layout Overhaul
+
+*   **App-Like Layout:** Re-architected the `AddChartPage` to have a fixed, non-scrolling viewport.
+*   **Contained Scrolling:** The chart gallery (`Step 2`) is now the single, scrollable area on the page, ensuring the dataset selection and footer action button remain persistently visible.
+*   **Centered, Max-Width Content:** The entire page content is now constrained to a maximum width of `1200px` and centered, dramatically improving readability and visual appeal on wider screens.
+*   **Header-Aligned Footer:** The footer's height has been explicitly set to `60px` to perfectly match the main application header's height, creating a consistent and professional rhythm throughout the application.
+*   **Robust Vertical Sizing:** The layout uses modern CSS flexbox properties (`flex-grow`, `flex-shrink`) to intelligently manage vertical space, preventing the unnatural stretching of components and creating a balanced, desktop-app-like feel.

@@ -2,7 +2,7 @@ import React from 'react';
 import AppRoutes from './routes/routes';
 import './App.css';
 import { useTheme } from '../hooks/theme/useTheme';
-import { SubHeaderProvider } from '../hooks/subHeader/SubHeaderContext';
+import { SubHeaderProvider } from '../hooks/subHeader/SubHeaderProvider';
 
 function App() {
   const { theme } = useTheme();

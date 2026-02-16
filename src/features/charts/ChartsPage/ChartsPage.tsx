@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import './ChartsPage.css';
@@ -78,6 +78,10 @@ const ChartsPage: React.FC = () => {
   const charts = useSelector(selectCharts);
   const { setSubHeaderContent } = useSubHeader();
 
+  const handleAddChartClick = useCallback(() => {
+    navigate('/add-chart');
+  }, [navigate]);
+
   useEffect(() => {
     setSubHeaderContent(
       <>
@@ -96,7 +100,7 @@ const ChartsPage: React.FC = () => {
     return () => {
       setSubHeaderContent(null);
     };
-  }, [setSubHeaderContent]);
+  }, [setSubHeaderContent, handleAddChartClick]);
 
   useEffect(() => {
     if (charts.length === 0) {
@@ -106,10 +110,6 @@ const ChartsPage: React.FC = () => {
 
   const toggleView = () => {
     setIsGridView(!isGridView);
-  };
-
-  const handleAddChartClick = () => {
-    navigate('/add-chart');
   };
 
   return (
