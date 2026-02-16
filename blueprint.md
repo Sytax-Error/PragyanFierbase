@@ -88,3 +88,9 @@ To streamline the creation of new chart plugins and ensure consistency, a plugin
 *   **Button Placement:** The "Create new chart" button on the "Add Chart" page has been moved to the bottom of the "Step 2: Choose chart type" card. This places the primary action in a more intuitive and contextually relevant location for the user.
 *   **Search Functionality:** The chart gallery includes a working search bar that filters the list of available chart types in real-time as the user types.
 
+### SubHeader Component
+
+*   **SubHeader Component:** A new `SubHeader` component has been created at `src/shared/components/SubHeader/SubHeader.tsx` to provide a consistent secondary header across different pages.
+*   **SubHeader Context:** A `SubHeaderContext` (`src/context/SubHeaderContext.tsx`) and a `useSubHeader` hook (`src/hooks/useSubHeader.ts`) have been implemented to allow pages to dynamically set the content of the `SubHeader`.
+*   **Integration:** The `SubHeader` is integrated into the `MainLayout` and its content is controlled by the current page using the `useSubHeader` hook.
+*   **Charts Page Integration:** The "Charts" page (`src/features/charts/ChartsPage/ChartsPage.tsx`) has been refactored to use the `SubHeader` to display the page title and action buttons.

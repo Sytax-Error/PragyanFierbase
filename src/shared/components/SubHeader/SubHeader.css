@@ -1,0 +1,11 @@
+.subheader-container {
+  position: sticky;
+  top: 60px; /* Height of the main header */
+  background-color: var(--background-color);
+  padding: 1rem;
+  border-bottom: 1px solid var(--border-color);
+  z-index: 999;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

@@ -2,13 +2,16 @@ import React from 'react';
 import AppRoutes from './routes/routes';
 import './App.css';
 import { useTheme } from '../hooks/theme/useTheme';
+import { SubHeaderProvider } from '../hooks/subHeader/SubHeaderContext';
 
 function App() {
   const { theme } = useTheme();
 
   return (
     <div className={`app-container ${theme}`}>
-      <AppRoutes />
+      <SubHeaderProvider>
+        <AppRoutes />
+      </SubHeaderProvider>
     </div>
   );
 }

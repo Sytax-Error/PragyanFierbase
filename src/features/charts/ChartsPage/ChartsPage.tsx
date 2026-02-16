@@ -6,6 +6,7 @@ import { FaTh, FaList, FaUpload } from 'react-icons/fa';
 import ChartCard from '../../../components/ChartCard/ChartCard';
 import ChartRow from '../../../components/ChartRow/ChartRow';
 import { addChart, selectCharts } from '../../../store/slices/chartSlice';
+import { useSubHeader } from '../../../hooks/subHeader/useSubHeader';
 
 const chartsData = [
   {
@@ -75,6 +76,27 @@ const ChartsPage: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const charts = useSelector(selectCharts);
+  const { setSubHeaderContent } = useSubHeader();
+
+  useEffect(() => {
+    setSubHeaderContent(
+      <>
+        <h1>Charts</h1>
+        <div className="charts-actions">
+          <button className="bulk-select">Bulk select</button>
+          <button className="add-chart" onClick={handleAddChartClick}>+ Chart</button>
+          <button className="download-chart">
+            <FaUpload />
+          </button>
+        </div>
+      </>
+    );
+
+    // Clean up subheader content on component unmount
+    return () => {
+      setSubHeaderContent(null);
+    };
+  }, [setSubHeaderContent]);
 
   useEffect(() => {
     if (charts.length === 0) {
@@ -92,16 +114,6 @@ const ChartsPage: React.FC = () => {
 
   return (
     <div className="charts-container">
-      <div className="charts-header">
-        <h1>Charts</h1>
-        <div className="charts-actions">
-          <button className="bulk-select">Bulk select</button>
-          <button className="add-chart" onClick={handleAddChartClick}>+ Chart</button>
-          <button className="download-chart">
-            <FaUpload />
-          </button>
-        </div>
-      </div>
       <div className="filter-section">
         <div className="view-toggle">
           <button onClick={toggleView} className="active">
