@@ -1,9 +1,9 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import MainLayout from '../layouts/MainLayout';
-import Dashboard from '../features/dashboard/Dashboard';
-import Charts from '../features/charts/Charts';
-import Datasets from '../features/datasets/Datasets';
+import MainLayout from '../../shared/layouts/MainLayout';
+import Dashboard from '../../features/dashboard/Dashboard';
+import Charts from '../../features/charts/Charts';
+import Datasets from '../../features/datasets/Datasets';
 
 const AppRoutes: React.FC = () => {
   return (

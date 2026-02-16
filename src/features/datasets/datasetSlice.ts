@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, type PayloadAction } from '@reduxjs/toolkit';
-import type { Dataset } from '../../types/dataset';
-import * as datasetService from '../../services/api/dataset.service';
+import type { Dataset } from '@/types/dataset';
+import * as datasetService from '@/services/api/dataset.service';
 
 // 1. Defines the "shape" of this slice's state
 interface DatasetState {

@@ -58,6 +58,12 @@ The initial setup involved creating the basic folder structure for the React app
 *   **Chart Styling:** Basic styling has been added for the charts.
 *   **App Integration:** The `Charts` component has been integrated into the main `App` component.
 
+### Dataset Table
+
+*   **DatasetTable Component:** A `DatasetTable` component was created to display sample data in a tabular format. This component is located in `src/features/datasets/DatasetTable.tsx`.
+*   **Styling:** A corresponding CSS file, `DatasetTable.css`, was created to style the table, including dark theme support.
+*   **Integration:** The `DatasetTable` component is now rendered on the "Datasets" page, which is accessible via the `/datasets` route.
+
 ## Plugin Generator System
 
 To streamline the creation of new chart plugins and ensure consistency, a plugin generator system has been implemented using `plop`.

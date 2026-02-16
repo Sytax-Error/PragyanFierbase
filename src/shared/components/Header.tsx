@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useTheme } from '../context/Theme';
+import { useTheme } from '../../hooks/theme/useTheme';
 import './Header.css';
 
 const Header: React.FC = () => {
