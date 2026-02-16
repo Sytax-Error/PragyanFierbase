@@ -4,7 +4,7 @@ interface Props {
   chartData: unknown[];
 }
 
-const BarChartChart = ({ chartData }: Props) => {
+const BarChart = ({ chartData }: Props) => {
   return (
     <div>
       <h3>BarChart Chart</h3>
@@ -13,4 +13,4 @@ const BarChartChart = ({ chartData }: Props) => {
   );
 };
 
-export default BarChartChart;
+export default BarChart;

@@ -1,16 +1,15 @@
-import { createVizPlugin } from "@/core/viz/createPlugin";
-import { vizRegistry } from "@/core/viz/registry";
-import { metadata } from "./metadata";
-import { controlPanel } from "./controlPanel";
-import { transformProps } from "./transformProps";
-import Chart from "./Chart";
+import { createVizPlugin, registerVizPlugin } from '../../createPlugin';
+import { metadata } from './metadata';
+import { controlPanel } from './controlPanel';
+import { transformProps } from './transformProps';
+import Chart from './Chart';
 
 const {{camelCase name}}Plugin = createVizPlugin({
-  type: "{{kebabCase name}}",
+  type: 'custom-plugin-{{kebabCase name}}',
   metadata,
   controlPanel,
   transformProps,
   Component: Chart,
 });
 
-vizRegistry.register({{camelCase name}}Plugin);
+registerVizPlugin({{camelCase name}}Plugin);

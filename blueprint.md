@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document outlines the plan for creating a data analysis and visualization tool. The application will allow users to connect to various data sources, query data, and visualize it through different types of charts.
+This document outlines the project structure and development plan for the application.
 
 ## Implemented Features
 
@@ -55,9 +55,8 @@ The initial setup involved creating the basic folder structure for the React app
 ### Charts and Visualization
 
 *   **Chart Component:** A `Charts` component has been created to display visualizations.
-*   **Chart Styling:** The `Charts` component has been styled with a modern, card-based design, complete with icons, improved typography, and a cleaner layout.
+*   **Chart Styling:** Basic styling has been added for the charts.
 *   **App Integration:** The `Charts` component has been integrated into the main `App` component.
-*   **View Toggle:** The "Charts" page now features a view toggle that allows users to switch between a grid view and a list view.
 
 ### Dataset Table
 
@@ -73,76 +72,12 @@ The initial setup involved creating the basic folder structure for the React app
 *   **Sticky Footer:** The layout has been adjusted to ensure the footer "sticks" to the bottom of the viewport, regardless of content height.
 *   **Integration:** The `Footer` is included in the `MainLayout`, making it visible on all pages.
 
-## Plugin Generator System
+### Plugin Generator System
 
 To streamline the creation of new chart plugins and ensure consistency, a plugin generator system has been implemented using `plop`.
 
-### Usage
+### Refactored Feature Organization
 
-To create a new chart plugin, run the following command:
+*   **Charts Feature:** The `charts` feature has been restructured to improve organization. Each page (`ChartsPage`, `AddChartPage`) is now located in its own directory within `src/features/charts/pages/`, along with its associated styles and component logic.
+*   **Dashboard Feature:** The user's original `Dashboard.tsx` component and its corresponding route have been restored, and the incorrectly generated dashboard files have been removed.
 
-```bash
-npm run create-plugin
-```
-
-You will be prompted to enter the name of the plugin. The generator will then create a new directory for the plugin in `src/features/charts/plugins/` with the following files:
-
-*   `metadata.ts`
-*   `controlPanel.ts`
-*   `transformProps.ts`
-*   `Chart.tsx`
-*   `index.ts`
-
-These files will be pre-populated with boilerplate code, ready for you to customize.
-
-## Completed Plan: Scalable API Service Architecture
-
-The user requested to build a scalable API service architecture for the analytics dashboard. This has been completed with the following steps:
-
-### Steps
-
-1.  **Folder Structure:**
-    *   Created `src/services/api` for API-related files.
-
-2.  **Environment Configuration:**
-    *   Created `.env` files for environment variables.
-    *   Created `src/config/env.ts` to expose environment variables to the application.
-
-3.  **Axios Setup:**
-    *   Installed `axios`.
-    *   Created `src/services/api/axios.ts` to configure a base Axios instance.
-
-4.  **Axios Interceptors:**
-    *   Created `src/services/api/interceptors.ts` to handle API requests and responses.
-
-5.  **Dataset API Service:**
-    *   Created `src/services/api/dataset.service.ts` to encapsulate all API calls related to datasets.
-
-6.  **Type Definitions:**
-    *   Created `src/types/dataset.ts` to define the `Dataset` interface.
-
-7.  **Redux Slice for Datasets:**
-    *   Installed `@reduxjs/toolkit` and `react-redux`.
-    *   Created `src/features/datasets/datasetSlice.ts` to manage the state for datasets.
-
-8.  **Absolute Imports:**
-    *   Updated `tsconfig.json` to allow absolute imports using the `@` alias.
-
-9.  **Redux Store:**
-    *   Created `src/store/index.ts` to configure the Redux store.
-
-## Current Plan: Header Cleanup and UI Enhancements
-
-This plan focuses on cleaning up the header by removing the "SQL Lab" option and enhancing the UI with icons and improved styling.
-
-### Steps
-
-1.  **Remove "SQL Lab" Feature:**
-    *   The "SQL Lab" link has been removed from the header (`src/shared/components/Header.tsx`).
-    *   The corresponding route has been removed from `src/app/routes/routes.tsx`.
-    *   The `SqlLab.tsx` component and its directory (`src/features/sqlLab`) have been deleted.
-
-2.  **UI Enhancements:**
-    *   Installed `react-icons` for icon support.
-    *   Updated `Header.tsx` to include a placeholder logo and icons for the "Settings" and theme toggle buttons.
-    *   Refined the CSS in `Header.css` to improve the header's appearance, including spacing, alignment, and icon styling.

@@ -6,6 +6,7 @@ import { ThemeProvider } from './hooks/theme/ThemeProvider';
 import { store } from './store';
 import App from './app/App';
 import './index.css';
+import './features/plugins';
 
 console.log('main.tsx: Rendering React app with all providers...');
 

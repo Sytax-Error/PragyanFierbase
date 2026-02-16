@@ -1,0 +1,15 @@
+.plugin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.plugin-card {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 1rem;
+}
+
+.plugin-card-header {
+  margin-bottom: 1rem;
+}

@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
-import './Charts.css';
-import { FaTh, FaList, FaStar, FaTrash, FaUpload, FaEdit, FaChartBar, FaTable, FaPlug } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
+import './ChartsPage.css';
+import { FaTh, FaList, FaUpload } from 'react-icons/fa';
+import ChartCard from '../../components/ChartCard/ChartCard';
+import ChartRow from '../../components/ChartRow/ChartRow';
 
 const chartsData = [
   {
@@ -59,64 +62,16 @@ const chartsData = [
   },
 ];
 
-const ChartCard = ({ chart }) => (
-  <div className="chart-card">
-    <div className="chart-card-header">
-      <FaStar className="star-icon" />
-      <h3 className="chart-name">{chart.name}</h3>
-    </div>
-    <div className="chart-card-body">
-      <div className="chart-info">
-        <FaChartBar className="chart-info-icon" />
-        <span>{chart.type}</span>
-      </div>
-      <div className="chart-info">
-        <FaTable className="chart-info-icon" />
-        <span>{chart.dataset}</span>
-      </div>
-      <div className="chart-info">
-        <FaPlug className="chart-info-icon" />
-        <span>{chart.onDashboards}</span>
-      </div>
-    </div>
-    <div className="chart-card-footer">
-      <span className="owner-initials">{chart.owners}</span>
-      <span className="last-modified">{chart.lastModified}</span>
-      <div className="action-icons">
-        <FaTrash />
-        <FaUpload />
-        <FaEdit />
-      </div>
-    </div>
-  </div>
-);
-
-const ChartRow = ({ chart }) => (
-    <div className="chart-row">
-        <div className="chart-row-main">
-            <FaStar className="star-icon" />
-            <span className="chart-name">{chart.name}</span>
-        </div>
-        <div className="chart-row-details">
-            <span>{chart.type}</span>
-            <span>{chart.dataset}</span>
-            <span>{chart.onDashboards}</span>
-            <span className="owner-initials">{chart.owners}</span>
-            <span>{chart.lastModified}</span>
-        </div>
-        <div className="action-icons">
-            <FaTrash />
-            <FaUpload />
-            <FaEdit />
-        </div>
-    </div>
-);
-
-const Charts: React.FC = () => {
+const ChartsPage: React.FC = () => {
   const [isGridView, setIsGridView] = useState(true);
+  const navigate = useNavigate();
 
   const toggleView = () => {
     setIsGridView(!isGridView);
+  };
+
+  const handleAddChartClick = () => {
+    navigate('/add-chart');
   };
 
   return (
@@ -125,7 +80,7 @@ const Charts: React.FC = () => {
         <h1>Charts</h1>
         <div className="charts-actions">
           <button className="bulk-select">Bulk select</button>
-          <button className="add-chart">+ Chart</button>
+          <button className="add-chart" onClick={handleAddChartClick}>+ Chart</button>
           <button className="download-chart">
             <FaUpload />
           </button>
@@ -158,4 +113,4 @@ const Charts: React.FC = () => {
   );
 };
 
-export default Charts;
+export default ChartsPage;
