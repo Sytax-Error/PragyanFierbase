@@ -1,9 +1,9 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { FaSearch } from 'react-icons/fa';
 import { addChart } from '../../../store/slices/chartSlice';
+import { useSubHeader } from '../../../hooks/subHeader/useSubHeader';
 import './AddChartPage.css';
 
 // Mock data for datasets and chart plugins
@@ -30,6 +30,7 @@ const AddChartPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { setSubHeaderContent } = useSubHeader();
 
   const handleCreateChart = () => {
     if (selectedDataset && selectedChartType) {
@@ -48,11 +49,20 @@ const AddChartPage: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    setSubHeaderContent(
+      <>
+        <h1>Create a new chart</h1>
+      </>
+    );
+
+    return () => {
+      setSubHeaderContent(null);
+    };
+  }, [setSubHeaderContent]);
+
   return (
     <div className="add-chart-page-container">
-      <header className="add-chart-header">
-        <h1>Create a new chart</h1>
-      </header>
       <main className="add-chart-main">
         <div className="chart-creation-steps">
           <div className="step">
@@ -71,7 +81,6 @@ const AddChartPage: React.FC = () => {
                     </option>
                   ))}
                 </select>
-                <a href="#" className="add-dataset-link">Add a dataset</a> or <a href="#">view instructions</a>
               </div>
             </div>
           </div>
@@ -108,19 +117,19 @@ const AddChartPage: React.FC = () => {
                     ))}
                 </div>
               </div>
-              <div className="add-chart-footer">
-                <p>Please select both a Dataset and a Chart type to proceed</p>
-                <button
-                  onClick={handleCreateChart}
-                  disabled={!selectedDataset || !selectedChartType}
-                >
-                  Create new chart
-                </button>
-              </div>
             </div>
           </div>
         </div>
       </main>
+      <div className="add-chart-footer">
+        <p>Please select both a Dataset and a Chart type to proceed</p>
+        <button
+          onClick={handleCreateChart}
+          disabled={!selectedDataset || !selectedChartType}
+        >
+          Create new chart
+        </button>
+      </div>
     </div>
   );
 };
