@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../../../hooks/theme/useTheme';
 import { useSubHeader } from '../../../hooks/subHeader/useSubHeader';
 import { FiSearch, FiPlus, FiBarChart2, FiPieChart, FiTrendingUp, FiCheckCircle, FiCircle, FiLayers, FiCompass } from 'react-icons/fi';
+import CustomSelect from '../../../components/CustomSelect/CustomSelect';
 import './AddChartPage.css';
 
 const chartPlugins = [
@@ -12,6 +13,11 @@ const chartPlugins = [
   { id: 'area', name: 'Area Chart', icon: <FiLayers /> },
   { id: 'scatter', name: 'Scatter Plot', icon: <FiTrendingUp /> },
   { id: 'radar', name: 'Radar Chart', icon: <FiCompass /> },
+];
+
+const datasets = [
+  { value: 'sales_data', label: 'Sales Data' },
+  { value: 'user_analytics', label: 'User Analytics' },
 ];
 
 const AddChartPage: React.FC = () => {
@@ -76,13 +82,12 @@ const AddChartPage: React.FC = () => {
           <div className="wizard-step" id="step-1">
             <h2 className="wizard-step-title">Select a Dataset</h2>
             <p className="wizard-step-subtitle">Choose the data source you want to visualize.</p>
-            <div className="dataset-selection">
-              <select onChange={(e) => setSelectedDataset(e.target.value)} value={selectedDataset}>
-                <option value="" disabled>Choose a dataset...</option>
-                <option value="sales_data">Sales Data</option>
-                <option value="user_analytics">User Analytics</option>
-              </select>
-            </div>
+            <CustomSelect
+              options={datasets}
+              value={selectedDataset}
+              onChange={setSelectedDataset}
+              placeholder="Choose a dataset..."
+            />
           </div>
 
           <div className="wizard-step" id="step-2">
@@ -97,7 +102,7 @@ const AddChartPage: React.FC = () => {
                   type="text"
                   placeholder="Search charts..."
                   value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.g. target.value)}
+                  onChange={(e) => setSearchTerm(e.target.value)}
                 />
               </div>
             </div>
