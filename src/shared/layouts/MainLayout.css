@@ -8,7 +8,7 @@
 .content {
   flex-grow: 1;
   overflow-y: auto; /* Allows only the content area to scroll if it overflows */
-  padding: 1.5rem;
+  padding: 0.5rem;
 }
 
 /* Ensures Header and Footer have a fixed height and don't shrink */

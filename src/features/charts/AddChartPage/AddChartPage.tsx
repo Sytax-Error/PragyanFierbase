@@ -2,16 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../../../hooks/theme/useTheme';
 import { useSubHeader } from '../../../hooks/subHeader/useSubHeader';
-import { FiSearch, FiPlus, FiBarChart2, FiPieChart, FiTrendingUp } from 'react-icons/fi';
+import { FiSearch, FiPlus, FiBarChart2, FiPieChart, FiTrendingUp, FiCheckCircle, FiCircle, FiLayers, FiCompass } from 'react-icons/fi';
 import './AddChartPage.css';
 
 const chartPlugins = [
   { id: 'bar', name: 'Bar Chart', icon: <FiBarChart2 /> },
   { id: 'pie', name: 'Pie Chart', icon: <FiPieChart /> },
   { id: 'line', name: 'Line Chart', icon: <FiTrendingUp /> },
-  { id: 'area', name: 'Area Chart', icon: <FiBarChart2 /> }, // Example, replace with specific icon
-  { id: 'scatter', name: 'Scatter Plot', icon: <FiTrendingUp /> }, // Example, replace with specific icon
-  { id: 'radar', name: 'Radar Chart', icon: <FiPieChart /> }, // Example, replace with specific icon
+  { id: 'area', name: 'Area Chart', icon: <FiLayers /> },
+  { id: 'scatter', name: 'Scatter Plot', icon: <FiTrendingUp /> },
+  { id: 'radar', name: 'Radar Chart', icon: <FiCompass /> },
 ];
 
 const AddChartPage: React.FC = () => {
@@ -23,8 +23,7 @@ const AddChartPage: React.FC = () => {
   const { setSubHeaderContent } = useSubHeader();
 
   useEffect(() => {
-    setSubHeaderContent(<><h1>Add Chart</h1>
-</>);
+    setSubHeaderContent(<><h1>Add New Chart</h1></>);
   }, [setSubHeaderContent]);
 
   const handleAddChart = () => {
@@ -37,67 +36,92 @@ const AddChartPage: React.FC = () => {
     chart.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const isDatasetSelected = !!selectedDataset;
+  const isChartSelected = !!selectedChart;
+
   return (
-    <div className={`add-chart-page-container ${theme}`}>
-      <div className="add-chart-content-wrapper">
-        <main className="add-chart-main">
-          <div className="chart-creation-steps">
-            {/* Step 1: Select Dataset (Fixed Height) */}
-            <div className="step">
-              <div className="step-number">1</div>
-              <div className="step-content">
-                <h2>Select a Dataset</h2>
-                <div className="dataset-selection">
-                  <select onChange={(e) => setSelectedDataset(e.target.value)} value={selectedDataset}>
-                    <option value="" disabled>Choose a dataset...</option>
-                    <option value="sales_data">Sales Data</option>
-                    <option value="user_analytics">User Analytics</option>
-                  </select>
-                </div>
+    <div className={`add-chart-container ${theme}`}>
+      <div className="add-chart-wizard">
+        <aside className="wizard-sidebar">
+          <div className="wizard-logo">
+            <FiBarChart2 />
+            <span className="logo-text">Chart Builder</span>
+          </div>
+          <nav className="wizard-nav">
+            <div className={`wizard-nav-item ${isDatasetSelected ? 'completed' : 'active'}`}>
+              <div className="nav-item-icon">
+                {isDatasetSelected ? <FiCheckCircle /> : <FiCircle />}
+              </div>
+              <div className="nav-item-text">
+                <h4>Step 1</h4>
+                <p>Select Dataset</p>
               </div>
             </div>
-
-            {/* Step 2: Choose Chart (Flexible Height with Internal Scroll) */}
-            <div className="step">
-              <div className="step-number">2</div>
-              <div className="step-content">
-                <div className="chart-gallery-header">
-                  <h2>Choose a Chart Type</h2>
-                  <div className="search-bar">
-                    <FiSearch className="search-icon" />
-                    <input
-                      type="text"
-                      placeholder="Search charts..."
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                    />
-                  </div>
-                </div>
-                <div className="chart-gallery">
-                  {filteredCharts.map(chart => (
-                    <div
-                      key={chart.id}
-                      className={`chart-plugin-card ${selectedChart === chart.id ? 'selected' : ''}`}
-                      onClick={() => setSelectedChart(chart.id)}
-                    >
-                      <div className="chart-thumbnail">{chart.icon}</div>
-                      <h3>{chart.name}</h3>
-                    </div>
-                  ))}
-                </div>
+            <div className={`wizard-nav-item ${isChartSelected ? 'completed' : (isDatasetSelected ? 'active' : '')}`}>
+              <div className="nav-item-icon">
+                {isChartSelected ? <FiCheckCircle /> : <FiCircle />}
               </div>
+              <div className="nav-item-text">
+                <h4>Step 2</h4>
+                <p>Choose Chart</p>
+              </div>
+            </div>
+          </nav>
+          <div className="wizard-footer">
+            <p>Select your data and chart type to proceed.</p>
+          </div>
+        </aside>
+
+        <main className="wizard-content">
+          <div className="wizard-step" id="step-1">
+            <h2 className="wizard-step-title">Select a Dataset</h2>
+            <p className="wizard-step-subtitle">Choose the data source you want to visualize.</p>
+            <div className="dataset-selection">
+              <select onChange={(e) => setSelectedDataset(e.target.value)} value={selectedDataset}>
+                <option value="" disabled>Choose a dataset...</option>
+                <option value="sales_data">Sales Data</option>
+                <option value="user_analytics">User Analytics</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="wizard-step" id="step-2">
+            <div className="chart-gallery-header">
+              <div>
+                <h2 className="wizard-step-title">Choose a Chart Type</h2>
+                <p className="wizard-step-subtitle">Pick a visualization that best represents your data.</p>
+              </div>
+              <div className="search-bar">
+                <FiSearch className="search-icon" />
+                <input
+                  type="text"
+                  placeholder="Search charts..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.g. target.value)}
+                />
+              </div>
+            </div>
+            <div className="chart-gallery">
+              {filteredCharts.map(chart => (
+                <div
+                  key={chart.id}
+                  className={`chart-plugin-card ${selectedChart === chart.id ? 'selected' : ''}`}
+                  onClick={() => setSelectedChart(chart.id)}
+                >
+                  <div className="chart-thumbnail">{chart.icon}</div>
+                  <h3>{chart.name}</h3>
+                </div>
+              ))}
             </div>
           </div>
         </main>
       </div>
 
-      <footer className="add-chart-footer">
-        <div className="footer-content">
-          <button onClick={handleAddChart} disabled={!selectedChart || !selectedDataset}>
-            <FiPlus />
-            Add Chart to Dashboard
-          </button>
-        </div>
+      <footer className="add-chart-footer-bar">
+        <button onClick={handleAddChart} disabled={!isChartSelected || !isDatasetSelected}>
+          <FiPlus />
+          Add Chart to Dashboard
+        </button>
       </footer>
     </div>
   );
