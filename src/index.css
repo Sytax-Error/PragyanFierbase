@@ -1,35 +1,68 @@
 :root {
   --subheader-height: 56px;
-  --background-light: #f8f9fa;
-  --text-light: #343a40;
-  --header-bg-light: #f8f9fa;
-  --header-text-light: #343a40;
-  --card-bg-light: #ffffff;
-  --card-border-light: #e9ecef;
 
-  --background-dark: #1a1a1a;
-  --text-dark: #f8f9fa;
-  --header-bg-dark: #212529;
-  --header-text-dark: #f8f9fa;
-  --card-bg-dark: #2c2c2c;
-  --card-border-dark: #3a3a3a;
+  /* Spacing */
+  --spacing-xxs: 2px;
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-lg: 16px;
+  --spacing-xl: 24px;
+  --spacing-xxl: 32px;
+
+  /* Border Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px; /* Reduced from 16px */
+
+  /* Transitions */
+  --transition-fast: all 0.2s ease-in-out;
+  --transition-medium: all 0.3s ease-in-out;
+
+  /* Light Theme */
+  --background-light: #f8f9fa;
+  --text-light: #212529;
+  --header-bg-light: #ffffff;
+  --header-text-light: #212529;
+  --card-bg-light: #ffffff;
+  --card-border-light: #dee2e6;
+
+  /* Dark Theme */
+  --background-dark: #121212;
+  --text-dark: #e9ecef;
+  --header-bg-dark: #1a1a1a;
+  --header-text-dark: #e9ecef;
+  --card-bg-dark: #1a1a1a;
+  --card-border-dark: #343a40;
+
+  /* Modern Theme */
+  --primary-color: #007bff;
+  --secondary-color: #6c757d;
+  --success-color: #28a745;
+  --danger-color: #dc3545;
+  --warning-color: #ffc107;
+  --info-color: #17a2b8;
+
+  --text-primary-modern: #212529;
+  --text-secondary-modern: #6c757d;
+  --background-modern: #f8f9fa;
+
+  --primary-font: 'Poppins', sans-serif;
+  --secondary-font: 'Roboto', sans-serif;
 }
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: var(--primary-font);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: var(--background-modern);
+  color: var(--text-primary-modern);
+  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="4" height="4" viewBox="0 0 4 4"><path fill="%239C92AC" fill-opacity="0.1" d="M1 3h1v1H1V3zm2-2h1v1H3V1z"></path></svg>');
 }
 
-.app.light {
-  background-color: var(--background-light);
-  color: var(--text-light);
-}
-
-.app.dark {
-  background-color: var(--background-dark);
-  color: var(--text-dark);
+.app.dark body {
+  --background-modern: #1a1a1a;
+  --text-primary-modern: #f8f9fa;
+  --text-secondary-modern: #adb5bd;
 }

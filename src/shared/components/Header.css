@@ -2,7 +2,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 20px;
+    padding: 0 var(--spacing-lg);
     background-color: #fff;
     border-bottom: 1px solid #ddd;
     height: 60px;
@@ -29,7 +29,7 @@
 }
 
 .nav-links a {
-    margin: 0 15px;
+    margin: 0 var(--spacing-md);
     text-decoration: none;
     color: #555;
     padding: 22px 0;
@@ -43,8 +43,8 @@
 }
 
 .nav-links a.active {
-    border-bottom: 3px solid #007bff;
-    color: #007bff;
+    border-bottom: 3px solid var(--primary-color);
+    color: var(--primary-color);
 }
 
 .header-actions {
@@ -56,7 +56,7 @@
     background: none;
     border: none;
     font-size: 1.5rem;
-    margin-left: 20px;
+    margin-left: var(--spacing-lg);
     cursor: pointer;
     color: #555;
     transition: color 0.3s ease;
@@ -67,14 +67,14 @@
 }
 
 .action-button:hover {
-    color: #007bff;
+    color: var(--primary-color);
 }
 
 .theme-toggle {
     background: none;
     border: none;
     font-size: 1.5rem;
-    margin-left: 20px;
+    margin-left: var(--spacing-lg);
     cursor: pointer;
     color: #555;
     transition: color 0.3s ease;
@@ -85,7 +85,7 @@
 }
 
 .theme-toggle:hover {
-    color: #007bff;
+    color: var(--primary-color);
 }
 
 .menu-toggle {

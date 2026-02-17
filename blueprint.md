@@ -7,6 +7,12 @@ This document outlines the project structure and development plan for the applic
 
 ## Implemented Features
 
+### Universal Design System
+
+*   **Universal Variables:** Created `src/styles/variables.css` to establish a single source of truth for design tokens, including a consistent spacing scale (`--spacing-xs` to `--spacing-xl`), border radii, and a standardized color palette. This ensures visual consistency and simplifies future theme adjustments.
+*   **CSS Refactoring:** Refactored all major component stylesheets, including `Dashboard.css`, `MainLayout.css`, and `AddChartPage.css`, to use the newly defined universal variables instead of hardcoded pixel values. This makes the codebase cleaner, more maintainable, and easier to theme.
+*   **Layout Utilities:** Introduced `src/styles/layout.css`, which provides a set of reusable utility classes for common layout patterns like `.container`, `.card`, and `.flex-center`. This accelerates development and promotes consistent page structure.
+
 ### Initial Setup
 
 The initial setup involved creating the basic folder structure for the React application. This helps in organizing the code and keeping it modular.
