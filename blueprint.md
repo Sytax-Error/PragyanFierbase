@@ -7,6 +7,14 @@ This document outlines the project structure and development plan for the applic
 
 ## Implemented Features
 
+### Dynamic Control Panel
+
+*   **ControlPanel Component:** A new `ControlPanel` component was created at `src/components/ControlPanel/ControlPanel.tsx` to provide a consistent and reusable container for chart controls. It includes a title and a content area, and is styled for a clean, modern look.
+*   **ColorPicker Control:** A `ColorPicker` component was created at `src/components/controls/ColorPicker/ColorPicker.tsx` to provide a user-friendly way to select colors. This replaces text-based color inputs with an interactive color swatch.
+*   **Slider Control:** A `Slider` component was created at `src/components/controls/Slider/Slider.tsx` to provide a way to select a numeric value from a range. It includes a label, the current value, and a range input.
+*   **Dynamic Control Rendering:** The `EditChartPage` was refactored to dynamically render controls based on their `type`, as defined in the chart plugin's `controlPanel.ts` file. It now uses a `switch` statement to render the appropriate control component, supporting `color`, `slider`, and default text inputs.
+*   **Bar Chart Plugin Update:** The `custom-plugin-bar-chart` was updated to use the new controls. The `color` field now uses the `ColorPicker`, and a new `barThickness` field was added that uses the `Slider` control.
+
 ### Universal Design System
 
 *   **Universal Variables:** Created `src/styles/variables.css` to establish a single source of truth for design tokens, including a consistent spacing scale (`--spacing-xs` to `--spacing-xl`), border radii, and a standardized color palette. This ensures visual consistency and simplifies future theme adjustments.

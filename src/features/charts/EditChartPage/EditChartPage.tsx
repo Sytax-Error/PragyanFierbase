@@ -4,7 +4,9 @@ import { vizRegistry } from '../../plugins/registry';
 import { runChart } from '../../chartEngine/runChart';
 import { useTheme } from '../../../hooks/theme/useTheme';
 import StatusIndicator from '../../../components/StatusIndicator/StatusIndicator';
-import { VizPlugin } from '../../plugins/types';
+import ControlPanel from '../../../components/ControlPanel/ControlPanel';
+import ColorPicker from '../../../components/controls/ColorPicker/ColorPicker';
+import Slider from '../../../components/controls/Slider/Slider';
 import './EditChartPage.css';
 
 type Status = 'loading' | 'found' | 'not-found';
@@ -68,25 +70,48 @@ const EditChartPage: React.FC = () => {
 
   const controlElements =
     plugin.controlPanel?.fields?.map((field: any) => {
-      return (
-        <div key={field.key} className="control-item">
-          <label>{field.label}</label>
-          <input
-            type={field.type}
-            value={controls[field.key] ?? field.defaultValue}
-            onChange={(e) =>
-              handleControlChange(field.key, e.target.value)
-            }
-          />
-        </div>
-      );
+      switch (field.type) {
+        case 'color':
+          return (
+            <ColorPicker
+              key={field.key}
+              label={field.label}
+              value={controls[field.key] ?? field.defaultValue}
+              onChange={(value) => handleControlChange(field.key, value)}
+            />
+          );
+        case 'slider':
+          return (
+            <Slider
+              key={field.key}
+              label={field.label}
+              value={controls[field.key] ?? field.defaultValue}
+              onChange={(value) => handleControlChange(field.key, value)}
+              {...field.config}
+            />
+          );
+        default:
+          return (
+            <div key={field.key} className="control-item">
+              <label>{field.label}</label>
+              <input
+                type={field.type}
+                value={controls[field.key] ?? field.defaultValue}
+                onChange={(e) =>
+                  handleControlChange(field.key, e.target.value)
+                }
+              />
+            </div>
+          );
+      }
     }) || [];
 
   return (
     <div className={`edit-chart-container ${theme}`}>
       <div className="edit-chart-sidebar card">
-        <h2 className="chart-title">{plugin.metadata.name}</h2>
-        <div className="controls-panel">{controlElements}</div>
+        <ControlPanel title={plugin.metadata.name}>
+          {controlElements}
+        </ControlPanel>
         <button className="create-chart-button" onClick={handleCreateChart}>
           Create Chart
         </button>

@@ -1,0 +1,30 @@
+.color-picker-control {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.color-picker-control label {
+  margin-right: 1rem;
+}
+
+.color-picker-input {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.color-picker-input::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.color-picker-input::-webkit-color-swatch {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
