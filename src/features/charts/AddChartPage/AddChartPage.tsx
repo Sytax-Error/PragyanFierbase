@@ -2,18 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../../../hooks/theme/useTheme';
 import { useSubHeader } from '../../../hooks/subHeader/useSubHeader';
-import { FiSearch, FiPlus, FiBarChart2, FiPieChart, FiTrendingUp, FiCheckCircle, FiCircle, FiLayers, FiCompass } from 'react-icons/fi';
+import { FiSearch, FiPlus, FiCheckCircle, FiCircle, FiImage } from 'react-icons/fi';
 import CustomSelect from '../../../components/CustomSelect/CustomSelect';
+import { vizRegistry } from '../../plugins/registry';
 import './AddChartPage.css';
-
-const chartPlugins = [
-  { id: 'bar', name: 'Bar Chart', icon: <FiBarChart2 /> },
-  { id: 'pie', name: 'Pie Chart', icon: <FiPieChart /> },
-  { id: 'line', name: 'Line Chart', icon: <FiTrendingUp /> },
-  { id: 'area', name: 'Area Chart', icon: <FiLayers /> },
-  { id: 'scatter', name: 'Scatter Plot', icon: <FiTrendingUp /> },
-  { id: 'radar', name: 'Radar Chart', icon: <FiCompass /> },
-];
 
 const datasets = [
   { value: 'sales_data', label: 'Sales Data' },
@@ -28,13 +20,20 @@ const AddChartPage: React.FC = () => {
   const navigate = useNavigate();
   const { setSubHeaderContent } = useSubHeader();
 
+  const chartPlugins = vizRegistry.list().map(plugin => ({
+    id: plugin.type,
+    name: plugin.metadata.name,
+    icon: plugin.metadata.icon, // Keep the component reference
+    thumbnail: plugin.metadata.thumbnail,
+  }));
+
   useEffect(() => {
     setSubHeaderContent(<><h1>Add New Chart</h1></>);
   }, [setSubHeaderContent]);
 
   const handleAddChart = () => {
     if (selectedChart && selectedDataset) {
-      navigate(`/dashboard/add-chart-success?dataset=${selectedDataset}&chart=${selectedChart}`);
+      // navigate(`/edit-chart/${selectedDataset}/${selectedChart}`);
     }
   };
 
@@ -45,12 +44,15 @@ const AddChartPage: React.FC = () => {
   const isDatasetSelected = !!selectedDataset;
   const isChartSelected = !!selectedChart;
 
+  // Correctly get the icon component for the logo
+  const LogoIcon = chartPlugins[0]?.icon || FiCircle;
+
   return (
     <div className={`add-chart-container ${theme}`}>
       <div className="add-chart-wizard">
         <aside className="wizard-sidebar">
           <div className="wizard-logo">
-            <FiBarChart2 />
+            <LogoIcon size="1.5rem" />
             <span className="logo-text">Chart Builder</span>
           </div>
           <nav className="wizard-nav">
@@ -107,16 +109,26 @@ const AddChartPage: React.FC = () => {
               </div>
             </div>
             <div className="chart-gallery">
-              {filteredCharts.map(chart => (
-                <div
-                  key={chart.id}
-                  className={`chart-plugin-card ${selectedChart === chart.id ? 'selected' : ''}`}
-                  onClick={() => setSelectedChart(chart.id)}
-                >
-                  <div className="chart-thumbnail">{chart.icon}</div>
-                  <h3>{chart.name}</h3>
-                </div>
-              ))}
+              {filteredCharts.map(chart => {
+                // Assign the icon to a capitalized variable
+                const Icon = chart.icon || FiImage;
+                return (
+                  <div
+                    key={chart.id}
+                    className={`chart-plugin-card ${selectedChart === chart.id ? 'selected' : ''}`}
+                    onClick={() => setSelectedChart(chart.id)}
+                  >
+                    <div className="chart-thumbnail">
+                      {chart.thumbnail ? (
+                        <img src={chart.thumbnail} alt={chart.name} />
+                      ) : (
+                        <Icon size="2.75rem" /> // Render the icon component correctly
+                      )}
+                    </div>
+                    <h3>{chart.name}</h3>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </main>
@@ -125,7 +137,7 @@ const AddChartPage: React.FC = () => {
       <footer className="add-chart-footer-bar">
         <button onClick={handleAddChart} disabled={!isChartSelected || !isDatasetSelected}>
           <FiPlus />
-          Add Chart to Dashboard
+          Proceed to Edit
         </button>
       </footer>
     </div>
