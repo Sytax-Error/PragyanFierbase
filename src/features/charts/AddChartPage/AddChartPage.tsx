@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../../../hooks/theme/useTheme';
+import { useSubHeader } from '../../../hooks/subHeader/useSubHeader';
 import { FiSearch, FiPlus, FiBarChart2, FiPieChart, FiTrendingUp } from 'react-icons/fi';
 import './AddChartPage.css';
 
@@ -19,6 +20,12 @@ const AddChartPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const { theme } = useTheme();
   const navigate = useNavigate();
+  const { setSubHeaderContent } = useSubHeader();
+
+  useEffect(() => {
+    setSubHeaderContent(<><h1>Add Chart</h1>
+</>);
+  }, [setSubHeaderContent]);
 
   const handleAddChart = () => {
     if (selectedChart && selectedDataset) {
