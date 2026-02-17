@@ -47,4 +47,15 @@ export const mockDatasets: Dataset[] = [
       { name: 'species', type: 'string' },
     ],
   },
+  {
+    id: '3',
+    name: 'Monthly Sales',
+    description: 'A dataset of monthly sales data for an e-commerce store.',
+    columns: [
+        { name: 'month', type: 'string' },
+        { name: 'sales', type: 'number' },
+        { name: 'year', type: 'integer' },
+        { name: 'category', type: 'string' },
+    ],
+  },
 ];

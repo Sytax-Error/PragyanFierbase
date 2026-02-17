@@ -4,7 +4,8 @@ import MainLayout from '../../shared/layouts/MainLayout';
 import Dashboard from '../../features/dashboard/Dashboard';
 import ChartsPage from '../../features/charts/ChartsPage/ChartsPage';
 import AddChartPage from '../../features/charts/AddChartPage/AddChartPage';
-import DatasetTable from '../../features/datasets/DatasetTable.tsx'
+import EditChartPage from '../../features/charts/EditChartPage/EditChartPage';
+import DatasetTable from '../../features/datasets/DatasetTable.tsx';
 
 const AppRoutes: React.FC = () => {
   return (
@@ -14,6 +15,7 @@ const AppRoutes: React.FC = () => {
         <Route path="dashboards" element={<Dashboard />} />
         <Route path="charts" element={<ChartsPage />} />
         <Route path="add-chart" element={<AddChartPage />} />
+        <Route path="edit-chart/:datasetId/:chartType" element={<EditChartPage />} />
         <Route path="datasets" element={<DatasetTable />} />
       </Route>
     </Routes>

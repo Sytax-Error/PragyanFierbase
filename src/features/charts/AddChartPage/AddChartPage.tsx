@@ -5,12 +5,8 @@ import { useSubHeader } from '../../../hooks/subHeader/useSubHeader';
 import { FiSearch, FiPlus, FiCheckCircle, FiCircle, FiImage } from 'react-icons/fi';
 import CustomSelect from '../../../components/CustomSelect/CustomSelect';
 import { vizRegistry } from '../../plugins/registry';
+import { mockDatasets } from '../../../data/mockDatasets'; // Import mockDatasets
 import './AddChartPage.css';
-
-const datasets = [
-  { value: 'sales_data', label: 'Sales Data' },
-  { value: 'user_analytics', label: 'User Analytics' },
-];
 
 const AddChartPage: React.FC = () => {
   const [selectedDataset, setSelectedDataset] = useState('');
@@ -33,7 +29,7 @@ const AddChartPage: React.FC = () => {
 
   const handleAddChart = () => {
     if (selectedChart && selectedDataset) {
-      // navigate(`/edit-chart/${selectedDataset}/${selectedChart}`);
+      navigate(`/edit-chart/${selectedDataset}/${selectedChart}`);
     }
   };
 
@@ -46,6 +42,8 @@ const AddChartPage: React.FC = () => {
 
   // Correctly get the icon component for the logo
   const LogoIcon = chartPlugins[0]?.icon || FiCircle;
+
+  const datasetOptions = mockDatasets.map(d => ({ value: d.id, label: d.name }));
 
   return (
     <div className={`add-chart-container ${theme}`}>
@@ -85,7 +83,7 @@ const AddChartPage: React.FC = () => {
             <h2 className="wizard-step-title">Select a Dataset</h2>
             <p className="wizard-step-subtitle">Choose the data source you want to visualize.</p>
             <CustomSelect
-              options={datasets}
+              options={datasetOptions}
               value={selectedDataset}
               onChange={setSelectedDataset}
               placeholder="Choose a dataset..."
