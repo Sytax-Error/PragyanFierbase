@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom';
 import { vizRegistry } from '../../plugins/registry';
 import { runChart } from '../../chartEngine/runChart';
 import { useTheme } from '../../../hooks/theme/useTheme';
+import StatusIndicator from '../../../components/StatusIndicator/StatusIndicator';
+import { VizPlugin } from '../../plugins/types';
 import './EditChartPage.css';
 
 type Status = 'loading' | 'found' | 'not-found';
@@ -13,7 +15,7 @@ const EditChartPage: React.FC = () => {
   const [ChartComponent, setChartComponent] = useState<React.ComponentType<any> | null>(null);
   const [chartProps, setChartProps] = useState<any>(null);
   const [controls, setControls] = useState<Record<string, any>>({});
-  const [plugin, setPlugin] = useState(null);
+  const [plugin, setPlugin] = useState<VizPlugin | null>(null);
   const [status, setStatus] = useState<Status>('loading');
 
   useEffect(() => {
@@ -21,14 +23,9 @@ const EditChartPage: React.FC = () => {
       const foundPlugin = vizRegistry.get(params.chartType);
       if (foundPlugin) {
         setPlugin(foundPlugin);
-        // Initialize controls with default values
         const initialControls: Record<string, any> = {};
-        foundPlugin.controlPanel?.tabs?.forEach((tab: any) => {
-          tab.sections.forEach((section: any) => {
-            section.controls.forEach((control: any) => {
-              initialControls[control.name] = control.defaultValue;
-            });
-          });
+        foundPlugin.controlPanel?.fields?.forEach((field: any) => {
+          initialControls[field.key] = field.defaultValue;
         });
         setControls(initialControls);
         setStatus('found');
@@ -58,49 +55,47 @@ const EditChartPage: React.FC = () => {
   };
 
   if (status === 'loading') {
-    return <div>Loading plugin...</div>;
+    return <StatusIndicator status="loading" message="Loading plugin..." />;
   }
 
   if (status === 'not-found') {
-    return <div>Plugin not found</div>;
+    return <StatusIndicator status="not-found" message={`Plugin "${params.chartType}" not found.`} />;
   }
 
   if (!plugin) {
-    return <div>Something went wrong</div>; // Should not happen
+    return <StatusIndicator status="error" message="Something went wrong" />;
   }
 
   const controlElements =
-    plugin.controlPanel?.tabs?.flatMap((tab: any) =>
-      tab.sections.flatMap((section: any) =>
-        section.controls.map((control: any) => {
-          const ControlComponent = control.render;
-          return (
-            <div key={control.name} className="control-item">
-              <label>{control.label}</label>
-              <ControlComponent
-                value={controls[control.name]}
-                onChange={(value: any) => handleControlChange(control.name, value)}
-              />
-            </div>
-          );
-        })
-      )
-    ) || [];
+    plugin.controlPanel?.fields?.map((field: any) => {
+      return (
+        <div key={field.key} className="control-item">
+          <label>{field.label}</label>
+          <input
+            type={field.type}
+            value={controls[field.key] ?? field.defaultValue}
+            onChange={(e) =>
+              handleControlChange(field.key, e.target.value)
+            }
+          />
+        </div>
+      );
+    }) || [];
 
   return (
     <div className={`edit-chart-container ${theme}`}>
-      <div className="edit-chart-sidebar">
-        <h2>{plugin.metadata.name}</h2>
+      <div className="edit-chart-sidebar card">
+        <h2 className="chart-title">{plugin.metadata.name}</h2>
         <div className="controls-panel">{controlElements}</div>
-        <button onClick={handleCreateChart}>Create Chart</button>
+        <button className="create-chart-button" onClick={handleCreateChart}>
+          Create Chart
+        </button>
       </div>
-      <div className="edit-chart-main">
+      <div className="edit-chart-main card">
         {ChartComponent ? (
           <ChartComponent {...chartProps} />
         ) : (
-          <div className="chart-placeholder">
-            <p>Your chart will appear here</p>
-          </div>
+          <StatusIndicator status="info" message="Your chart will appear here" />
         )}
       </div>
     </div>

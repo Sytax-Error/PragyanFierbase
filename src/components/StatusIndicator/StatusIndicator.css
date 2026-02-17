@@ -1,0 +1,49 @@
+.status-indicator-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  background-color: var(--card-bg-color, #ffffff);
+  border-radius: 12px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05), 0 6px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  max-width: 400px;
+  margin: 40px auto;
+}
+
+.status-icon-container {
+  margin-bottom: 20px;
+}
+
+.status-icon {
+  font-size: 48px;
+  color: var(--primary-color, #8884d8);
+}
+
+.status-icon.error {
+  color: var(--error-color, #ff6b6b);
+}
+
+.status-icon.not-found {
+  color: var(--warning-color, #feca57);
+}
+
+.status-message {
+  font-size: 18px;
+  color: var(--text-color, #333);
+  font-weight: 500;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.spin {
+  animation: spin 1.5s linear infinite;
+}
