@@ -1,0 +1,9 @@
+.edit-chart-main {
+  flex-grow: 1;
+  padding: var(--spacing-lg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: auto;
+  position: relative; /* Needed for positioning status indicators correctly */
+}

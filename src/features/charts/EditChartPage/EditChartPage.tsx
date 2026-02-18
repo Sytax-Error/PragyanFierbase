@@ -7,6 +7,7 @@ import { useTheme } from '@/hooks/theme/useTheme';
 import { useDataset } from '@/hooks/data/useDataset';
 import { StatusIndicator } from '@/components';
 import EditChartSidebar from './components/EditChartSidebar';
+import EditChartMain from './components/EditChartMain';
 import '@/features/charts/EditChartPage/EditChartPage.css';
 
 type Status = 'loading' | 'found' | 'not-found';
@@ -81,15 +82,11 @@ const EditChartPage: React.FC = () => {
         onCreateChart={handleCreateChart}
         isLoading={dataLoading}
       />
-      <div className="edit-chart-main card">
-        {dataLoading ? (
-          <StatusIndicator status="loading" message="Fetching data..." />
-        ) : ChartComponent ? (
-          <ChartComponent {...chartProps as object} />
-        ) : (
-          <StatusIndicator status="info" message={'Configure your chart and click "Create Chart"'} />
-        )}
-      </div>
+      <EditChartMain 
+        dataLoading={dataLoading} 
+        ChartComponent={ChartComponent} 
+        chartProps={chartProps} 
+      />
     </div>
   );
 };
