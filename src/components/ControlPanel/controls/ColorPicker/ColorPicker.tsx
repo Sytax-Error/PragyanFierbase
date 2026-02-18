@@ -1,11 +1,8 @@
 import React from 'react';
+import type { BaseControlProps } from '@/core/controls/controlRegistry';
 import './ColorPicker.css';
 
-interface ColorPickerProps {
-  label: string;
-  value: string;
-  onChange: (value: string) => void;
-}
+interface ColorPickerProps extends BaseControlProps {}
 
 const ColorPicker: React.FC<ColorPickerProps> = ({ label, value, onChange }) => {
   return (
@@ -13,7 +10,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({ label, value, onChange }) => 
       <label>{label}</label>
       <input
         type="color"
-        value={value}
+        value={value as string}
         onChange={(e) => onChange(e.target.value)}
         className="color-picker-input"
       />

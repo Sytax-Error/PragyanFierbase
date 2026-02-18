@@ -1,5 +1,6 @@
 import React from 'react';
-import { Button, ControlPanel, DataColumnSelector, ColorPicker, Slider } from '@/components';
+import { Button, ControlPanel } from '@/components';
+import DynamicControl from '@/core/controls/DynamicControl';
 import type { VizPlugin } from '@/features/plugins/types';
 import type { Dataset } from '@/hooks/data/useDataset';
 import './EditChartSidebar.css';
@@ -36,52 +37,18 @@ const EditChartSidebar: React.FC<EditChartSidebarProps> = ({
   };
 
   const controlElements =
-    plugin?.controlPanel?.fields?.map((field: { key: string; label: string; type: string; kind: 'dimension' | 'measure'; config: Record<string, unknown>}) => {
-      switch (field.type) {
-        case 'data-column':
-          return (
-            <DataColumnSelector
-              key={field.key}
-              label={field.label}
-              value={controls[field.key] as string}
-              onChange={(value) => handleControlChange(field.key, value)}
-              columns={getColumnsByKind(field.kind)}
-            />
-          );
-        case 'color':
-          return (
-            <ColorPicker
-              key={field.key}
-              label={field.label}
-              value={controls[field.key] as string}
-              onChange={(value) => handleControlChange(field.key, value)}
-            />
-          );
-        case 'slider':
-          return (
-            <Slider
-              key={field.key}
-              label={field.label}
-              value={controls[field.key] as number}
-              onChange={(value) => handleControlChange(field.key, value)}
-              {...field.config}
-            />
-          );
-        default:
-          return (
-            <div key={field.key} className="control-item">
-              <label>{field.label}</label>
-              <input
-                type={field.type}
-                value={controls[field.key] as string}
-                onChange={(e) =>
-                  handleControlChange(field.key, e.target.value)
-                }
-              />
-            </div>
-          );
-      }
-    }) || [];
+    plugin?.controlPanel?.fields?.map((field: { key: string; label: string; type: string; kind: 'dimension' | 'measure'; config: Record<string, unknown>}) => (
+      <DynamicControl
+        key={field.key}
+        type={field.type}
+        fieldKey={field.key}
+        label={field.label}
+        value={controls[field.key]}
+        onChange={handleControlChange}
+        options={getColumnsByKind(field.kind)}
+        config={field.config}
+      />
+    )) || [];
 
   return (
     <div className="edit-chart-sidebar card">
