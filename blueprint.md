@@ -23,6 +23,9 @@ This document outlines the architecture and implementation details of the Pragya
 - **UI/UX:**
   - The UI intelligently filters dropdowns to show only valid column types (dimensions vs. measures).
 
+- **UI Components:**
+  - Control components (`ColorPicker`, `Slider`, `DataColumnSelector`) are consolidated and exported from a single `ControlPanel` component for better organization and reusability.
+
 ## Next Feature: Saving and Listing Charts
 
 ### Plan
