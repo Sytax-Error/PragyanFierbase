@@ -24,24 +24,32 @@ const EditChartPage: React.FC = () => {
     return plugin ? 'found' : 'not-found';
   }, [chartType, plugin]);
 
-  const [ChartComponent, setChartComponent] = useState<React.ComponentType<unknown> | null>(null);
-  const [chartProps, setChartProps] = useState<unknown>(null);
-  const [controls, setControls] = useState<Record<string, unknown>>({});
-
-  useEffect(() => {
-    if (plugin) {
-      const initialControls: Record<string, unknown> = {};
-      plugin.controlPanel?.fields?.forEach((field: { key: string; defaultValue: unknown; }) => {
-        initialControls[field.key] = field.defaultValue;
-      });
-      setControls(initialControls);
-    } else {
-      setControls({});
-    }
+  const initialControls = useMemo(() => {
+    if (!plugin) return {};
+    const controls: Record<string, unknown> = {};
+    plugin.controlPanel?.fields?.forEach((field) => {
+      controls[field.key] = field.defaultValue;
+    });
+    return controls;
   }, [plugin]);
 
+  const [userModifiedControls, setUserModifiedControls] = useState<Record<string, unknown>>({});
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setUserModifiedControls({});
+  }, [plugin]);
+
+  const controls = useMemo(() => ({
+    ...initialControls,
+    ...userModifiedControls,
+  }), [initialControls, userModifiedControls]);
+
+  const [ChartComponent, setChartComponent] = useState<React.ComponentType<unknown> | null>(null);
+  const [chartProps, setChartProps] = useState<unknown>(null);
+
   const handleControlChange = (controlName: string, value: unknown) => {
-    setControls(prevControls => ({
+    setUserModifiedControls(prevControls => ({
       ...prevControls,
       [controlName]: value,
     }));

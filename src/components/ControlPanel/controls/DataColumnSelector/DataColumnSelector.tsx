@@ -1,5 +1,6 @@
 import React from 'react';
 import type { BaseControlProps } from '@/core/controls/controlRegistry';
+import { CustomSelect } from '@/components';
 import './DataColumnSelector.css';
 
 interface DataColumnSelectorProps extends BaseControlProps {
@@ -7,15 +8,20 @@ interface DataColumnSelectorProps extends BaseControlProps {
 }
 
 const DataColumnSelector: React.FC<DataColumnSelectorProps> = ({ label, value, onChange, options = [] }) => {
+  const selectOptions = options.map(col => ({
+    value: col,
+    label: col,
+  }));
+
   return (
     <div className="data-column-selector">
       <label>{label}</label>
-      <select value={value as string} onChange={(e) => onChange(e.target.value)}>
-        <option value="" disabled>Select a column</option>
-        {options.map(col => (
-          <option key={col} value={col}>{col}</option>
-        ))}
-      </select>
+      <CustomSelect
+        options={selectOptions}
+        value={value as string}
+        onChange={onChange}
+        placeholder="Select a column"
+      />
     </div>
   );
 };

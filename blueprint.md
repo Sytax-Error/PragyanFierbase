@@ -21,6 +21,7 @@ This document outlines the architecture and implementation details of the Pragya
   - **Pluggable Control System:** Implemented a centralized control registry (`src/core/controls/controlRegistry.ts`) that maps control types to their respective React components.
   - **Dynamic Rendering:** Developed a `DynamicControl` component (`src/core/controls/DynamicControl.tsx`) that leverages the registry to render the correct UI elements based on plugin configuration.
   - **Standardized Interface:** All control components now adhere to the `BaseControlProps` interface, ensuring a consistent contract for value management and event handling.
+  - **Standardized UI Components:** Control panel components now utilize a standardized, reusable `CustomSelect` component featuring scrollable option lists for handling large datasets.
 
 ## Implemented Features
 
@@ -29,6 +30,20 @@ This document outlines the architecture and implementation details of the Pragya
 *   **Control Registry:** Created `controlRegistry.ts` to manage all available sidebar controls (ColorPicker, Slider, DataColumnSelector). This allows for adding new control types globally without modifying page-level code.
 *   **Sidebar Refactoring:** Updated `EditChartSidebar.tsx` to remove hardcoded `switch` statements. It now dynamically maps over plugin fields and uses `DynamicControl` for rendering, making the sidebar fully pluggable.
 *   **Prop Normalization:** Standardized how data is passed to controls by aligning the `options` prop across the registry and components, ensuring consistent behavior for data-driven selectors.
+
+### UI & Component Refinements
+
+*   **CustomSelect Refinement:** Enhanced the `CustomSelect` component by adding scrollable option lists with a `250px` max-height and modern custom scrollbar styling, preventing dropdowns from extending beyond the viewport.
+*   **DataColumnSelector Refactoring:** Refactored the `DataColumnSelector` control to utilize the reusable `CustomSelect` component, ensuring visual consistency across all selection UI elements and reducing code duplication.
+*   **Style Consolidation:** Performed a cleanup of CSS files (e.g., `AddChartPage.css`) by removing redundant selection styles, centralizing look-and-feel management within the core component stylesheets.
+*   **Button Enhancement:** Updated the `Button` component to correctly handle the `fullWidth` property. It now uses a CSS class (`btn-fullwidth`) rather than passing the property as a custom DOM attribute, resolving React console warnings.
+
+### Code Quality & Linting
+
+*   **Resolved Linting Errors:** Systematically addressed all ESLint errors, including:
+    *   Replaced `any` with `unknown[]` in `controlRegistry.ts` to enforce stricter typing (`@typescript-eslint/no-explicit-any`).
+    *   Refactored state management in `EditChartPage.tsx` to resolve the `react-hooks/set-state-in-effect` error. The new implementation uses `useMemo` for derived state and a targeted `useEffect` to reset user-modified controls, improving performance and adhering to React best practices.
+*   **React Best Practices:** Fixed a React warning by ensuring custom props like `fullWidth` on the `Button` component are not passed down to the DOM.
 
 ## Visual Enhancements Plan
 

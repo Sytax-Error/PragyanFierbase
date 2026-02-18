@@ -1,9 +1,10 @@
-import React from 'react';
+import React, {  useEffect } from 'react';
 import { Button, ControlPanel } from '@/components';
 import DynamicControl from '@/core/controls/DynamicControl';
 import type { VizPlugin } from '@/features/plugins/types';
 import type { Dataset } from '@/hooks/data/useDataset';
 import './EditChartSidebar.css';
+import { useSubHeader } from '@/hooks/subHeader/useSubHeader';
 
 interface EditChartSidebarProps {
   title: string;
@@ -24,6 +25,11 @@ const EditChartSidebar: React.FC<EditChartSidebarProps> = ({
   onCreateChart,
   isLoading,
 }) => {
+  const { setSubHeaderContent } = useSubHeader();
+
+    useEffect(() => {
+      setSubHeaderContent(<><h1>Create Chart</h1></>);
+    }, [setSubHeaderContent]);
 
   const getColumnsByKind = (kind: 'dimension' | 'measure') => {
     if (!dataset) return [];

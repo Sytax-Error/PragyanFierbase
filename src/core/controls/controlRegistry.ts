@@ -10,14 +10,14 @@ export interface BaseControlProps {
   label: string;
   value: unknown;
   onChange: (value: unknown) => void;
-  options?: any[];
+  options?: unknown[];
   config?: Record<string, unknown>;
 }
 
 /**
  * Registry type
  */
-type ControlRegistry = Record<string, ComponentType<any>>;
+type ControlRegistry = Record<string, ComponentType<BaseControlProps>>;
 
 /**
  * Central control registry

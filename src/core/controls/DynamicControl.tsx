@@ -7,7 +7,7 @@ interface DynamicControlProps {
   label: string;
   value: unknown;
   onChange: (key: string, value: unknown) => void;
-  options?: any[]; 
+  options?: unknown[]; 
   config?: Record<string, unknown>;
 }
 

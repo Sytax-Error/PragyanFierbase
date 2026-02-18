@@ -2,9 +2,7 @@ import React from 'react';
 import type { BaseControlProps } from '@/core/controls/controlRegistry';
 import './ColorPicker.css';
 
-interface ColorPickerProps extends BaseControlProps {}
-
-const ColorPicker: React.FC<ColorPickerProps> = ({ label, value, onChange }) => {
+const ColorPicker: React.FC<BaseControlProps> = ({ label, value, onChange }) => {
   return (
     <div className="color-picker-control">
       <label>{label}</label>
