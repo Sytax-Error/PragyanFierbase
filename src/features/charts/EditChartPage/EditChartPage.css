@@ -1,23 +1,72 @@
 .edit-chart-container {
   display: flex;
-  gap: 20px;
-  padding: 20px;
+  gap: var(--spacing-lg);
+  padding: var(--spacing-lg);
+  height: calc(100vh - 205px);
+  box-sizing: border-box;
 }
 
 .edit-chart-sidebar {
   width: 300px;
+  flex-shrink: 0;
+  padding: var(--spacing-lg);
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  overflow: hidden;
 }
 
-.edit-chart-main {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.edit-chart-sidebar .control-panel {
+  flex-grow: 1;
+  overflow-y: auto;
 }
 
 .create-chart-button {
+  margin-top: var(--spacing-lg);
   width: 100%;
+}
+
+.edit-chart-main {
+  flex-grow: 1;
+  padding: var(--spacing-lg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: auto;
+}
+
+.card {
+  background-color: var(--card-bg-light);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--card-border-light);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.dark .card {
+  background-color: var(--card-bg-dark);
+  border-color: var(--card-border-dark);
+}
+
+.control-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  margin-bottom: var(--spacing-md);
+}
+
+.control-item > label {
+  font-weight: 500;
+}
+
+.control-item > input {
+  padding: var(--spacing-sm);
+  border: 1px solid var(--card-border-light);
+  border-radius: var(--radius-md);
+  background-color: var(--background-light);
+  color: var(--text-light);
+}
+
+.dark .control-item > input {
+  background-color: var(--background-dark);
+  color: var(--text-dark);
+  border: 1px solid var(--card-border-dark);
 }

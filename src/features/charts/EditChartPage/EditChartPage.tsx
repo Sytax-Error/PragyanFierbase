@@ -5,7 +5,7 @@ import type { VizPlugin } from '@/features/plugins/types';
 import { runChart } from '@/features/chartEngine/runChart';
 import { useTheme } from '@/hooks/theme/useTheme';
 import { useDataset } from '@/hooks/data/useDataset';
-import { StatusIndicator, ControlPanel, Button, ColorPicker, Slider, DataColumnSelector } from '@/components';
+import { StatusIndicator, DataColumnSelector, ColorPicker, Slider, Button, ControlPanel } from '@/components';
 import '@/features/charts/EditChartPage/EditChartPage.css';
 
 type Status = 'loading' | 'found' | 'not-found';

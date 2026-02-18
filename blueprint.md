@@ -4,46 +4,14 @@
 
 This document outlines the architecture and implementation details of the Pragyan BI tool. It serves as a single source of truth for the project's design, features, and future development plans.
 
-## Current State
+## Visual Enhancements Plan
 
-- **Data Layer:**
-  - A mock data service (`src/services/api/dataset.service.ts`) provides datasets and their schemas.
-  - It uses `@faker-js/faker` to dynamically generate realistic data for any defined schema.
-  - Redux Toolkit (`datasetSlice.ts`) is used to manage the dataset state globally.
-  - A `useDataset` hook provides easy access to dataset information.
+1.  **Review Existing Styles:** I'll start by examining the current CSS to understand the existing design system, including colors, spacing, and component styles. This will help me identify areas for improvement and ensure that my changes are consistent with the current design language.
 
-- **Chart Engine:**
-  - A plugin-based architecture (`vizRegistry`) allows for easy extension with new chart types.
-  - The `runChart` function orchestrates the rendering of charts, including data transformation.
-  - The `EditChartPage` provides a user interface for configuring charts.
-  - Moved the `VizPlugin` type to a dedicated `types.ts` file and updated all relevant files to import from there, fixing a subtle module loading issue.
-  - Corrected all `import` statements for the `VizPlugin` type to be `import type` to prevent runtime errors.
+2.  **Modernize the Color Palette:** I'll introduce a new color palette that is more vibrant and modern. I will define a set of primary, secondary, and accent colors that will be used throughout the application.
 
-- **Chart Types:**
-  - A custom bar chart plugin (`custom-plugin-bar-chart`) is implemented.
+3.  **Improve Typography:** I'll select a new set of fonts that are clean, legible, and visually appealing. I'll also establish a clear typographic hierarchy to improve readability and guide the user's attention.
 
-- **UI/UX:**
-  - The UI intelligently filters dropdowns to show only valid column types (dimensions vs. measures).
+4.  **Enhance Component Styling:** I'll update the styling of the application's components, such as buttons, cards, and forms, to give them a more modern and polished look. This will include adding subtle animations and transitions to improve the user experience.
 
-- **UI Components:**
-  - Control components (`ColorPicker`, `Slider`, `DataColumnSelector`) are consolidated and exported from a single `ControlPanel` component for better organization and reusability.
-
-## Next Feature: Saving and Listing Charts
-
-### Plan
-
-1.  **Chart Service (`src/services/api/chart.service.ts`):**
-    -   Create a new mock service to manage chart configurations.
-    -   It will store chart data in-memory.
-    -   **`saveChart(chartConfig)`:** A function to save a new chart configuration.
-    -   **`getCharts()`:** A function to retrieve the list of all saved charts.
-
-2.  **Save Functionality (`EditChartPage.tsx`):**
-    -   Add a "Save Chart" button to the UI.
-    -   On click, the button will capture the current chart's configuration (chart type, controls, dataset ID).
-    -   It will call the `chartService.saveChart()` method to persist the configuration.
-
-3.  **Dynamic Chart List (`ChartsPage/ChartsPage.tsx`):**
-    -   Refactor the `ChartsPage` to remove the hardcoded chart data.
-    -   Use the `chartService.getCharts()` method to fetch the list of saved charts.
-    -   Display the dynamic list of charts, each linking to its corresponding `EditChartPage`.
+5.  **Introduce a "Glassmorphism" Effect:** To create a sense of depth and hierarchy, I'll apply a "glassmorphism" effect to the application's main content area. This will involve using a blurred background with a semi-transparent overlay to create a frosted glass effect.
