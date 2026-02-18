@@ -5,7 +5,7 @@ import type { VizPlugin } from '@/features/plugins/types';
 import { runChart } from '@/features/chartEngine/runChart';
 import { useTheme } from '@/hooks/theme/useTheme';
 import { useDataset } from '@/hooks/data/useDataset';
-import { StatusIndicator, DataColumnSelector, ColorPicker, Slider, Button, ControlPanel } from '@/components';
+import { StatusIndicator } from '@/components';
 import EditChartSidebar from './components/EditChartSidebar';
 import '@/features/charts/EditChartPage/EditChartPage.css';
 
@@ -70,70 +70,14 @@ const EditChartPage: React.FC = () => {
     return <StatusIndicator status="error" message="Something went wrong" />;
   }
 
-  const getColumnsByKind = (kind: 'dimension' | 'measure') => {
-    if (!dataset) return [];
-    if (kind === 'dimension') {
-      return dataset.columns.filter(c => c.type === 'string').map(c => c.name);
-    }
-    if (kind === 'measure') {
-      return dataset.columns.filter(c => c.type === 'number' || c.type === 'integer').map(c => c.name);
-    }
-    return dataset.columns.map(c => c.name);
-  };
-
-  const controlElements =
-    plugin.controlPanel?.fields?.map((field: { key: string; label: string; type: string; kind: 'dimension' | 'measure'; config: Record<string, unknown>}) => {
-      switch (field.type) {
-        case 'data-column':
-          return (
-            <DataColumnSelector
-              key={field.key}
-              label={field.label}
-              value={controls[field.key] as string}
-              onChange={(value) => handleControlChange(field.key, value)}
-              columns={getColumnsByKind(field.kind)}
-            />
-          );
-        case 'color':
-          return (
-            <ColorPicker
-              key={field.key}
-              label={field.label}
-              value={controls[field.key] as string}
-              onChange={(value) => handleControlChange(field.key, value)}
-            />
-          );
-        case 'slider':
-          return (
-            <Slider
-              key={field.key}
-              label={field.label}
-              value={controls[field.key] as number}
-              onChange={(value) => handleControlChange(field.key, value)}
-              {...field.config}
-            />
-          );
-        default:
-          return (
-            <div key={field.key} className="control-item">
-              <label>{field.label}</label>
-              <input
-                type={field.type}
-                value={controls[field.key] as string}
-                onChange={(e) =>
-                  handleControlChange(field.key, e.target.value)
-                }
-              />
-            </div>
-          );
-      }
-    }) || [];
-
   return (
     <div className={`edit-chart-container ${theme}`}>
       <EditChartSidebar
         title={plugin.metadata.name as string}
-        controlElements={controlElements}
+        plugin={plugin}
+        dataset={dataset}
+        controls={controls}
+        handleControlChange={handleControlChange}
         onCreateChart={handleCreateChart}
         isLoading={dataLoading}
       />
