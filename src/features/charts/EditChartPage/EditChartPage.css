@@ -6,6 +6,10 @@
   box-sizing: border-box;
 }
 
+.edit-chart-container.sidebar-collapsed {
+  gap: 0;
+}
+
 /* Responsive styles */
 @media (max-width: 768px) {
   .edit-chart-container {

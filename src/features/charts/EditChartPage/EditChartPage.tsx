@@ -16,6 +16,7 @@ const EditChartPage: React.FC = () => {
   const params = useParams<{ datasetId: string; chartType: string }>();
   const { theme } = useTheme();
   const { dataset, data: currentDatasetData, loading: dataLoading } = useDataset(params.datasetId);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   const chartType = params.chartType;
   const plugin: VizPlugin | null = useMemo(() => (chartType ? vizRegistry.get(chartType) : null), [chartType]);
@@ -67,6 +68,10 @@ const EditChartPage: React.FC = () => {
     }
   };
 
+  const toggleSidebar = () => {
+    setIsSidebarCollapsed(!isSidebarCollapsed);
+  };
+
   if (status === 'loading') {
     return <StatusIndicator status="loading" message="Loading plugin..." />;
   }
@@ -80,15 +85,17 @@ const EditChartPage: React.FC = () => {
   }
 
   return (
-    <div className={`edit-chart-container ${theme}`}>
+    <div className={`edit-chart-container ${theme} ${isSidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
       <EditChartSidebar
-        title={plugin.metadata.name as string}
+        title={'Controle Section'}
         plugin={plugin}
         dataset={dataset}
         controls={controls}
         handleControlChange={handleControlChange}
         onCreateChart={handleCreateChart}
         isLoading={dataLoading}
+        isCollapsed={isSidebarCollapsed}
+        onToggle={toggleSidebar}
       />
       <EditChartMain 
         dataLoading={dataLoading} 

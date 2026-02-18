@@ -1,4 +1,5 @@
-import React, {  useEffect } from 'react';
+import React, { useEffect } from 'react';
+import { FaChevronLeft, FaChevronRight, FaChartBar } from 'react-icons/fa';
 import { Button, ControlPanel } from '@/components';
 import DynamicControl from '@/core/controls/DynamicControl';
 import type { VizPlugin } from '@/features/plugins/types';
@@ -14,6 +15,8 @@ interface EditChartSidebarProps {
   handleControlChange: (controlName: string, value: unknown) => void;
   onCreateChart: () => void;
   isLoading: boolean;
+  isCollapsed: boolean;
+  onToggle: () => void;
 }
 
 const EditChartSidebar: React.FC<EditChartSidebarProps> = ({
@@ -24,12 +27,19 @@ const EditChartSidebar: React.FC<EditChartSidebarProps> = ({
   handleControlChange,
   onCreateChart,
   isLoading,
+  isCollapsed,
+  onToggle,
 }) => {
   const { setSubHeaderContent } = useSubHeader();
 
-    useEffect(() => {
-      setSubHeaderContent(<><h1>Create Chart</h1></>);
-    }, [setSubHeaderContent]);
+  useEffect(() => {
+    setSubHeaderContent(
+      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-md)' }}>
+        <FaChartBar size="1.5rem" />
+        <h1>Create Chart</h1>
+      </div>
+    );
+  }, [setSubHeaderContent]);
 
   const getColumnsByKind = (kind: 'dimension' | 'measure') => {
     if (!dataset) return [];
@@ -57,13 +67,20 @@ const EditChartSidebar: React.FC<EditChartSidebarProps> = ({
     )) || [];
 
   return (
-    <div className="edit-chart-sidebar card">
-      <ControlPanel title={title}>
-        {controlElements}
-      </ControlPanel>
-      <Button className="create-chart-button" onClick={onCreateChart} disabled={isLoading}>
-        {isLoading ? 'Loading Data...' : 'Create Chart'}
-      </Button>
+    <div className={`edit-chart-sidebar card ${isCollapsed ? 'collapsed' : ''}`}>
+      <div className="sidebar-toggle" onClick={onToggle}>
+        {isCollapsed ? <FaChevronRight /> : <FaChevronLeft />}
+      </div>
+      <div className="sidebar-content">
+        <ControlPanel title={title}>
+          {controlElements}
+        </ControlPanel>
+        <div className="sidebar-footer">
+          <Button className="create-chart-button" onClick={onCreateChart} disabled={isLoading}>
+            {isLoading ? 'Loading Data...' : 'Create Chart'}
+          </Button>
+        </div>
+      </div>
     </div>
   );
 };
