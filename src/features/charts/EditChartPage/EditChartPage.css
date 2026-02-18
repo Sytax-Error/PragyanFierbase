@@ -2,27 +2,8 @@
   display: flex;
   gap: var(--spacing-lg);
   padding: var(--spacing-lg);
-  height: 100%; /* Changed from calc(100vh - 205px) */
+  height: 100%;
   box-sizing: border-box;
-}
-
-.edit-chart-sidebar {
-  width: 300px;
-  flex-shrink: 0;
-  padding: var(--spacing-lg);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-.edit-chart-sidebar .control-panel {
-  flex-grow: 1;
-  overflow-y: auto;
-}
-
-.create-chart-button {
-  margin-top: var(--spacing-lg);
-  width: 100%;
 }
 
 .edit-chart-main {
@@ -69,4 +50,11 @@
   background-color: var(--background-dark);
   color: var(--text-dark);
   border: 1px solid var(--card-border-dark);
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .edit-chart-container {
+    flex-direction: column;
+  }
 }

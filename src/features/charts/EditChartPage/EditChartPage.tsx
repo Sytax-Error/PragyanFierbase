@@ -6,6 +6,7 @@ import { runChart } from '@/features/chartEngine/runChart';
 import { useTheme } from '@/hooks/theme/useTheme';
 import { useDataset } from '@/hooks/data/useDataset';
 import { StatusIndicator, DataColumnSelector, ColorPicker, Slider, Button, ControlPanel } from '@/components';
+import EditChartSidebar from './components/EditChartSidebar';
 import '@/features/charts/EditChartPage/EditChartPage.css';
 
 type Status = 'loading' | 'found' | 'not-found';
@@ -130,14 +131,12 @@ const EditChartPage: React.FC = () => {
 
   return (
     <div className={`edit-chart-container ${theme}`}>
-      <div className="edit-chart-sidebar card">
-        <ControlPanel title={plugin.metadata.name as string}>
-          {controlElements}
-        </ControlPanel>
-        <Button className="create-chart-button" onClick={handleCreateChart} disabled={dataLoading}>
-          {dataLoading ? 'Loading Data...' : 'Create Chart'}
-        </Button>
-      </div>
+      <EditChartSidebar
+        title={plugin.metadata.name as string}
+        controlElements={controlElements}
+        onCreateChart={handleCreateChart}
+        isLoading={dataLoading}
+      />
       <div className="edit-chart-main card">
         {dataLoading ? (
           <StatusIndicator status="loading" message="Fetching data..." />

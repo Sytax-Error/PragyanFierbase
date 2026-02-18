@@ -1,0 +1,27 @@
+.edit-chart-sidebar {
+  width: 22rem; /* 448px */
+  flex-shrink: 0;
+  padding: var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.edit-chart-sidebar .control-panel {
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.create-chart-button {
+  margin-top: var(--spacing-lg);
+  width: 100%;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .edit-chart-sidebar {
+    width: 100%;
+    height: auto;
+    max-height: 50vh; /* Allow it to take up to half the viewport height */
+  }
+}
