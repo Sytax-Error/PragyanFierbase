@@ -1,11 +1,17 @@
 import React, { useEffect } from 'react';
-import { FaChevronLeft, FaChevronRight, FaChartBar } from 'react-icons/fa';
+import {
+  FiChevronLeft,
+  FiChevronRight,
+  FiChevronUp,
+  FiChevronDown,
+} from 'react-icons/fi';
+import { FaChartBar } from 'react-icons/fa';
 import { Button, ControlPanel } from '@/components';
 import DynamicControl from '@/core/controls/DynamicControl';
 import type { VizPlugin } from '@/features/plugins/types';
 import type { Dataset } from '@/hooks/data/useDataset';
-import './EditChartSidebar.css';
 import { useSubHeader } from '@/hooks/subHeader/useSubHeader';
+import './EditChartSidebar.css';
 
 interface EditChartSidebarProps {
   title: string;
@@ -69,12 +75,19 @@ const EditChartSidebar: React.FC<EditChartSidebarProps> = ({
   return (
     <div className={`edit-chart-sidebar card ${isCollapsed ? 'collapsed' : ''}`}>
       <div className="sidebar-toggle" onClick={onToggle}>
-        {isCollapsed ? <FaChevronRight /> : <FaChevronLeft />}
+        <span className="desktop-icon">
+          {isCollapsed ? <FiChevronRight /> : <FiChevronLeft />}
+        </span>
+        <span className="mobile-icon">
+          {isCollapsed ? <FiChevronUp /> : <FiChevronDown />}
+        </span>
       </div>
       <div className="sidebar-content">
-        <ControlPanel title={title}>
-          {controlElements}
-        </ControlPanel>
+        <div className="sidebar-controls">
+          <ControlPanel title={title}>
+            {controlElements}
+          </ControlPanel>
+        </div>
         <div className="sidebar-footer">
           <Button className="create-chart-button" onClick={onCreateChart} disabled={isLoading}>
             {isLoading ? 'Loading Data...' : 'Create Chart'}

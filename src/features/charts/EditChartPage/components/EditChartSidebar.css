@@ -1,88 +1,129 @@
+
 .edit-chart-sidebar {
   position: relative;
   width: 22rem;
   flex-shrink: 0;
-  padding: var(--spacing-lg);
+  background-color: var(--card-bg-light);
+  border-radius: var(--radius-lg);
+  transition: all var(--transition-medium);
+  border: 1px solid var(--card-border-light);
   display: flex;
   flex-direction: column;
-  transition: width 0.3s ease-in-out;
+  min-height: 0;
 }
 
-.edit-chart-sidebar.collapsed {
-  width: 2rem;
-  padding: 0;
+.sidebar-content {
+  padding: var(--spacing-lg);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  transition: opacity var(--transition-medium);
+  min-height: 0;
 }
+
+.edit-chart-sidebar.collapsed .sidebar-content {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.sidebar-controls {
+  flex-grow: 1;
+  overflow-y: auto;
+  margin-right: -1rem;
+  padding-right: 1rem;
+}
+
 
 .sidebar-toggle {
   position: absolute;
-  top: 50%;
-  right: -1.25rem;
-  transform: translateY(-50%);
   width: 2.5rem;
   height: 2.5rem;
-  background-color: var(--color-primary);
-  color: var(--color-text-over-primary);
+  background-color: var(--primary-color);
+  color: white;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  border: 2px solid var(--color-background);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border: 3px solid var(--background-light);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   z-index: 100;
-  transition: background-color 0.2s, transform 0.2s;
+  transition: background-color var(--transition-fast), transform var(--transition-fast);
 }
 
-.sidebar-toggle:hover {
-  background-color: var(--color-primary-dark);
-  transform: translateY(-50%) scale(1.1);
+.sidebar-footer {
+  margin-top: auto;
+  padding-top: var(--spacing-md);
+  flex-shrink: 0;
 }
 
-.edit-chart-sidebar.collapsed .sidebar-toggle {
-  right: -1.25rem;
+/* Desktop styles */
+@media (min-width: 769px) {
+  .edit-chart-sidebar {
+    width: 22rem;
+  }
+
+  .edit-chart-sidebar.collapsed {
+    width: 0;
+    padding: 0;
+    border: none;
+  }
+
+  .sidebar-toggle {
+    top: 50%;
+    right: -1.25rem;
+    transform: translateY(-50%);
+  }
+  
+  .sidebar-toggle:hover {
+    transform: translateY(-50%) scale(1.1);
+    background-color: var(--primary-color);
+  }
+
+  .sidebar-toggle .mobile-icon {
+    display: none;
+  }
 }
 
-.sidebar-content {
-  overflow: hidden;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
-.edit-chart-sidebar.collapsed .sidebar-content {
-  opacity: 0;
-}
-
-.edit-chart-sidebar .control-panel {
-  flex-grow: 1;
-  overflow-y: auto;
-}
-
-.create-chart-button {
-  margin-top: var(--spacing-lg);
-  width: 100%;
-}
-
-/* Responsive styles */
+/* Mobile styles */
 @media (max-width: 768px) {
   .edit-chart-sidebar {
     width: 100%;
     height: auto;
-    max-height: 50vh;
+    max-height: 70vh; /* Allow more height for controls */
   }
 
   .edit-chart-sidebar.collapsed {
-    width: 100%;
-    height: 4rem;
+    height: 3.5rem; /* Height of the header */
+    max-height: 3.5rem;
   }
 
   .sidebar-toggle {
-    top: -1.5rem;
-    right: 50%;
-    transform: translateX(50%);
+    top: auto;
+    bottom: -1.25rem;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  .sidebar-toggle:hover {
+    transform: translateX(-50%) scale(1.1);
+    background-color: var(--primary-color);
   }
 
   .edit-chart-sidebar.collapsed .sidebar-toggle {
-    top: -1rem;
+    bottom: -1.25rem;
   }
+
+  .sidebar-toggle .desktop-icon {
+    display: none;
+  }
+}
+
+.app.dark .edit-chart-sidebar {
+  background-color: var(--card-bg-dark);
+  border-color: var(--card-border-dark);
+}
+
+.app.dark .sidebar-toggle {
+  border-color: var(--background-dark);
 }
