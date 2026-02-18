@@ -1,5 +1,5 @@
 import React from "react";
-import "./SubHeader.css";
+import "@/shared/components/SubHeader/SubHeader.css";
 interface SubHeaderProps {
   children: React.ReactNode;
 }

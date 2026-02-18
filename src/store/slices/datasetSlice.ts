@@ -2,11 +2,13 @@ import { createSlice, createAsyncThunk, type PayloadAction } from '@reduxjs/tool
 import type { Dataset } from '@/types/dataset';
 import * as datasetService from '@/services/api/dataset.service';
 
+type DataRecord = Record<string, unknown>;
+
 // 1. Defines the "shape" of this slice's state
 interface DatasetState {
   datasets: Dataset[]; // List of all datasets
   currentDataset: Dataset | null; // The currently selected dataset object
-  currentDatasetData: any[] | null; // Data for the currently selected dataset
+  currentDatasetData: DataRecord[] | null; // Data for the currently selected dataset
   loading: boolean; // Loading for the list of datasets
   dataLoading: boolean; // Loading for the specific dataset data
   error: string | null;
@@ -27,7 +29,7 @@ export const fetchDatasets = createAsyncThunk('datasets/fetchDatasets', async (_
   try {
     const response = await datasetService.getDatasets();
     return response.datasets;
-  } catch (error) {
+  } catch {
     return rejectWithValue('Failed to fetch datasets.');
   }
 });
@@ -44,7 +46,7 @@ export const fetchDatasetData = createAsyncThunk(
       }
       const response = await datasetService.getDatasetData(datasetName);
       return { dataset, data: response.data };
-    } catch (error) {
+    } catch {
       return rejectWithValue(`Failed to fetch data for ${datasetName}.`);
     }
   }
@@ -75,7 +77,7 @@ const datasetSlice = createSlice({
         state.dataLoading = true;
         state.error = null;
       })
-      .addCase(fetchDatasetData.fulfilled, (state, action: PayloadAction<{ dataset: Dataset; data: any[] }>) => {
+      .addCase(fetchDatasetData.fulfilled, (state, action: PayloadAction<{ dataset: Dataset; data: DataRecord[] }>) => {
         state.dataLoading = false;
         state.currentDataset = action.payload.dataset;
         state.currentDatasetData = action.payload.data;

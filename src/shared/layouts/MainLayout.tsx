@@ -1,11 +1,11 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-import SubHeader from '../components/SubHeader/SubHeader';
-import { useTheme } from '../../hooks/theme/useTheme';
-import { useSubHeader } from '../../hooks/subHeader/useSubHeader';
-import './MainLayout.css';
+import Header from '@/shared/components/Header';
+import Footer from '@/shared/components/Footer';
+import SubHeader from '@/shared/components/SubHeader/SubHeader';
+import { useTheme } from '@/hooks/theme/useTheme';
+import { useSubHeader } from '@/hooks/subHeader/useSubHeader';
+import '@/shared/layouts/MainLayout.css';
 
 const MainLayout: React.FC = () => {
   const { theme } = useTheme();

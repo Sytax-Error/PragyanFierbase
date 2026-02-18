@@ -1,9 +1,12 @@
 import { vizRegistry } from '../plugins/registry';
 
+// Define a more specific type for dataset records
+type DataRecord = Record<string, unknown>;
+
 interface RunChartParams {
-  dataset: any[]; // The actual dataset
+  dataset: DataRecord[]; // The actual dataset
   chartType: string;
-  controls: Record<string, any>;
+  controls: Record<string, unknown>;
 }
 
 export const runChart = async ({ dataset, chartType, controls }: RunChartParams) => {

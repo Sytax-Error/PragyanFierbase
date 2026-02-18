@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useTheme } from '../../../hooks/theme/useTheme';
-import { useSubHeader } from '../../../hooks/subHeader/useSubHeader';
+import { useTheme } from '@/hooks/theme/useTheme';
+import { useSubHeader } from '@/hooks/subHeader/useSubHeader';
 import { FiSearch, FiPlus, FiCheckCircle, FiCircle, FiImage } from 'react-icons/fi';
-import CustomSelect from '../../../components/CustomSelect/CustomSelect';
-import { vizRegistry } from '../../plugins/registry';
-import { mockDatasets } from '../../../data/mockDatasets'; // Import mockDatasets
-import './AddChartPage.css';
+import { CustomSelect } from '@/components';
+import { vizRegistry } from '@/features/plugins/registry';
+import { mockDatasets } from '@/data/mockDatasets'; // Import mockDatasets
+import '@/features/charts/AddChartPage/AddChartPage.css';
 
 const AddChartPage: React.FC = () => {
   const [selectedDataset, setSelectedDataset] = useState('');

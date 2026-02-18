@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import './ChartsPage.css';
+import '@/features/charts/ChartsPage/ChartsPage.css';
 import { FaTh, FaList, FaUpload } from 'react-icons/fa';
-import ChartCard from '../../../components/ChartCard/ChartCard';
-import ChartRow from '../../../components/ChartRow/ChartRow';
-import { addChart, selectCharts } from '../../../store/slices/chartSlice';
-import { useSubHeader } from '../../../hooks/subHeader/useSubHeader';
+import { ChartCard, ChartRow } from '@/components';
+import { addChart, selectCharts } from '@/store/slices/chartSlice';
+import { useSubHeader } from '@/hooks/subHeader/useSubHeader';
 
 const chartsData = [
   {

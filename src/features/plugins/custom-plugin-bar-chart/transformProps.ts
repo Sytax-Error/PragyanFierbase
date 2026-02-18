@@ -1,5 +1,7 @@
+type DataRecord = Record<string, unknown>;
+
 interface TransformPropsOptions {
-  dataset: any[];
+  dataset: DataRecord[];
   controls: {
     dimension: string;
     measure: string;

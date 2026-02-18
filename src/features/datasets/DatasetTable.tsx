@@ -1,5 +1,5 @@
 import React from 'react';
-import './DatasetTable.css';
+import '@/features/datasets/DatasetTable.css';
 
 const sampleData = {
   columns: ['ID', 'Name', 'Age', 'City'],

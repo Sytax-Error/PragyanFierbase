@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { SubHeaderContext } from './SubHeaderContext';
+import { SubHeaderContext } from '@/hooks/subHeader/SubHeaderContext';
 
 export const useSubHeader = () => {
   const context = useContext(SubHeaderContext);

@@ -16,6 +16,8 @@ This document outlines the architecture and implementation details of the Pragya
   - A plugin-based architecture (`vizRegistry`) allows for easy extension with new chart types.
   - The `runChart` function orchestrates the rendering of charts, including data transformation.
   - The `EditChartPage` provides a user interface for configuring charts.
+  - Moved the `VizPlugin` type to a dedicated `types.ts` file and updated all relevant files to import from there, fixing a subtle module loading issue.
+  - Corrected all `import` statements for the `VizPlugin` type to be `import type` to prevent runtime errors.
 
 - **Chart Types:**
   - A custom bar chart plugin (`custom-plugin-bar-chart`) is implemented.

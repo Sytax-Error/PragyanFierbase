@@ -1,15 +1,17 @@
 
 import MockAdapter from 'axios-mock-adapter';
-import type { DatasetResponse, Dataset, Column } from '../../types/dataset';
-import { mockDatasets } from '../../data/mockDatasets';
+import type { DatasetResponse, Column } from '@/types/dataset';
+import { mockDatasets } from '@/data/mockDatasets';
 import api from './axios';
 import { faker } from '@faker-js/faker';
 
+type DataRecord = Record<string, unknown>;
+
 // Helper function to generate mock data based on schema
-const generateMockData = (columns: Column[], numRows: number = 50): any[] => {
+const generateMockData = (columns: Column[], numRows: number = 50): DataRecord[] => {
   const data = [];
   for (let i = 0; i < numRows; i++) {
-    const row: { [key: string]: any } = {};
+    const row: DataRecord = {};
     columns.forEach(col => {
       switch (col.type) {
         case 'string':
@@ -78,9 +80,9 @@ export const getDatasets = async (): Promise<DatasetResponse> => {
  * Fetches the actual data for a single dataset.
  * @param datasetName - The name of the dataset to fetch.
  */
-export const getDatasetData = async (datasetName: string): Promise<{ data: any[] }> => {
+export const getDatasetData = async (datasetName: string): Promise<{ data: DataRecord[] }> => {
   console.log(`Service: Calling api.get for data: ${datasetName}`);
-  const response = await api.get<{ data: any[] }>(`/api/dataset-data/${encodeURIComponent(datasetName)}`);
+  const response = await api.get<{ data: DataRecord[] }>(`/api/dataset-data/${encodeURIComponent(datasetName)}`);
   console.log(`Service: Got data for ${datasetName} from mock adapter.`);
   return response.data;
 };

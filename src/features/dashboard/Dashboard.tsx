@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchDatasets } from '../../store/slices/datasetSlice';
-import type { AppDispatch, RootState } from '../../store';
-import './Dashboard.css';
+import { fetchDatasets } from '@/store/slices/datasetSlice';
+import type { AppDispatch, RootState } from '@/store';
+import '@/features/dashboard/Dashboard.css';
 
 const Dashboard: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();

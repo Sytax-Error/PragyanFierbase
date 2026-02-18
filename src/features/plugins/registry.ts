@@ -1,7 +1,4 @@
-interface VizPlugin {
-  type: string;
-  [key: string]: unknown;
-}
+import type { VizPlugin } from './types';
 
 const plugins = new Map<string, VizPlugin>();
 

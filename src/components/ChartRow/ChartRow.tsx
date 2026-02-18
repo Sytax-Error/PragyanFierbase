@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaStar, FaTrash, FaUpload, FaEdit } from 'react-icons/fa';
-import './ChartRow.css';
+import '@/components/ChartRow/ChartRow.css';
 
 const ChartRow = ({ chart }) => {
     const navigate = useNavigate();

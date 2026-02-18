@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { useTheme } from '../../hooks/theme/useTheme';
+import { useTheme } from '@/hooks/theme/useTheme';
 import { FiSettings, FiSun, FiMoon } from 'react-icons/fi';
 import './Header.css';
 
