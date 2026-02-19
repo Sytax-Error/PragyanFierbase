@@ -1,0 +1,1 @@
+import '@/features/plugins/custom-plugin-bar-chart/src';

@@ -11,33 +11,38 @@ module.exports = function (plop) {
     actions: [
       {
         type: 'add',
-        path: 'src/features/plugins/custom-plugin-{{kebabCase name}}/{{pascalCase name}}.tsx',
+        path: 'src/features/plugins/custom-plugin-{{kebabCase name}}/src/{{pascalCase name}}.tsx',
         templateFile: 'plop-templates/plugin/Component.tsx.hbs',
       },
       {
         type: 'add',
-        path: 'src/features/plugins/custom-plugin-{{kebabCase name}}/controlPanel.ts',
+        path: 'src/features/plugins/custom-plugin-{{kebabCase name}}/src/plugin/controlPanel.ts',
         templateFile: 'plop-templates/plugin/controlPanel.ts.hbs',
       },
       {
         type: 'add',
-        path: 'src/features/plugins/custom-plugin-{{kebabCase name}}/index.ts',
+        path: 'src/features/plugins/custom-plugin-{{kebabCase name}}/src/index.ts',
         templateFile: 'plop-templates/plugin/index.ts.hbs',
       },
       {
         type: 'add',
-        path: 'src/features/plugins/custom-plugin-{{kebabCase name}}/metadata.ts',
+        path: 'src/features/plugins/custom-plugin-{{kebabCase name}}/src/plugin/metadata.ts',
         templateFile: 'plop-templates/plugin/metadata.ts.hbs',
       },
       {
         type: 'add',
-        path: 'src/features/plugins/custom-plugin-{{kebabCase name}}/transformProps.ts',
+        path: 'src/features/plugins/custom-plugin-{{kebabCase name}}/src/plugin/transformProps.ts',
         templateFile: 'plop-templates/plugin/transformProps.ts.hbs',
       },
       {
+        type: 'add',
+        path: 'src/features/plugins/custom-plugin-{{kebabCase name}}/src/images/thumbnail.svg',
+        templateFile: 'plop-templates/plugin/thumbnail.svg.hbs',
+      },
+      {
         type: 'append',
-        path: 'src/features/plugins/index.ts',
-        template: 'import \'./custom-plugin-{{kebabCase name}}\';',
+        path: 'src/core/visualization/pluginload.ts',
+        template: 'import \'@/features/plugins/custom-plugin-{{kebabCase name}}/src\';',
       },
     ],
   });

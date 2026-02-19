@@ -1,7 +1,7 @@
 import { createVizPlugin, registerVizPlugin } from '@/core/visualization';
-import { metadata } from './metadata';
-import { controlPanel } from './controlPanel';
-import { transformProps } from './transformProps';
+import { metadata } from './plugin/metadata';
+import { controlPanel } from './plugin/controlPanel';
+import { transformProps } from './plugin/transformProps';
 import BarChart from './BarChart';
 
 const barChartPlugin = createVizPlugin({
