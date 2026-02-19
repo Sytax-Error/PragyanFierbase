@@ -1,23 +1,17 @@
+/* Base styles for desktop */
 .subheader-container {
   position: sticky;
   top: 60px; /* Height of main header */
-
   background: var(--header-bg, #ffffff);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
-
-  min-height: 64px;
-  padding: 0.75rem 2rem;
-
+  height: 64px; /* Use a fixed height to prevent vertical shift */
+  padding: 0 2rem;
   border-bottom: 1px solid var(--border-color, #e5e7eb);
-
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-
   z-index: 999;
-
   display: flex;
   align-items: center;
-
   transition: all 0.25s ease;
 }
 
@@ -26,25 +20,15 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-
   gap: 1.5rem;
-  flex-wrap: wrap;
+  overflow: hidden; /* Prevent content from breaking out */
 }
 
-/* Optional: If you usually have title on left and actions on right */
+/* Handle long titles on desktop */
 .subheader-content > :first-child {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: var(--text-primary, #1f2937);
-}
-
-/* Smooth hover effect for buttons inside subheader */
-.subheader-content button {
-  transition: all 0.2s ease;
-}
-
-.subheader-content button:hover {
-  transform: translateY(-1px);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* ========================= */
@@ -53,17 +37,19 @@
 
 @media (max-width: 768px) {
   .subheader-container {
+    /* On mobile, height is determined by content */
+    height: auto;
     padding: 0.75rem 1rem;
-    min-height: auto;
   }
 
   .subheader-content {
+    /* On mobile, stack items vertically */
     flex-direction: column;
     align-items: flex-start;
     gap: 0.75rem;
   }
 
-  /* If you have action buttons */
+  /* Allow action buttons to wrap on mobile */
   .subheader-content > div {
     width: 100%;
     display: flex;

@@ -14,7 +14,9 @@ const MainLayout: React.FC = () => {
   return (
     <div className={`layout ${theme}`}>
       <Header />
-      {subHeaderContent && <SubHeader>{subHeaderContent}</SubHeader>}
+      {/* Always render the SubHeader to reserve its space, but only pass children when they exist. */}
+      {/* The SubHeader component itself will handle hiding the content container. */}
+      <SubHeader>{subHeaderContent}</SubHeader>
       <main className="content">
         <Outlet />
       </main>
