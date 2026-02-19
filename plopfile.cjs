@@ -37,7 +37,7 @@ module.exports = function (plop) {
       {
         type: 'append',
         path: 'src/features/plugins/index.ts',
-        template: 'import \'./custom-plugin-{{kebabCase name}}\';\n',
+        template: 'import \'./custom-plugin-{{kebabCase name}}\';',
       },
     ],
   });

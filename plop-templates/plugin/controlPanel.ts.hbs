@@ -1,9 +1,23 @@
 export const controlPanel = {
   fields: [
     {
+      key: "dimension",
+      label: "Dimension",
+      type: "data-column",
+      kind: "dimension",
+      defaultValue: "",
+    },
+    {
+      key: "measure",
+      label: "Measure",
+      type: "data-column",
+      kind: "measure",
+      defaultValue: "",
+    },
+    {
       key: "color",
       label: "Color",
-      type: "text",
+      type: "color",
       defaultValue: "#8884d8",
     },
   ],

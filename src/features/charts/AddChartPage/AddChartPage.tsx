@@ -108,8 +108,6 @@ const AddChartPage: React.FC = () => {
             </div>
             <div className="chart-gallery">
               {filteredCharts.map(chart => {
-                // Assign the icon to a capitalized variable
-                const Icon = chart.icon || FiImage;
                 return (
                   <div
                     key={chart.id}
@@ -117,11 +115,7 @@ const AddChartPage: React.FC = () => {
                     onClick={() => setSelectedChart(chart.id)}
                   >
                     <div className="chart-thumbnail">
-                      {chart.thumbnail ? (
-                        <img src={chart.thumbnail} alt={chart.name} />
-                      ) : (
-                        <Icon size="2.75rem" /> // Render the icon component correctly
-                      )}
+                      <img src={chart.thumbnail} alt={chart.name} />
                     </div>
                     <h3>{chart.name}</h3>
                   </div>
