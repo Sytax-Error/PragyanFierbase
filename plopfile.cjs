@@ -16,6 +16,11 @@ module.exports = function (plop) {
       },
       {
         type: 'add',
+        path: 'src/features/plugins/custom-plugin-{{kebabCase name}}/src/types.ts',
+        templateFile: 'plop-templates/plugin/types.ts.hbs',
+      },
+      {
+        type: 'add',
         path: 'src/features/plugins/custom-plugin-{{kebabCase name}}/src/plugin/controlPanel.ts',
         templateFile: 'plop-templates/plugin/controlPanel.ts.hbs',
       },

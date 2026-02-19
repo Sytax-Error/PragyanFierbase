@@ -1,6 +1,15 @@
-export const transformProps = (data: Record<string, unknown>[], config: Record<string, unknown>) => {
-  return {
-    chartData: data,
-    color: config.color,
-  };
-};
+import type { {{pascalCase name}}Props, TransformPropsOptions } from "../types";
+
+export const transformProps = (options: TransformPropsOptions): {{pascalCase name}}Props => {
+    const { dataset, controls } = options;
+    const { dimension, measure } = controls;
+    const data = dataset.map((record) => {
+        return {
+            name: record[dimension] as string,
+            value: record[measure],
+        }
+    })
+    return {
+        data
+    }
+}

@@ -1,18 +1,11 @@
 import React from "react";
+import type { BarChartProps } from "./types";
 
-interface Props {
-  chartData: unknown[];
-  color: string;
-  barThickness: number;
-}
-
-const BarChart = ({ chartData, color, barThickness }: Props) => {
+const BarChart = ({ data }: BarChartProps) => {
   return (
     <div>
       <h3>BarChart Chart</h3>
-      <p>Color: {color}</p>
-      <p>Bar Thickness: {barThickness}</p>
-      <pre>{JSON.stringify(chartData, null, 2)}</pre>
+      <pre>{JSON.stringify(data, null, 2)}</pre>
     </div>
   );
 };

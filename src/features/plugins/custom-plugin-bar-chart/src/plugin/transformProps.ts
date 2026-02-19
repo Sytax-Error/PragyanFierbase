@@ -1,55 +1,15 @@
-type DataRecord = Record<string, unknown>;
+import type { BarChartProps, TransformPropsOptions } from "../types";
 
-interface TransformPropsOptions {
-  dataset: DataRecord[];
-  controls: {
-    dimension: string;
-    measure: string;
-    color: string;
-    barThickness: number;
-  };
-}
-
-export const transformProps = (options: TransformPropsOptions) => {
-  const { dataset, controls } = options;
-  const { dimension, measure, color, barThickness } = controls;
-
-  // Check if the necessary controls are provided
-  if (!dimension || !measure) {
-    // Return a default or empty state if the required data columns are not selected
-    console.warn("Dimension or measure not selected.");
+export const transformProps = (options: TransformPropsOptions): BarChartProps => {
+    const { dataset, controls } = options;
+    const { dimension, measure } = controls;
+    const data = dataset.map((record) => {
+        return {
+            name: record[dimension] as string,
+            value: record[measure],
+        }
+    })
     return {
-      data: [],
-      width: 730,
-      height: 250,
-      // You can add other default chart properties here
-    };
-  }
-
-  console.log('Transforming data with controls:', controls);
-  console.log('Using dataset:', dataset);
-
-  const transformedData = dataset.map(row => ({
-    name: row[dimension],
-    value: row[measure],
-  }));
-
-  console.log('Transformed data:', transformedData);
-
-  return {
-    data: transformedData,
-    width: 730, 
-    height: 250,
-    bar: {
-      dataKey: 'value',
-      fill: color,
-      barSize: barThickness,
-    },
-    xAxis: {
-      dataKey: 'name',
-    },
-    yAxis: {},
-    tooltip: {},
-    legend: {},
-  };
-};
+        data
+    }
+}

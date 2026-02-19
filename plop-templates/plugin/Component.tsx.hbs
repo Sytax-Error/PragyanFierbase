@@ -1,14 +1,11 @@
 import React from "react";
+import type { {{pascalCase name}}Props } from "./types";
 
-interface Props {
-  chartData: Record<string, unknown>[];
-}
-
-const {{pascalCase name}} = ({ chartData}: Props) => {
+const {{pascalCase name}} = ({ data }: {{pascalCase name}}Props) => {
   return (
     <div>
       <h3>{{titleCase name}}</h3>
-      <pre>{JSON.stringify(chartData, null, 2)}</pre>
+      <pre>{JSON.stringify(data, null, 2)}</pre>
     </div>
   );
 };
