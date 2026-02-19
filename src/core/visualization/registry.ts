@@ -1,4 +1,4 @@
-import type { VizPlugin } from './types';
+import type { VizPlugin } from '@/core/visualization/types';
 
 const plugins = new Map<string, VizPlugin>();
 

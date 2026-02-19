@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '@/hooks/theme/useTheme';
 import { useSubHeader } from '@/hooks/subHeader/useSubHeader';
-import { FiSearch, FiPlus, FiCheckCircle, FiCircle, FiImage } from 'react-icons/fi';
+import { FiSearch, FiPlus, FiCheckCircle, FiCircle } from 'react-icons/fi';
 import { CustomSelect } from '@/components';
-import { vizRegistry } from '@/features/plugins/registry';
+import { vizRegistry } from '@/core/visualization';
 import { mockDatasets } from '@/data/mockDatasets'; // Import mockDatasets
 import '@/features/charts/AddChartPage/AddChartPage.css';
 

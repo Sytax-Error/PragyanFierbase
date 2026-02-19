@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
-import { vizRegistry } from '@/features/plugins/registry';
-import type { VizPlugin } from '@/features/plugins/types';
-import { runChart } from '@/features/chartEngine/runChart';
+import { vizRegistry, type VizPlugin } from '@/core/visualization';
+import { runChart } from '@/core/chart-engine';
 import { useTheme } from '@/hooks/theme/useTheme';
 import { useDataset } from '@/hooks/data/useDataset';
 import { StatusIndicator } from '@/components';

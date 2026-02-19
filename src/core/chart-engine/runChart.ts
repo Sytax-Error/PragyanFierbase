@@ -1,4 +1,4 @@
-import { vizRegistry } from '../plugins/registry';
+import { vizRegistry } from '@/core/visualization';
 
 // Define a more specific type for dataset records
 type DataRecord = Record<string, unknown>;
@@ -31,3 +31,4 @@ export const runChart = async ({ dataset, chartType, controls }: RunChartParams)
     props: transformedProps,
   };
 };
+

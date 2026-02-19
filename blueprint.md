@@ -2,49 +2,34 @@
 
 ## Overview
 
-This document outlines the architecture and implementation details of the Pragyan BI tool. It serves as a single source of truth for the project's design, features, and future development plans.
+This document outlines the architecture and implementation details of the Pragyan application, a powerful and flexible data visualization tool. It serves as a living document, updated with each significant change to reflect the current state of the project.
 
-## Current State
+## Core Refactoring: Phase 1
 
-- **Data Layer:**
-  - A mock data service (`src/services/api/dataset.service.ts`) provides datasets and their schemas.
-  - It uses `@faker-js/faker` to dynamically generate realistic data for any defined schema.
-  - Redux Toolkit (`datasetSlice.ts`) is used to manage the dataset state globally.
-  - A `useDataset` hook provides easy access to dataset information.
+**Date:** 2024-07-25
 
-- **Chart Engine:**
-  - A plugin-based architecture (`vizRegistry`) allows for easy extension with new chart types.
-  - The `runChart` function orchestrates the rendering of charts, including data transformation.
-  - The `EditChartPage` provides a user interface for configuring charts.
+### Objective
 
-- **Modular UI System:**
-  - **Pluggable Control System:** Implemented a centralized control registry (`src/core/controls/controlRegistry.ts`) that maps control types to their respective React components.
-  - **Dynamic Rendering:** Developed a `DynamicControl` component (`src/core/controls/DynamicControl.tsx`) that leverages the registry to render the correct UI elements based on plugin configuration.
-  - **Standardized Interface:** All control components now adhere to the `BaseControlProps` interface, ensuring a consistent contract for value management and event handling.
-  - **Standardized UI Components:** Control panel components now utilize a standardized, reusable `CustomSelect` component featuring scrollable option lists for handling large datasets.
+To improve the project's structure, maintainability, and scalability by refactoring core logic out of the `features` directory and into a more appropriate `core` directory. This change clarifies the separation between application features (like specific charts or pages) and the underlying systems that power them.
 
-## Implemented Features
+### Changes Implemented
 
-### Collapsible Sidebar
+1.  **Relocated Visualization Plugin System:**
+    *   **Action:** Moved the core plugin logic from `src/features/plugins` to `src/core/visualization`.
+    *   **Files Moved:** `createPlugin.ts`, `registry.ts`, `types.ts`.
+    *   **New Structure:** Introduced a centralized `index.ts` in the new directory for clean, unified exports.
+    *   **Impact:** All imports related to the plugin system were updated to use the new, more robust absolute path: `@/core/visualization`.
 
-- **Functionality:** Added a collapsible sidebar to the `EditChartPage` to provide more space for the chart preview.
-- **Toggle Button:** Implemented a floating toggle button with smooth animations to control the sidebar's visibility.
+2.  **Relocated Chart Engine:**
+    *   **Action:** Moved the chart execution logic from `src/features/chartEngine` to `src/core/chart-engine`.
+    *   **Files Moved:** `runChart.ts`.
+    *   **New Structure:** Created a new `index.ts` to provide a clean export for the `runChart` function.
+    *   **Impact:** The `EditChartPage` component was updated to import `runChart` from the new `@/core/chart-engine` path.
 
-### Pluggable Control System
+3.  **Dependency & Import Cleanup:**
+    *   All affected files, including `AddChartPage.tsx`, `EditChartPage.tsx`, the `bar-chart` plugin, and the `plop` template, were updated to use the new absolute import paths.
+    *   The original, now-empty directories (`src/features/plugins` and `src/features/chartEngine`) were removed.
 
-- **Control Registry:** Created `controlRegistry.ts` to manage all available sidebar controls (ColorPicker, Slider, DataColumnSelector). This allows for adding new control types globally without modifying page-level code.
-- **Sidebar Refactoring:** Updated `EditChartSidebar.tsx` to remove hardcoded `switch` statements. It now dynamically maps over plugin fields and uses `DynamicControl` for rendering, making the sidebar fully pluggable.
-- **Prop Normalization:** Standardized how data is passed to controls by aligning the `options` prop across the registry and components, ensuring consistent behavior for data-driven selectors.
+### Rationale
 
-### UI & Component Refinements
-
-- **CustomSelect Refinement:** Enhanced the `CustomSelect` component by adding scrollable option lists with a `250px` max-height and modern custom scrollbar styling, preventing dropdowns from extending beyond the viewport.
-- **DataColumnSelector Refactoring:** Refactored the `DataColumnSelector` control to utilize the reusable `CustomSelect` component, ensuring visual consistency across all selection UI elements and reducing code duplication.
-- **Style Consolidation:** Performed a cleanup of CSS files (e.g., `AddChartPage.css`) by removing redundant selection styles, centralizing look-and-feel management within the core component stylesheets.
-- **Button Enhancement:** Updated the `Button` component to correctly handle the `fullWidth` property. It now uses a CSS class (`btn-fullwidth`) rather than passing the property as a custom DOM attribute, resolving React console warnings.
-
-### Code Quality & Linting
-
-- **Resolved Linting Errors:** Systematically addressed all ESLint errors, including:
-    - Replaced `any` with `unknown[]` in `controlRegistry.ts` to enforce stricter typing (`@typescript-eslint/no-explicit-any`).
-    - Refactore
+This refactoring establishes a clear and logical separation of concerns within the codebase. By isolating core functionalities, we make the system easier to understand, test, and extend. This foundational work is crucial for the long-term health and scalability of the Pragyan application.

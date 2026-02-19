@@ -1,5 +1,5 @@
-import { vizRegistry } from './registry';
-import type { VizPlugin } from './types';
+import { vizRegistry } from '@/core/visualization/registry';
+import type { VizPlugin } from '@/core/visualization/types';
 
 // Define a function to create a new plugin
 export function createVizPlugin(plugin: VizPlugin): VizPlugin {

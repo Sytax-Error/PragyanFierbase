@@ -1,15 +1,15 @@
-import { createVizPlugin, registerVizPlugin } from '../createPlugin';
+import { createVizPlugin, registerVizPlugin } from '@/core/visualization';
 import { metadata } from './metadata';
 import { controlPanel } from './controlPanel';
 import { transformProps } from './transformProps';
-import {{pascalCase name}} from './{{pascalCase name}}';
+import Component from './{{pascalCase name}}';
 
-const {{camelCase name}}Plugin = createVizPlugin({
+const plugin = createVizPlugin({
   type: 'custom-plugin-{{kebabCase name}}',
   metadata,
   controlPanel,
   transformProps,
-  Component: {{pascalCase name}},
+  Component,
 });
 
-registerVizPlugin({{camelCase name}}Plugin);
+registerVizPlugin(plugin);
