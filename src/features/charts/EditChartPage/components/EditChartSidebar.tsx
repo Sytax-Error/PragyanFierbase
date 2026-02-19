@@ -1,16 +1,14 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   FiChevronLeft,
   FiChevronRight,
   FiChevronUp,
   FiChevronDown,
 } from 'react-icons/fi';
-import { FaChartBar } from 'react-icons/fa';
 import { Button, ControlPanel } from '@/components';
 import DynamicControl from '@/core/controls/DynamicControl';
-import type { VizPlugin } from '@/features/plugins/types';
-import type { Dataset } from '@/hooks/data/useDataset';
-import { useSubHeader } from '@/hooks/subHeader/useSubHeader';
+import type { VizPlugin } from '@/core/visualization';
+import type { Dataset } from '@/types';
 import './EditChartSidebar.css';
 
 interface EditChartSidebarProps {
@@ -36,16 +34,7 @@ const EditChartSidebar: React.FC<EditChartSidebarProps> = ({
   isCollapsed,
   onToggle,
 }) => {
-  const { setSubHeaderContent } = useSubHeader();
 
-  useEffect(() => {
-    setSubHeaderContent(
-      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-md)' }}>
-        <FaChartBar size="1.5rem" />
-        <h1>Create Chart</h1>
-      </div>
-    );
-  }, [setSubHeaderContent]);
 
   const getColumnsByKind = (kind: 'dimension' | 'measure') => {
     if (!dataset) return [];

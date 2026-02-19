@@ -1,28 +1,41 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { useParams } from 'react-router-dom';
-import { vizRegistry, type VizPlugin } from '@/core/visualization';
-import { runChart } from '@/core/chart-engine';
-import { useTheme } from '@/hooks/theme/useTheme';
-import { useDataset } from '@/hooks/data/useDataset';
-import { StatusIndicator } from '@/components';
-import EditChartSidebar from './components/EditChartSidebar';
-import EditChartMain from './components/EditChartMain';
-import '@/features/charts/EditChartPage/EditChartPage.css';
-
-type Status = 'loading' | 'found' | 'not-found';
+import React, { useState, useEffect, useMemo } from "react";
+import { useParams } from "react-router-dom";
+import { vizRegistry, type VizPlugin } from "@/core/visualization";
+import { runChart } from "@/core/chart-engine";
+import { useTheme } from "@/hooks/theme/useTheme";
+import { useDataset } from "@/hooks/data/useDataset";
+import { StatusIndicator } from "@/components";
+import EditChartSidebar from "./components/EditChartSidebar";
+import EditChartMain from "./components/EditChartMain";
+import "@/features/charts/EditChartPage/EditChartPage.css";
+import { useSubHeader } from "@/hooks/subHeader/useSubHeader";
+type Status = "loading" | "found" | "not-found";
 
 const EditChartPage: React.FC = () => {
   const params = useParams<{ datasetId: string; chartType: string }>();
   const { theme } = useTheme();
-  const { dataset, data: currentDatasetData, loading: dataLoading } = useDataset(params.datasetId);
+  const {
+    dataset,
+    data: currentDatasetData,
+    loading: dataLoading,
+  } = useDataset(params.datasetId);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   const chartType = params.chartType;
-  const plugin: VizPlugin | null = useMemo(() => (chartType ? vizRegistry.get(chartType) : null), [chartType]);
+  const plugin: VizPlugin | null = useMemo(
+    () => (chartType ? vizRegistry.get(chartType) : null),
+    [chartType]
+  );
   const status: Status = useMemo(() => {
-    if (!chartType) return 'loading';
-    return plugin ? 'found' : 'not-found';
+    if (!chartType) return "loading";
+    return plugin ? "found" : "not-found";
   }, [chartType, plugin]);
+
+  const { setSubHeaderContent } = useSubHeader();
+
+  useEffect(() => {
+    setSubHeaderContent(<h1>Create Chart</h1>);
+  }, [setSubHeaderContent]);
 
   const initialControls = useMemo(() => {
     if (!plugin) return {};
@@ -33,23 +46,29 @@ const EditChartPage: React.FC = () => {
     return controls;
   }, [plugin]);
 
-  const [userModifiedControls, setUserModifiedControls] = useState<Record<string, unknown>>({});
+  const [userModifiedControls, setUserModifiedControls] = useState<
+    Record<string, unknown>
+  >({});
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setUserModifiedControls({});
   }, [plugin]);
 
-  const controls = useMemo(() => ({
-    ...initialControls,
-    ...userModifiedControls,
-  }), [initialControls, userModifiedControls]);
+  const controls = useMemo(
+    () => ({
+      ...initialControls,
+      ...userModifiedControls,
+    }),
+    [initialControls, userModifiedControls]
+  );
 
-  const [ChartComponent, setChartComponent] = useState<React.ComponentType<unknown> | null>(null);
+  const [ChartComponent, setChartComponent] =
+    useState<React.ComponentType<unknown> | null>(null);
   const [chartProps, setChartProps] = useState<unknown>(null);
 
   const handleControlChange = (controlName: string, value: unknown) => {
-    setUserModifiedControls(prevControls => ({
+    setUserModifiedControls((prevControls) => ({
       ...prevControls,
       [controlName]: value,
     }));
@@ -71,12 +90,17 @@ const EditChartPage: React.FC = () => {
     setIsSidebarCollapsed(!isSidebarCollapsed);
   };
 
-  if (status === 'loading') {
+  if (status === "loading") {
     return <StatusIndicator status="loading" message="Loading plugin..." />;
   }
 
-  if (status === 'not-found') {
-    return <StatusIndicator status="not-found" message={`Plugin "${params.chartType}" not found.`} />;
+  if (status === "not-found") {
+    return (
+      <StatusIndicator
+        status="not-found"
+        message={`Plugin "${params.chartType}" not found.`}
+      />
+    );
   }
 
   if (!plugin || !dataset) {
@@ -84,9 +108,11 @@ const EditChartPage: React.FC = () => {
   }
 
   return (
-    <div className={`edit-chart-container ${theme} ${isSidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
+    <div
+      className={`edit-chart-container ${theme} ${isSidebarCollapsed ? "sidebar-collapsed" : ""}`}
+    >
       <EditChartSidebar
-        title={'Controle Section'}
+        title={"Controle Section"}
         plugin={plugin}
         dataset={dataset}
         controls={controls}
@@ -96,10 +122,10 @@ const EditChartPage: React.FC = () => {
         isCollapsed={isSidebarCollapsed}
         onToggle={toggleSidebar}
       />
-      <EditChartMain 
-        dataLoading={dataLoading} 
-        ChartComponent={ChartComponent} 
-        chartProps={chartProps} 
+      <EditChartMain
+        dataLoading={dataLoading}
+        ChartComponent={ChartComponent}
+        chartProps={chartProps}
       />
     </div>
   );
