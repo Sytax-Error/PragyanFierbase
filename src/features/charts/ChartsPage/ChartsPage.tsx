@@ -1,11 +1,9 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import '@/features/charts/ChartsPage/ChartsPage.css';
-import { FaTh, FaList, FaUpload } from 'react-icons/fa';
+import { FaTh, FaList } from 'react-icons/fa';
 import { ChartCard, ChartRow } from '@/components';
 import { addChart, selectCharts } from '@/store/slices/chartSlice';
-import { useSubHeader } from '@/hooks/subHeader/useSubHeader';
 
 const chartsData = [
   {
@@ -72,34 +70,8 @@ const chartsData = [
 
 const ChartsPage: React.FC = () => {
   const [isGridView, setIsGridView] = useState(true);
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const charts = useSelector(selectCharts);
-  const { setSubHeaderContent } = useSubHeader();
-
-  const handleAddChartClick = useCallback(() => {
-    navigate('/add-chart');
-  }, [navigate]);
-
-  useEffect(() => {
-    setSubHeaderContent(
-      <>
-        <h1>Charts</h1>
-        <div className="charts-actions">
-          <button className="bulk-select">Bulk select</button>
-          <button className="add-chart" onClick={handleAddChartClick}>+ Chart</button>
-          <button className="download-chart">
-            <FaUpload />
-          </button>
-        </div>
-      </>
-    );
-
-    // Clean up subheader content on component unmount
-    return () => {
-      setSubHeaderContent(null);
-    };
-  }, [setSubHeaderContent, handleAddChartClick]);
 
   useEffect(() => {
     if (charts.length === 0) {

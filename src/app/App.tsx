@@ -1,17 +1,14 @@
 import React from 'react';
-import AppRoutes from '@/app/routes/routes';
+import { Outlet } from 'react-router-dom';
 import '@/app/App.css';
 import { useTheme } from '@/hooks/theme/useTheme';
-import { SubHeaderProvider } from '@/hooks/subHeader/SubHeaderProvider';
 
 function App() {
   const { theme } = useTheme();
 
   return (
     <div className={`app-container ${theme}`}>
-      <SubHeaderProvider>
-        <AppRoutes />
-      </SubHeaderProvider>
+      <Outlet />
     </div>
   );
 }

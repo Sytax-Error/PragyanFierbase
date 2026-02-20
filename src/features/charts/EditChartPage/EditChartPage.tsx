@@ -7,7 +7,6 @@ import { useDataset } from "@/hooks/data/useDataset";
 import { StatusIndicator } from "@/components";
 import { EditChartSidebar, EditChartMain } from "./components";
 import "@/features/charts/EditChartPage/EditChartPage.css";
-import { useSubHeader } from "@/hooks/subHeader/useSubHeader";
 type Status = "loading" | "found" | "not-found";
 
 const EditChartPage: React.FC = () => {
@@ -29,12 +28,6 @@ const EditChartPage: React.FC = () => {
     if (!chartType) return "loading";
     return plugin ? "found" : "not-found";
   }, [chartType, plugin]);
-
-  const { setSubHeaderContent } = useSubHeader();
-
-  useEffect(() => {
-    setSubHeaderContent(<h1>Create Chart</h1>);
-  }, [setSubHeaderContent]);
 
   const initialControls = useMemo(() => {
     if (!plugin) return {};

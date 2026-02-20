@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '@/hooks/theme/useTheme';
-import { useSubHeader } from '@/hooks/subHeader/useSubHeader';
 import { FiSearch, FiPlus, FiCheckCircle, FiCircle } from 'react-icons/fi';
 import { CustomSelect } from '@/components';
 import { vizRegistry } from '@/core/visualization';
@@ -14,7 +13,6 @@ const AddChartPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const { theme } = useTheme();
   const navigate = useNavigate();
-  const { setSubHeaderContent } = useSubHeader();
 
   const chartPlugins = vizRegistry.list().map(plugin => ({
     id: plugin.type,
@@ -22,10 +20,6 @@ const AddChartPage: React.FC = () => {
     icon: plugin.metadata.icon, // Keep the component reference
     thumbnail: plugin.metadata.thumbnail,
   }));
-
-  useEffect(() => {
-    setSubHeaderContent(<><h1>Add New Chart</h1></>);
-  }, [setSubHeaderContent]);
 
   const handleAddChart = () => {
     if (selectedChart && selectedDataset) {

@@ -5,7 +5,7 @@
   background: var(--header-bg, #ffffff);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
-  height: 64px; /* Use a fixed height to prevent vertical shift */
+  height: 4rem; /* Match the content height */
   padding: 0 2rem;
   border-bottom: 1px solid var(--border-color, #e5e7eb);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
@@ -15,11 +15,21 @@
   transition: all 0.25s ease;
 }
 
+/* Visually hide the subheader when it has no content, but keep its height to prevent layout shifts */
+.subheader-container:has(.subheader-content:empty) {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
 .subheader-content {
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  height: 5rem; /* Ensure content fills the container height */
   gap: 1.5rem;
   overflow: hidden; /* Prevent content from breaking out */
 }
@@ -37,23 +47,25 @@
 
 @media (max-width: 768px) {
   .subheader-container {
-    /* On mobile, height is determined by content */
+    /* On mobile, allow height to adjust slightly if needed, but have a min-height */
+    min-height: 4rem;
     height: auto;
     padding: 0.75rem 1rem;
   }
 
   .subheader-content {
-    /* On mobile, stack items vertically */
-    flex-direction: column;
-    align-items: flex-start;
+    /* On mobile, keep items in a row */
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
     gap: 0.75rem;
   }
 
-  /* Allow action buttons to wrap on mobile */
-  .subheader-content > div {
-    width: 100%;
+  /* Allow action buttons to wrap on mobile if needed */
+  .subheader-content > div:last-child {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
+    justify-content: flex-end; /* Align buttons to the right */
   }
 }

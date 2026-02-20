@@ -1,0 +1,68 @@
+.charts-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.bulk-select, .add-chart, .download-chart {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 0.9rem;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  height: 44px; /* Set a fixed height for alignment */
+}
+
+/* Primary action button */
+.add-chart {
+  background-color: var(--primary-color, #007bff);
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2);
+}
+
+.add-chart:hover {
+  background-color: var(--primary-hover, #0069d9);
+  box-shadow: 0 6px 16px rgba(0, 123, 255, 0.25);
+  transform: translateY(-1px);
+}
+
+/* Secondary action buttons */
+.bulk-select, .download-chart {
+  background-color: var(--button-secondary-bg, #f0f2f5);
+  color: var(--text-color, #333);
+  border: 1px solid var(--border-color, #e5e7eb);
+}
+
+.bulk-select:hover, .download-chart:hover {
+  background-color: var(--button-secondary-hover, #e9ecef);
+  border-color: #d8dde1;
+}
+
+.dark .bulk-select, .dark .download-chart {
+  background-color: var(--button-secondary-bg-dark, #3a3b3c);
+  color: var(--text-color-dark, #f0f0f0);
+  border-color: #4a4b4c;
+}
+
+.dark .bulk-select:hover, .dark .download-chart:hover {
+  background-color: #4a4b4c;
+  border-color: #5a5b5c;
+}
+
+
+/* Specific styling for the download icon button */
+.download-chart {
+  padding: 0.75rem; /* Make it square */
+  aspect-ratio: 1 / 1;
+}
+
+.download-chart svg {
+  font-size: 1.1rem;
+}

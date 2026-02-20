@@ -6,12 +6,9 @@ interface SubHeaderProps {
 }
 
 const SubHeader: React.FC<SubHeaderProps> = ({ children }) => {
-  // By rendering the container div unconditionally, we reserve its space in the layout.
-  // The content div is only rendered if children are provided, preventing an empty
-  // content box from being visible when there's no sub-header.
   return (
     <div className="subheader-container">
-      {children && <div className="subheader-content">{children}</div>}
+      <div className="subheader-content">{children}</div>
     </div>
   );
 };

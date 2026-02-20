@@ -1,5 +1,5 @@
 .charts-container {
-    padding: 20px;
+    /* The padding is now handled by the .content class in MainLayout.css */
     background-color: #f9f9f9;
 }
 
@@ -17,31 +17,6 @@
 .charts-header h1 {
     font-size: 2rem;
     font-weight: 700;
-}
-
-.charts-actions button {
-    margin-left: 10px;
-    padding: 10px 20px;
-    border-radius: 5px;
-    border: none;
-    cursor: pointer;
-    font-size: 1rem;
-}
-
-.bulk-select {
-    background-color: #e0e0e0;
-    color: #333;
-}
-
-.add-chart {
-    background-color: #007bff;
-    color: #fff;
-}
-
-.download-chart {
-    background: none;
-    border: 1px solid #ccc;
-    font-size: 1.2rem;
 }
 
 .filter-section {
