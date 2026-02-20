@@ -8,7 +8,7 @@
 .content {
   flex-grow: 1;
   overflow-y: auto; /* Allows only the content area to scroll if it overflows */
-  padding: var(--spacing-lg); /* Using a larger padding for better layout */
+  padding: var(--spacing-md); /* Using a larger padding for better layout */
   background-color: var(--background-light);
   color: var(--text-light);
   transition: background-color var(--transition-medium), color var(--transition-medium);

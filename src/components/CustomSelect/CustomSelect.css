@@ -56,25 +56,6 @@
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
   max-height: 250px;
   overflow-y: auto;
-  scrollbar-width: thin;
-}
-
-/* Custom scrollbar for Webkit (Chrome, Safari, Edge) */
-.custom-select-options::-webkit-scrollbar {
-  width: 6px;
-}
-
-.custom-select-options::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.custom-select-options::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0.2);
-  border-radius: 10px;
-}
-
-.custom-select-options::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(0, 0, 0, 0.3);
 }
 
 .custom-select-option {
@@ -119,14 +100,6 @@
 .dark .custom-select-options {
   background-color: var(--popover-bg-dark);
   border-color: var(--popover-border-dark);
-}
-
-.dark .custom-select-options::-webkit-scrollbar-thumb {
-  background-color: rgba(255, 255, 255, 0.2);
-}
-
-.dark .custom-select-options::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(255, 255, 255, 0.3);
 }
 
 .dark .custom-select-option {
