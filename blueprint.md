@@ -4,32 +4,39 @@
 
 This document outlines the architecture and implementation details of the Pragyan application, a powerful and flexible data visualization tool. It serves as a living document, updated with each significant change to reflect the current state of the project.
 
-## Core Refactoring: Phase 1
+## Features and Design
 
-**Date:** 2024-07-25
+### Core Architecture
+- **Visualization Plugin System:** A modular system for registering and rendering different chart types. Core logic is located in `src/core/visualization`.
+- **Chart Engine:** A service for running chart queries and returning a renderable component. Located in `src/core/chart-engine`.
+- **Theming:** A dark/light mode theme system implemented with CSS variables and the `useTheme` hook.
 
-### Objective
+### Components
+- **`EditChartSidebar`:** A collapsible sidebar for configuring chart options.
+- **`ControlPanel`:** A component within the sidebar that holds the controls for the selected chart type.
+- **`CustomSelect`:** A theme-aware custom select dropdown component.
+- **`EditChartMain`:** The main content area for displaying the chart visualization.
 
-To improve the project's structure, maintainability, and scalability by refactoring core logic out of the `features` directory and into a more appropriate `core` directory. This change clarifies the separation between application features (like specific charts or pages) and the underlying systems that power them.
+### Styling
+- **CSS Variables:** The project uses CSS variables for consistent theming and spacing.
+- **`card` class:** A reusable class for creating card-like UI elements with a border and background. Its styles are defined in `src/styles/layout.css` and imported globally in `src/main.tsx`.
 
-### Changes Implemented
+## Completed Task: Fix Chart Overflow and Scrolling Issue
 
-1.  **Relocated Visualization Plugin System:**
-    *   **Action:** Moved the core plugin logic from `src/features/plugins` to `src/core/visualization`.
-    *   **Files Moved:** `createPlugin.ts`, `registry.ts`, `types.ts`.
-    *   **New Structure:** Introduced a centralized `index.ts` in the new directory for clean, unified exports.
-    *   **Impact:** All imports related to the plugin system were updated to use the new, more robust absolute path: `@/core/visualization`.
+### Problem Statement
+When a chart was created, it appeared to break out of its container (`.edit-chart-main.card`). The component's border and padding were not visible, and the entire page would scroll instead of just the chart area.
 
-2.  **Relocated Chart Engine:**
-    *   **Action:** Moved the chart execution logic from `src/features/chartEngine` to `src/core/chart-engine`.
-    *   **Files Moved:** `runChart.ts`.
-    *   **New Structure:** Created a new `index.ts` to provide a clean export for the `runChart` function.
-    *   **Impact:** The `EditChartPage` component was updated to import `runChart` from the new `@/core/chart-engine` path.
+### Initial Plan (Incorrect)
+The first approach was based on the assumption that the component's internal structure was causing the issue. The plan was to:
+1.  Wrap the chart in a new `div`.
+2.  Modify the CSS to apply flex properties only to the status message and `overflow: auto` to the new wrapper.
+3.  This plan was flawed because it didn't address the root cause.
 
-3.  **Dependency & Import Cleanup:**
-    *   All affected files, including `AddChartPage.tsx`, `EditChartPage.tsx`, the `bar-chart` plugin, and the `plop` template, were updated to use the new absolute import paths.
-    *   The original, now-empty directories (`src/features/plugins` and `src/features/chartEngine`) were removed.
+### Final Resolution
 
-### Rationale
+#### Root Cause Analysis
+The actual problem was much simpler: the global stylesheet `src/styles/layout.css`, which contains the definition for the `.card` class (including its essential `padding` and `border`), was not being imported into the application. Without these styles, the container had no padding to contain the chart.
 
-This refactoring establishes a clear and logical separation of concerns within the codebase. By isolating core functionalities, we make the system easier to understand, test, and extend. This foundational work is crucial for the long-term health and scalability of the Pragyan application.
+#### Solution Implemented
+1.  **Global Style Import:** The file `src/main.tsx` was modified to include the missing global layout stylesheet by adding the line: `import '@/styles/layout.css';`.
+2.  **Result:** With the global styles correctly loaded, the `.card` class on the `EditChartMain` component now applies the necessary padding. The `overflow: auto` property on `.edit-chart-main` now functions as intended, containing the chart within the card's boundaries and resolving the layout and scrolling bug.

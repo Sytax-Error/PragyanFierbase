@@ -1,9 +1,13 @@
 .edit-chart-main {
   flex-grow: 1;
   padding: var(--spacing-lg);
-  display: flex;
-  justify-content: center;
-  align-items: center;
   overflow: auto;
   position: relative; /* Needed for positioning status indicators correctly */
+}
+
+.edit-chart-main > :not(div) {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }

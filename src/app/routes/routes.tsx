@@ -1,85 +1,66 @@
-import React from 'react';
-import { FaHome, FaChartBar, FaPlus } from 'react-icons/fa';
-import MainLayout from '@/shared/layouts/MainLayout';
-import Dashboard from '@/features/dashboard/Dashboard';
-import ChartsPage from '@/features/charts/ChartsPage/ChartsPage';
-import AddChartPage from '@/features/charts/AddChartPage/AddChartPage';
-import EditChartPage from '@/features/charts/EditChartPage/EditChartPage';
-import DatasetTable from '@/features/datasets/DatasetTable.tsx';
-import SubHeaderActions from '@/features/charts/ChartsPage/SubHeaderActions';
+import React from "react";
+import { FaHome, FaChartBar, FaPlus } from "react-icons/fa";
+import MainLayout from "@/shared/layouts/MainLayout";
+import Dashboard from "@/features/dashboard/Dashboard";
+import ChartsPage from "@/features/charts/ChartsPage/ChartsPage";
+import AddChartPage from "@/features/charts/AddChartPage/AddChartPage";
+import EditChartPage from "@/features/charts/EditChartPage/EditChartPage";
+import DatasetTable from "@/features/datasets/DatasetTable.tsx";
+import SubHeaderActions from "@/features/charts/ChartsPage/SubHeaderActions";
 
 const routes = [
   {
-    path: '/',
+    path: "/",
     element: <MainLayout />,
     children: [
       {
         index: true,
         element: <Dashboard />,
         handle: {
-          subHeader: (
-            <div className="flex flex-row items-center gap-2">
-              <FaHome />
-              <span className="text-xl font-semibold">Dashboards</span>
-            </div>
-          ),
+          subHeader: <span className="text-xl font-semibold">Dashboards</span>,
         },
       },
       {
-        path: 'dashboards',
+        path: "dashboards",
         element: <Dashboard />,
         handle: {
-          subHeader: (
-            <div className="flex flex-row items-center gap-2">
-              <FaHome />
-              <span className="text-xl font-semibold">Dashboards</span>
-            </div>
-          ),
+          subHeader: <span className="text-xl font-semibold">Dashboards</span>,
         },
       },
       {
-        path: 'charts',
+        path: "charts",
         element: <ChartsPage />,
         handle: {
           subHeader: (
             <>
-              <div className="flex flex-row items-center gap-2">
-                <FaChartBar />
-                <span className="text-xl font-semibold">Charts</span>
-              </div>
+              <span className="text-xl font-semibold">Charts</span>
               <SubHeaderActions />
             </>
           ),
         },
       },
       {
-        path: 'add-chart',
+        path: "add-chart",
         element: <AddChartPage />,
         handle: {
           subHeader: (
-            <div className="flex flex-row items-center gap-2">
-              <FaPlus />
-              <span className="text-xl font-semibold">Add New Chart</span>
-            </div>
+            <span className="text-xl font-semibold">Add New Chart</span>
           ),
         },
       },
       {
-        path: 'edit-chart/:datasetId/:chartType',
+        path: "edit-chart/:datasetId/:chartType",
         element: <EditChartPage />,
         handle: {
-          subHeader: (
-            <div className="flex flex-row items-center gap-2">
-              <FaChartBar />
-              <span className="text-xl font-semibold">Edit Chart</span>
-            </div>
-          ),
+          subHeader: <span className="text-xl font-semibold">Edit Chart</span>,
         },
       },
       {
-        path: 'datasets',
+        path: "datasets",
         element: <DatasetTable />,
-        handle: { subHeader: <span className="text-xl font-semibold">Datasets</span> },
+        handle: {
+          subHeader: <span className="text-xl font-semibold">Datasets</span>,
+        },
       },
     ],
   },

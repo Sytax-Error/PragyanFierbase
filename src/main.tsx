@@ -6,6 +6,7 @@ import { ThemeProvider } from '@/hooks/theme/ThemeProvider';
 import { store } from '@/store';
 import routes from '@/app/routes/routes';
 import '@/index.css';
+import '@/styles/layout.css'; // Import global layout styles
 import '@/core/visualization/pluginload';
 
 // Create the data router with the new object-based routes
