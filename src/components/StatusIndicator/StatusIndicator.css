@@ -1,15 +1,40 @@
+:root {
+  --card-bg-light: #ffffff;
+  --card-bg-dark: #2a2a2e;
+  --text-light: #333;
+  --text-dark: #eee;
+  --primary-light: #8884d8;
+  --primary-dark: #9a96e6;
+  --error-light: #ff6b6b;
+  --error-dark: #ff8e8e;
+  --warning-light: #feca57;
+  --warning-dark: #ffd37a;
+  --shadow-lg-light: 0 10px 20px rgba(0, 0, 0, 0.05), 0 6px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg-dark: 0 10px 20px rgba(0, 0, 0, 0.2), 0 6px 6px rgba(0, 0, 0, 0.25);
+  --popover-bg-light: #ffffff;
+  --popover-bg-dark: #3a3a3e;
+}
+
 .status-indicator-card {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 40px;
-  background-color: var(--card-bg-color, #ffffff);
+  background-color: var(--card-bg-light);
+  color: var(--text-light);
   border-radius: 12px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05), 0 6px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-lg-light);
   text-align: center;
   max-width: 400px;
   margin: 40px auto;
+  transition: background-color var(--transition-medium), color var(--transition-medium), box-shadow var(--transition-medium);
+}
+
+.dark .status-indicator-card {
+  background-color: var(--card-bg-dark);
+  color: var(--text-dark);
+  box-shadow: var(--shadow-lg-dark);
 }
 
 .status-icon-container {
@@ -18,20 +43,32 @@
 
 .status-icon {
   font-size: 48px;
-  color: var(--primary-color, #8884d8);
+  color: var(--primary-light);
+  transition: color var(--transition-medium);
+}
+
+.dark .status-icon {
+  color: var(--primary-dark);
 }
 
 .status-icon.error {
-  color: var(--error-color, #ff6b6b);
+  color: var(--error-light);
+}
+
+.dark .status-icon.error {
+  color: var(--error-dark);
 }
 
 .status-icon.not-found {
-  color: var(--warning-color, #feca57);
+  color: var(--warning-light);
+}
+
+.dark .status-icon.not-found {
+  color: var(--warning-dark);
 }
 
 .status-message {
   font-size: 18px;
-  color: var(--text-color, #333);
   font-weight: 500;
 }
 

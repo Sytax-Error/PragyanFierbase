@@ -119,11 +119,11 @@
   }
 }
 
-.app.dark .edit-chart-sidebar {
+.dark .edit-chart-sidebar {
   background-color: var(--card-bg-dark);
   border-color: var(--card-border-dark);
 }
 
-.app.dark .sidebar-toggle {
-  border-color: var(--background-dark);
+.dark .sidebar-content {
+    color: var(--text-dark);
 }

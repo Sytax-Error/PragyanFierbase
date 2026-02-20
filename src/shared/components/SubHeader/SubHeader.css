@@ -2,7 +2,7 @@
 .subheader-container {
   position: sticky;
   top: 60px; /* Height of main header */
-  background: var(--header-bg, #ffffff);
+  background: var(--header-bg-light);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   height: 4rem; /* Match the content height */
@@ -14,6 +14,14 @@
   align-items: center;
   transition: all 0.25s ease;
 }
+
+/* Dark theme styles */
+.dark .subheader-container {
+  background: var(--header-bg-dark);
+  border-bottom: 1px solid var(--card-border-dark);
+  color:var(--header-bg-light)
+}
+
 
 /* Visually hide the subheader when it has no content, but keep its height to prevent layout shifts */
 .subheader-container:has(.subheader-content:empty) {

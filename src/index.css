@@ -13,28 +13,41 @@
   /* Border Radius */
   --radius-sm: 4px;
   --radius-md: 8px;
-  --radius-lg: 12px; /* Reduced from 16px */
+  --radius-lg: 12px;
 
   /* Transitions */
   --transition-fast: all 0.2s ease-in-out;
   --transition-medium: all 0.3s ease-in-out;
 
   /* Light Theme */
+  --primary-light: #6E8EFB;
+  --primary-light-rgb: 110, 142, 251;
   --background-light: #f8f9fa;
   --text-light: #212529;
-  --header-bg-light: #ffffff;
-  --header-text-light: #212529;
+  --text-light-secondary: #6c757d;
   --card-bg-light: #ffffff;
   --card-border-light: #dee2e6;
+  --popover-bg-light: #ffffff;
+  --input-bg-light: #ffffff;
+  --input-border-light: #ced4da;
 
   /* Dark Theme */
+  --primary-dark: #8A9BFF;
+  --primary-dark-rgb: 138, 155, 255;
   --background-dark: #121212;
   --text-dark: #e9ecef;
-  --header-bg-dark: #1a1a1a;
-  --header-text-dark: #e9ecef;
+  --text-dark-secondary: #adb5bd;
   --card-bg-dark: #1a1a1a;
   --card-border-dark: #343a40;
-
+  --popover-bg-dark: #2c2c34;
+  --popover-border-dark: #343a40;
+  --input-bg-dark: #252528;
+  --input-border-dark: #495057;
+  --header-bg-dark: #1a1a1a;
+  --header-text-dark: #e9ecef;
+  --header-bg-light: #ffffff;
+  --header-text-light: #212529;
+  
   /* Modern Theme */
   --primary-color: #007bff;
   --secondary-color: #6c757d;
@@ -62,7 +75,41 @@ body {
 }
 
 .app.dark body {
-  --background-modern: #1a1a1a;
+  background-color: var(--background-dark);
+  color: var(--text-dark);
   --text-primary-modern: #f8f9fa;
   --text-secondary-modern: #adb5bd;
+}
+
+
+/* ========================= */
+/* Modern Scrollbar          */
+/* ========================= */
+
+.content::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.content::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: var(--radius-md);
+  transition: background-color var(--transition-fast);
+}
+
+.content::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+/* Dark theme scrollbar */
+.dark .content::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.dark .content::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.4);
 }

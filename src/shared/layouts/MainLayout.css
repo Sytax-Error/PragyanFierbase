@@ -8,7 +8,15 @@
 .content {
   flex-grow: 1;
   overflow-y: auto; /* Allows only the content area to scroll if it overflows */
-  padding: var(--spacing-xs);
+  padding: var(--spacing-lg); /* Using a larger padding for better layout */
+  background-color: var(--background-light);
+  color: var(--text-light);
+  transition: background-color var(--transition-medium), color var(--transition-medium);
+}
+
+.dark .content {
+  background-color: var(--background-dark);
+  color: var(--text-dark);
 }
 
 /* Ensures Header and Footer have a fixed height and don't shrink */
