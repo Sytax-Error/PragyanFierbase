@@ -1,3 +1,4 @@
+
 .text-input-container {
   display: flex;
   flex-direction: column;
@@ -43,4 +44,24 @@
 .text-input::placeholder {
   color: var(--text-light-secondary);
   opacity: 0.8;
+}
+
+/* --- Dark Theme --- */
+.dark .text-input {
+  border-color: var(--input-border-dark);
+  background-color: var(--input-bg-dark);
+  color: var(--text-dark);
+}
+
+.dark .text-input:focus {
+  border-color: var(--primary-dark);
+  box-shadow: 0 0 0 3px rgba(var(--primary-dark-rgb), 0.2);
+}
+
+.dark .text-input::placeholder {
+  color: var(--text-dark-secondary);
+}
+
+.dark .text-input-label {
+  color: var(--text-dark-secondary);
 }

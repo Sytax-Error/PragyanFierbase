@@ -1,12 +1,14 @@
 export type DataRecord = Record<string, unknown>;
 
 export interface {{pascalCase name}}Props {
-  data: { name: string; value: unknown }[];
+  data: DataRecord[];
+  headerText: string;
 }
 
 export interface {{pascalCase name}}PluginConfig {
   dimension: string;
   measure: string;
+  headerText: string;
 }
 
 export interface TransformPropsOptions {

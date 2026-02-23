@@ -1,40 +1,36 @@
 import React from 'react';
-import {
-  FiChevronLeft,
-  FiChevronRight,
-  FiChevronUp,
-  FiChevronDown,
-} from 'react-icons/fi';
-import { Button, ControlPanel } from '@/components';
-import DynamicControl from '@/core/controls/DynamicControl';
+import { FiChevronLeft, FiChevronRight, FiChevronUp, FiChevronDown } from 'react-icons/fi';
 import type { VizPlugin } from '@/core/visualization';
-import type { Dataset } from '@/types';
+import type { Dataset } from '@/types/dataset';
+import { ControlPanel, Button } from '@/components';
+import DynamicControl from '@/core/controls/DynamicControl';
 import './EditChartSidebar.css';
 
 interface EditChartSidebarProps {
+  plugin: VizPlugin;
+  dataset: Dataset;
   title: string;
-  plugin: VizPlugin | null;
-  dataset: Dataset | null;
   controls: Record<string, unknown>;
   handleControlChange: (controlName: string, value: unknown) => void;
   onCreateChart: () => void;
   isLoading: boolean;
   isCollapsed: boolean;
   onToggle: () => void;
+  isCreationDisabled: boolean;
 }
 
-const EditChartSidebar: React.FC<EditChartSidebarProps> = ({
-  title,
-  plugin,
-  dataset,
-  controls,
-  handleControlChange,
-  onCreateChart,
+const EditChartSidebar: React.FC<EditChartSidebarProps> = ({ 
+  plugin, 
+  dataset, 
+  title, 
+  controls, 
+  handleControlChange, 
+  onCreateChart, 
   isLoading,
   isCollapsed,
   onToggle,
+  isCreationDisabled
 }) => {
-
 
   const getColumnsByKind = (kind: 'dimension' | 'measure') => {
     if (!dataset) return [];
@@ -47,8 +43,9 @@ const EditChartSidebar: React.FC<EditChartSidebarProps> = ({
     return dataset.columns.map(c => c.name);
   };
 
-  const controlElements =
-    plugin?.controlPanel?.fields?.map((field: { key: string; label: string; type: string; kind: 'dimension' | 'measure'; config: Record<string, unknown>}) => (
+  const controlElements = plugin?.controlPanel?.fields?.map((field) => {
+    const options = field.kind ? getColumnsByKind(field.kind) : [];
+    return (
       <DynamicControl
         key={field.key}
         type={field.type}
@@ -56,21 +53,22 @@ const EditChartSidebar: React.FC<EditChartSidebarProps> = ({
         label={field.label}
         value={controls[field.key]}
         onChange={handleControlChange}
-        options={getColumnsByKind(field.kind)}
-        config={field.config}
+        options={options}
+        config={field.config as Record<string, unknown>}
       />
-    )) || [];
+    );
+  }) || [];
 
   return (
     <div className={`edit-chart-sidebar card ${isCollapsed ? 'collapsed' : ''}`}>
-      <div className="sidebar-toggle" onClick={onToggle}>
-        <span className="desktop-icon">
-          {isCollapsed ? <FiChevronRight /> : <FiChevronLeft />}
-        </span>
-        <span className="mobile-icon">
-          {isCollapsed ? <FiChevronUp /> : <FiChevronDown />}
-        </span>
-      </div>
+       <div className="sidebar-toggle" onClick={onToggle}>
+         <span className="desktop-icon">
+           {isCollapsed ? <FiChevronRight /> : <FiChevronLeft />}
+         </span>
+         <span className="mobile-icon">
+           {isCollapsed ? <FiChevronUp /> : <FiChevronDown />}
+         </span>
+       </div>
       <div className="sidebar-content">
         <div className="sidebar-controls">
           <ControlPanel title={title}>
@@ -78,7 +76,7 @@ const EditChartSidebar: React.FC<EditChartSidebarProps> = ({
           </ControlPanel>
         </div>
         <div className="sidebar-footer">
-          <Button className="create-chart-button" onClick={onCreateChart} disabled={isLoading}>
+          <Button onClick={onCreateChart} disabled={isLoading || isCreationDisabled}>
             {isLoading ? 'Loading Data...' : 'Create Chart'}
           </Button>
         </div>

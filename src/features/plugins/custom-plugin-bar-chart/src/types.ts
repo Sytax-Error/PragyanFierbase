@@ -1,12 +1,14 @@
 export type DataRecord = Record<string, unknown>;
 
 export interface BarChartProps {
-  data: { name: string; value: unknown }[];
+  data: DataRecord[];
+  headerText:string;
 }
 
 export interface BarChartPluginConfig {
   dimension: string;
   measure: string;
+  headerText:string;
 }
 
 export interface TransformPropsOptions {

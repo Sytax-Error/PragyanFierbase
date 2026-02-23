@@ -1,8 +1,9 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '@/hooks/theme/useTheme';
 import { FiSearch, FiPlus, FiCheckCircle, FiCircle } from 'react-icons/fi';
-import { CustomSelect } from '@/components';
+import { CustomSelect, Button } from '@/components';
 import { vizRegistry } from '@/core/visualization';
 import { mockDatasets } from '@/data/mockDatasets'; // Import mockDatasets
 import '@/features/charts/AddChartPage/AddChartPage.css';
@@ -17,7 +18,6 @@ const AddChartPage: React.FC = () => {
   const chartPlugins = vizRegistry.list().map(plugin => ({
     id: plugin.type,
     name: plugin.metadata.name,
-    icon: plugin.metadata.icon, // Keep the component reference
     thumbnail: plugin.metadata.thumbnail,
   }));
 
@@ -34,9 +34,6 @@ const AddChartPage: React.FC = () => {
   const isDatasetSelected = !!selectedDataset;
   const isChartSelected = !!selectedChart;
 
-  // Correctly get the icon component for the logo
-  const LogoIcon = chartPlugins[0]?.icon || FiCircle;
-
   const datasetOptions = mockDatasets.map(d => ({ value: d.id, label: d.name }));
 
   return (
@@ -44,7 +41,6 @@ const AddChartPage: React.FC = () => {
       <div className="add-chart-wizard">
         <aside className="wizard-sidebar">
           <div className="wizard-logo">
-            <LogoIcon size="1.5rem" />
             <span className="logo-text">Chart Builder</span>
           </div>
           <nav className="wizard-nav">
@@ -121,10 +117,10 @@ const AddChartPage: React.FC = () => {
       </div>
 
       <footer className="add-chart-footer-bar">
-        <button onClick={handleAddChart} disabled={!isChartSelected || !isDatasetSelected}>
+        <Button onClick={handleAddChart} disabled={!isChartSelected || !isDatasetSelected}>
           <FiPlus />
           Proceed to Edit
-        </button>
+        </Button>
       </footer>
     </div>
   );

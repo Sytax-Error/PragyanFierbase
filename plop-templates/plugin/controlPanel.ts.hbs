@@ -1,23 +1,26 @@
-import { metadata } from './metadata';
+import { metadata } from "./metadata";
+import type { ControlPanelDef } from "@/core/visualization";
 
-export const controlPanel = {
+export const controlPanel: ControlPanelDef = {
   fields: [
     {
       key: "dimension",
       label: "Dimension",
       type: "data-column",
-      kind: "dimension", // <-- Specifies that this control expects a categorical column
+      kind: "dimension",
       defaultValue: "",
+      validation: { notEmpty: true },
     },
     {
       key: "measure",
       label: "Measure",
       type: "data-column",
-      kind: "measure", // <-- Specifies that this control expects a numerical column
+      kind: "measure",
       defaultValue: "",
+      validation: { notEmpty: true },
     },
     {
-      key: "header-text",
+      key: "headerText",
       label: "Header Text",
       type: "text",
       defaultValue: metadata.name,

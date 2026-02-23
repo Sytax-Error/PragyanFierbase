@@ -1,4 +1,5 @@
-import { vizRegistry } from '@/core/visualization';
+import { vizRegistry } from "@/core/visualization";
+import type { ComponentType } from "react";
 
 // Define a more specific type for dataset records
 type DataRecord = Record<string, unknown>;
@@ -25,10 +26,11 @@ export const runChart = async ({ dataset, chartType, controls }: RunChartParams)
       : plugin.transformProps({ dataset: dataset, controls }) // For functions like ({ dataset, controls })
     : { chartData: dataset };
 
+  const Component = (plugin.Component || plugin.component) as ComponentType<unknown>;
+
   // Return component and props
   return {
-    Component: plugin.Component || plugin.component, // Handle different component property names
+    Component: Component,
     props: transformedProps,
   };
 };
-

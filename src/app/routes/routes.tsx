@@ -1,5 +1,3 @@
-import React from "react";
-import { FaHome, FaChartBar, FaPlus } from "react-icons/fa";
 import MainLayout from "@/shared/layouts/MainLayout";
 import Dashboard from "@/features/dashboard/Dashboard";
 import ChartsPage from "@/features/charts/ChartsPage/ChartsPage";
@@ -7,6 +5,7 @@ import AddChartPage from "@/features/charts/AddChartPage/AddChartPage";
 import EditChartPage from "@/features/charts/EditChartPage/EditChartPage";
 import DatasetTable from "@/features/datasets/DatasetTable.tsx";
 import SubHeaderActions from "@/features/charts/ChartsPage/SubHeaderActions";
+import EditChartSubHeaderActions from "@/features/charts/EditChartPage/components/SubHeaderActions";
 
 const routes = [
   {
@@ -52,7 +51,12 @@ const routes = [
         path: "edit-chart/:datasetId/:chartType",
         element: <EditChartPage />,
         handle: {
-          subHeader: <span className="text-xl font-semibold">Edit Chart</span>,
+          subHeader: (
+            <>
+              <span className="text-xl font-semibold">Edit Chart</span>
+              <EditChartSubHeaderActions />
+            </>
+          ),
         },
       },
       {

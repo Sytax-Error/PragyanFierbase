@@ -1,10 +1,11 @@
 import React from "react";
 import type { {{pascalCase name}}Props } from "./types";
 
-const {{pascalCase name}} = ({ data }: {{pascalCase name}}Props) => {
+const {{pascalCase name}} = (props: {{pascalCase name}}Props) => {
+  const { data, headerText } = props;
   return (
     <div>
-      <h3>{{titleCase name}}</h3>
+      <h3>{headerText}</h3>
       <pre>{JSON.stringify(data, null, 2)}</pre>
     </div>
   );

@@ -7,6 +7,7 @@ import { useDataset } from "@/hooks/data/useDataset";
 import { StatusIndicator } from "@/components";
 import { EditChartSidebar, EditChartMain } from "./components";
 import "@/features/charts/EditChartPage/EditChartPage.css";
+import { validateControls } from "@/core/validation/validation";
 type Status = "loading" | "found" | "not-found";
 
 const EditChartPage: React.FC = () => {
@@ -21,7 +22,7 @@ const EditChartPage: React.FC = () => {
 
   const chartType = params.chartType;
   const plugin: VizPlugin | null = useMemo(
-    () => (chartType ? vizRegistry.get(chartType) : null),
+    () => (chartType ? vizRegistry.get(chartType) ?? null : null),
     [chartType]
   );
   const status: Status = useMemo(() => {
@@ -78,6 +79,13 @@ const EditChartPage: React.FC = () => {
     }
   };
 
+  const isCreateChartDisabled = useMemo(() => {
+    if (!plugin?.controlPanel?.fields) {
+      return true;
+    }
+    return !validateControls(plugin.controlPanel.fields, controls);
+  }, [controls, plugin]);
+
   const toggleSidebar = () => {
     setIsSidebarCollapsed(!isSidebarCollapsed);
   };
@@ -113,6 +121,7 @@ const EditChartPage: React.FC = () => {
         isLoading={dataLoading}
         isCollapsed={isSidebarCollapsed}
         onToggle={toggleSidebar}
+        isCreationDisabled={isCreateChartDisabled}
       />
       <EditChartMain
         dataLoading={dataLoading}

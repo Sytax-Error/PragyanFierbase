@@ -2,7 +2,7 @@ import type { BarChartProps, TransformPropsOptions } from "../types";
 
 export const transformProps = (options: TransformPropsOptions): BarChartProps => {
     const { dataset, controls } = options;
-    const { dimension, measure } = controls;
+    const { dimension, measure ,headerText} = controls;
     const data = dataset.map((record) => {
         return {
             name: record[dimension] as string,
@@ -10,6 +10,7 @@ export const transformProps = (options: TransformPropsOptions): BarChartProps =>
         }
     })
     return {
-        data
+        data,
+        headerText
     }
 }
