@@ -1,6 +1,7 @@
-import React from 'react';
+
 import { useNavigate } from 'react-router-dom';
-import { FaStar, FaTrash, FaUpload, FaEdit } from 'react-icons/fa';
+import { Star, Trash2, Upload, FilePenLine, BarChart, Database, LayoutGrid } from 'lucide-react';
+import { formatTimeAgo } from '@/utils/formatTimeAgo';
 import '@/components/ChartRow/ChartRow.css';
 
 const ChartRow = ({ chart }) => {
@@ -10,23 +11,39 @@ const ChartRow = ({ chart }) => {
         navigate(`/edit-chart/${chart.dataset}/${chart.type}`);
     };
 
+    // Stop propagation to prevent navigation when clicking on icons
+    const handleIconClick = (e) => {
+        e.stopPropagation();
+        // Add specific logic for each icon click here
+        alert(`${e.currentTarget.dataset.action} action`);
+    };
+
     return (
         <div className="chart-row" onClick={handleNavigate}>
             <div className="chart-row-main">
-                <FaStar className="star-icon" />
+                <Star className="star-icon" />
                 <span className="chart-name">{chart.name}</span>
             </div>
             <div className="chart-row-details">
-                <span>{chart.type}</span>
-                <span>{chart.dataset}</span>
-                <span>{chart.onDashboards}</span>
+                <div className="chart-info">
+                    <BarChart className="chart-info-icon" />
+                    <span>{chart.type}</span>
+                </div>
+                <div className="chart-info">
+                    <Database className="chart-info-icon" />
+                    <span>{chart.dataset}</span>
+                </div>
+                <div className="chart-info">
+                    <LayoutGrid className="chart-info-icon" />
+                    <span>{chart.onDashboards}</span>
+                </div>
                 <span className="owner-initials">{chart.owners}</span>
-                <span>{chart.lastModified}</span>
+                <span>{formatTimeAgo(chart.lastModified)}</span>
             </div>
             <div className="action-icons">
-                <FaTrash onClick={(e) => { e.stopPropagation(); alert('Delete action'); }} />
-                <FaUpload onClick={(e) => { e.stopPropagation(); alert('Upload action'); }} />
-                <FaEdit />
+                <Trash2 data-action="Delete" onClick={handleIconClick} />
+                <Upload data-action="Upload" onClick={handleIconClick} />
+                <FilePenLine data-action="Edit" onClick={handleIconClick} />
             </div>
         </div>
     );

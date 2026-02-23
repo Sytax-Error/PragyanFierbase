@@ -1,7 +1,8 @@
+
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '../../store';
 
-interface Chart {
+export interface Chart {
   id: string;
   name: string;
   type: string;
@@ -10,6 +11,7 @@ interface Chart {
   tags: string;
   owners: string;
   lastModified: string;
+  controls?: Record<string, unknown>; // Optional property to store chart-specific controls
 }
 
 interface ChartsState {
@@ -27,7 +29,12 @@ const chartsSlice = createSlice({
   initialState,
   reducers: {
     addChart: (state, action: PayloadAction<Chart>) => {
-      state.charts.push(action.payload);
+      const newChart = action.payload;
+      // Remove any existing chart with the same ID to handle updates
+      const updatedCharts = state.charts.filter(chart => chart.id !== newChart.id);
+      // Add the new or updated chart
+      updatedCharts.push(newChart);
+      state.charts = updatedCharts;
     },
     // Add other chart-related reducers here
   },

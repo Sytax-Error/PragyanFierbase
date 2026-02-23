@@ -1,5 +1,7 @@
+
 import React, { useState, useEffect, useMemo } from "react";
 import { useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { vizRegistry, type VizPlugin } from "@/core/visualization";
 import { runChart } from "@/core/chart-engine";
 import { useTheme } from "@/hooks/theme/useTheme";
@@ -8,10 +10,13 @@ import { StatusIndicator } from "@/components";
 import { EditChartSidebar, EditChartMain } from "./components";
 import "@/features/charts/EditChartPage/EditChartPage.css";
 import { validateControls } from "@/core/validation/validation";
+import { setEditorState, resetEditor } from "@/store/slices/chartEditorSlice";
+
 type Status = "loading" | "found" | "not-found";
 
 const EditChartPage: React.FC = () => {
   const params = useParams<{ datasetId: string; chartType: string }>();
+  const dispatch = useDispatch();
   const { theme } = useTheme();
   const {
     dataset,
@@ -55,6 +60,22 @@ const EditChartPage: React.FC = () => {
     }),
     [initialControls, userModifiedControls]
   );
+
+  useEffect(() => {
+    dispatch(
+      setEditorState({
+        datasetId: params.datasetId,
+        chartType: params.chartType,
+        controls: controls,
+      })
+    );
+  }, [dispatch, params.datasetId, params.chartType, controls]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(resetEditor());
+    };
+  }, [dispatch]);
 
   const [ChartComponent, setChartComponent] =
     useState<React.ComponentType<unknown> | null>(null);
@@ -109,7 +130,9 @@ const EditChartPage: React.FC = () => {
 
   return (
     <div
-      className={`edit-chart-container ${theme} ${isSidebarCollapsed ? "sidebar-collapsed" : ""}`}
+      className={`edit-chart-container ${theme} ${
+        isSidebarCollapsed ? "sidebar-collapsed" : ""
+      }`}
     >
       <EditChartSidebar
         title={"Controle Section"}
