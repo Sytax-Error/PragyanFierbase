@@ -1,5 +1,6 @@
+
 import React from 'react';
-import { FiChevronLeft, FiChevronRight, FiChevronUp, FiChevronDown } from 'react-icons/fi';
+import { ChevronLeft, ChevronRight, ChevronUp, ChevronDown } from 'lucide-react';
 import type { VizPlugin } from '@/core/visualization';
 import type { Dataset } from '@/types/dataset';
 import { ControlPanel, Button } from '@/components';
@@ -63,10 +64,10 @@ const EditChartSidebar: React.FC<EditChartSidebarProps> = ({
     <div className={`edit-chart-sidebar card ${isCollapsed ? 'collapsed' : ''}`}>
        <div className="sidebar-toggle" onClick={onToggle}>
          <span className="desktop-icon">
-           {isCollapsed ? <FiChevronRight /> : <FiChevronLeft />}
+           {isCollapsed ? <ChevronRight /> : <ChevronLeft />}
          </span>
          <span className="mobile-icon">
-           {isCollapsed ? <FiChevronUp /> : <FiChevronDown />}
+           {isCollapsed ? <ChevronUp /> : <ChevronDown />}
          </span>
        </div>
       <div className="sidebar-content">

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { FiChevronDown } from 'react-icons/fi';
+import { ChevronDown } from 'lucide-react';
 import './CustomSelect.css';
 
 type Option = {
@@ -41,7 +41,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({ options, value, onChange, p
         data-placeholder={!value}
       >
         <span>{selectedOptionLabel}</span>
-        <FiChevronDown className="dropdown-icon" />
+        <ChevronDown className="dropdown-icon" />
       </div>
       {isDropdownOpen && (
         <ul className="custom-select-options">

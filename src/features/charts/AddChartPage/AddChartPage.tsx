@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '@/hooks/theme/useTheme';
-import { FiSearch, FiPlus, FiCheckCircle, FiCircle } from 'react-icons/fi';
+import { Search, Plus, CheckCircle, Circle } from 'lucide-react';
 import { CustomSelect, Button } from '@/components';
 import { vizRegistry } from '@/core/visualization';
 import { mockDatasets } from '@/data/mockDatasets'; // Import mockDatasets
@@ -46,7 +46,7 @@ const AddChartPage: React.FC = () => {
           <nav className="wizard-nav">
             <div className={`wizard-nav-item ${isDatasetSelected ? 'completed' : 'active'}`}>
               <div className="nav-item-icon">
-                {isDatasetSelected ? <FiCheckCircle /> : <FiCircle />}
+                {isDatasetSelected ? <CheckCircle /> : <Circle />}
               </div>
               <div className="nav-item-text">
                 <h4>Step 1</h4>
@@ -55,7 +55,7 @@ const AddChartPage: React.FC = () => {
             </div>
             <div className={`wizard-nav-item ${isChartSelected ? 'completed' : (isDatasetSelected ? 'active' : '')}`}>
               <div className="nav-item-icon">
-                {isChartSelected ? <FiCheckCircle /> : <FiCircle />}
+                {isChartSelected ? <CheckCircle /> : <Circle />}
               </div>
               <div className="nav-item-text">
                 <h4>Step 2</h4>
@@ -87,7 +87,7 @@ const AddChartPage: React.FC = () => {
                 <p className="wizard-step-subtitle">Pick a visualization that best represents your data.</p>
               </div>
               <div className="search-bar">
-                <FiSearch className="search-icon" />
+                <Search className="search-icon" />
                 <input
                   type="text"
                   placeholder="Search charts..."
@@ -118,7 +118,7 @@ const AddChartPage: React.FC = () => {
 
       <footer className="add-chart-footer-bar">
         <Button onClick={handleAddChart} disabled={!isChartSelected || !isDatasetSelected}>
-          <FiPlus />
+          <Plus />
           Proceed to Edit
         </Button>
       </footer>

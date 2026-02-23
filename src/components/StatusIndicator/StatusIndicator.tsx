@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaSpinner, FaExclamationTriangle, FaQuestionCircle } from 'react-icons/fa';
+import { Loader, AlertTriangle, HelpCircle } from 'lucide-react';
 import './StatusIndicator.css';
 
 type StatusIndicatorProps = {
@@ -8,10 +8,10 @@ type StatusIndicatorProps = {
 };
 
 const iconMap = {
-  loading: <FaSpinner className="status-icon spin" />,
-  error: <FaExclamationTriangle className="status-icon error" />,
-  'not-found': <FaQuestionCircle className="status-icon not-found" />,
-  info: <FaQuestionCircle className="status-icon info" />,
+  loading: <Loader className="status-icon spin" />,
+  error: <AlertTriangle className="status-icon error" />,
+  'not-found': <HelpCircle className="status-icon not-found" />,
+  info: <HelpCircle className="status-icon info" />,
 };
 
 const StatusIndicator: React.FC<StatusIndicatorProps> = ({ status, message }) => {

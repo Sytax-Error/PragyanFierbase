@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useTheme } from '@/hooks/theme/useTheme';
-import { FiSettings, FiSun, FiMoon } from 'react-icons/fi';
+import { Settings, Sun, Moon } from 'lucide-react';
 import './Header.css';
 
 const Header: React.FC = () => {
@@ -25,10 +25,10 @@ const Header: React.FC = () => {
       </nav>
       <div className="header-actions">
         <button className="action-button">
-          <FiSettings />
+          <Settings />
         </button>
         <button onClick={toggleTheme} className="theme-toggle">
-          {theme === 'light' ? <FiMoon /> : <FiSun />}
+          {theme === 'light' ? <Moon /> : <Sun />}
         </button>
         <button className="menu-toggle" onClick={toggleMenu}>
           <div className={`hamburger ${isMenuOpen ? 'open' : ''}`}>
