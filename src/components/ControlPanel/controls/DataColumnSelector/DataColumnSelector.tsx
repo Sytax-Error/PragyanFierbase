@@ -1,24 +1,26 @@
 import React from 'react';
-import type { BaseControlProps } from '@/core/controls/controlRegistry';
 import { CustomSelect } from '@/components';
+import type { BaseControlProps } from '@/core/controls/controlRegistry';
 import './DataColumnSelector.css';
 
-interface DataColumnSelectorProps extends BaseControlProps {
-  options?: string[];
-}
+const DataColumnSelector: React.FC<BaseControlProps> = ({ label, value, onChange, options = [] }) => {
+  // Filter out any non-string values from the options array and map to the format expected by CustomSelect.
+  const selectOptions = (options as unknown[])
+    .filter((opt): opt is string => typeof opt === 'string')
+    .map(col => ({
+      value: col,
+      label: col,
+    }));
 
-const DataColumnSelector: React.FC<DataColumnSelectorProps> = ({ label, value, onChange, options = [] }) => {
-  const selectOptions = options.map(col => ({
-    value: col,
-    label: col,
-  }));
+  // Ensure the value passed to CustomSelect is a string.
+  const stringValue = typeof value === 'string' ? value : '';
 
   return (
     <div className="data-column-selector">
       <label>{label}</label>
       <CustomSelect
         options={selectOptions}
-        value={value as string}
+        value={stringValue}
         onChange={onChange}
         placeholder="Select a column"
       />

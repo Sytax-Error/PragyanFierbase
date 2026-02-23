@@ -2,6 +2,7 @@ import {
   DataColumnSelector,
   ColorPicker,
   Slider,
+  TextInput
 } from '@/components';
 
 import type { ComponentType } from 'react';
@@ -26,4 +27,5 @@ export const CONTROL_REGISTRY: ControlRegistry = {
   'data-column': DataColumnSelector,
   color: ColorPicker,
   slider: Slider,
+  text:TextInput
 };

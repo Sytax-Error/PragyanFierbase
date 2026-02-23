@@ -3,6 +3,7 @@ import './ControlPanel.css';
 import ColorPicker from './controls/ColorPicker/ColorPicker';
 import DataColumnSelector from './controls/DataColumnSelector/DataColumnSelector';
 import Slider from './controls/Slider/Slider';
+import TextInput from './controls/TextInput/TextInput';
 
 interface ControlPanelProps {
   title: string;
@@ -19,4 +20,4 @@ const ControlPanel: React.FC<ControlPanelProps> = ({ title, children }) => {
 };
 
 export default ControlPanel;
-export { ColorPicker, DataColumnSelector, Slider };
+export { ColorPicker, DataColumnSelector, Slider,TextInput };

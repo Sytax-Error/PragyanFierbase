@@ -1,3 +1,5 @@
+import { metadata } from './metadata';
+
 export const controlPanel = {
   fields: [
     {
@@ -13,6 +15,12 @@ export const controlPanel = {
       type: "data-column",
       kind: "measure", // <-- Specifies that this control expects a numerical column
       defaultValue: "",
+    },
+    {
+      key: "header-text",
+      label: "Header Text",
+      type: "text",
+      defaultValue: metadata.name,
     },
   ],
 };
