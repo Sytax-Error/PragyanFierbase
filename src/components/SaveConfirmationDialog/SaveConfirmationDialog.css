@@ -1,57 +1,48 @@
+/*
+* ==============================================
+* SAVE CONFIRMATION DIALOG
+* ==============================================
+* A modern, polished, and intuitive confirmation dialog
+* with full light and dark theme support.
+*/
 
+/* -- Overlay -- */
 .dialog-overlay {
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(33, 37, 41, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-    -webkit-backdrop-filter: blur(8px);
-    backdrop-filter: blur(8px);
-    animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    inset: 0;
+    background-color: rgba(23, 27, 34, 0.8); /* Darker for more focus */
+    display: grid;
+    place-items: center;
+    z-index: 1050;
+    animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/* -- Dialog Content -- */
 .dialog-content {
     width: 90%;
-    max-width: 420px;
+    max-width: 480px;
     padding: var(--spacing-xl);
-    padding-top: calc(var(--spacing-xl) + 36px); /* Make space for the icon */
-    border-radius: var(--border-radius-xl);
-    background-color: var(--card-bg-light);
-    border: 1px solid var(--card-border-light);
-    box-shadow: 0 20px 40px -10px rgba(0,0,0,0.2), 0 10px 20px -15px rgba(0,0,0,0.1);
+    border-radius: var(--radius-xl);
     text-align: center;
     position: relative;
     animation: slideInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    
+    /* --- Light Theme Styles --- */
+    background-color: var(--card-bg-light);
+    border: 1px solid var(--card-border-light);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    --hover-bg-color: rgba(0, 0, 0, 0.05);
 }
 
-.dialog-header {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translate(-50%, -50%);
+/* --- Dark Theme Overrides --- */
+.dark .dialog-content {
+    background-color: var(--card-bg-dark);
+    border: 1px solid var(--card-border-dark);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    --hover-bg-color: rgba(255, 255, 255, 0.08);
 }
 
-.dialog-icon-wrapper {
-    width: 72px;
-    height: 72px;
-    border-radius: 50%;
-    background: linear-gradient(145deg, var(--primary-color), var(--primary-color-dark));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 8px 20px -4px var(--primary-color-light);
-    border: 4px solid var(--card-bg-light);
-}
-
-.dialog-icon {
-    color: #fff;
-}
-
+/* -- Close Button -- */
 .close-button {
     position: absolute;
     top: var(--spacing-md);
@@ -59,62 +50,107 @@
     background: transparent;
     border: none;
     cursor: pointer;
-    color: var(--text-color-secondary);
-    padding: 8px;
+    padding: 10px;
     border-radius: 50%;
-    transition: all 0.2s ease-in-out;
+    transition: var(--transition-fast);
+    color: var(--text-light-secondary);
+}
+
+.dark .close-button {
+    color: var(--text-dark-secondary);
 }
 
 .close-button:hover {
     background-color: var(--hover-bg-color);
-    color: var(--text-color-primary);
-    transform: rotate(90deg);
+    transform: rotate(90deg) scale(1.1);
+    color: var(--text-light);
+}
+
+.dark .close-button:hover {
+    color: var(--text-dark);
+}
+
+/* -- Body Content -- */
+.dialog-body {
+    padding: var(--spacing-sm) 0;
 }
 
 .dialog-body h3 {
     font-family: var(--primary-font);
-    font-size: 1.75rem;
-    font-weight: 600;
-    color: var(--text-color-primary);
-    margin: 0 0 var(--spacing-md);
+    font-size: var(--font-size-xl);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 0 0 var(--spacing-sm);
+    color: var(--text-light);
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.dark .dialog-body h3 {
+    color: var(--text-dark);
+    text-shadow: none;
 }
 
 .dialog-body p {
     font-family: var(--secondary-font);
-    color: var(--text-color-secondary);
-    font-size: 1rem;
+    font-size: var(--font-size-md);
     line-height: 1.6;
     margin: 0 auto var(--spacing-xl);
-    max-width: 340px;
+    max-width: 400px;
+    color: var(--text-light-secondary);
 }
 
+.dark .dialog-body p {
+    color: var(--text-dark-secondary);
+}
+
+/* -- Footer & Buttons -- */
 .dialog-footer {
     display: flex;
+    flex-direction: row;
     justify-content: center;
     gap: var(--spacing-md);
 }
 
 .dialog-footer .btn {
-    min-width: 140px;
+    flex: 1;
+    padding: var(--spacing-sm) var(--spacing-lg);
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    border-radius: var(--radius-md);
+    border: none;
+    transition: var(--transition-medium);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-xs);
+    color: white;
+    background: var(--primary-light);
+    box-shadow: 0 4px 15px -5px rgba(var(--primary-light-rgb), 0.6);
 }
 
-.dialog-footer .btn-primary:hover {
-    box-shadow: 0 4px 15px -5px var(--primary-color);
-    transform: translateY(-2px);
+.dark .dialog-footer .btn {
+    background: var(--primary-dark);
+    box-shadow: 0 4px 20px -5px rgba(var(--primary-dark-rgb), 0.5);
+    color: #fff;
 }
 
-.dialog-footer .btn-secondary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px -5px rgba(0,0,0,0.1);
+.dialog-footer .btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px -8px rgba(var(--primary-light-rgb), 0.7);
 }
 
-/* Animations */
+.dark .dialog-footer .btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px -8px rgba(var(--primary-dark-rgb), 0.6);
+}
+
+/* -- Animations -- */
 @keyframes fadeIn {
-    from { opacity: 0; backdrop-filter: blur(0); }
-    to { opacity: 1; backdrop-filter: blur(8px); }
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 @keyframes slideInUp {
-    from { transform: translateY(30px) scale(0.98); opacity: 0; }
+    from { transform: translateY(40px) scale(0.95); opacity: 0; }
     to { transform: translateY(0) scale(1); opacity: 1; }
 }

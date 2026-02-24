@@ -14,6 +14,17 @@
   --radius-sm: 4px;
   --radius-md: 8px;
   --radius-lg: 12px;
+  --radius-xl: 16px; /* Added for consistency */
+
+  /* Typography */
+  --primary-font: 'Poppins', sans-serif;
+  --secondary-font: 'Roboto', sans-serif;
+  --font-size-base: 1rem; /* 16px */
+  --font-size-md: 1.125rem; /* 18px */
+  --font-size-lg: 1.25rem; /* 20px */
+  --font-size-xl: 1.5rem;   /* 24px */
+  --font-size-xxl: 2rem;  /* 32px */
+
 
   /* Transitions */
   --transition-fast: all 0.2s ease-in-out;
@@ -59,9 +70,6 @@
   --text-primary-modern: #212529;
   --text-secondary-modern: #6c757d;
   --background-modern: #f8f9fa;
-
-  --primary-font: 'Poppins', sans-serif;
-  --secondary-font: 'Roboto', sans-serif;
 }
 
 body {
