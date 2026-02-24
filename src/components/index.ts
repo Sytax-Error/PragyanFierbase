@@ -6,3 +6,4 @@ export { default as CustomSelect } from './CustomSelect/CustomSelect';
 export { default as PluginCard } from './PluginCard/PluginCard';
 export { default as StatusIndicator } from './StatusIndicator/StatusIndicator';
 export * from './ControlPanel/controls';
+export { default as SaveConfirmationDialog } from './SaveConfirmationDialog/SaveConfirmationDialog';

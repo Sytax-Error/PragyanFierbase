@@ -36,6 +36,7 @@ This change will simplify the components, clarify the routing, and align the cod
 - **`CustomSelect`:** A theme-aware custom select dropdown component.
 - **`EditChartMain`:** The main content area for displaying the chart visualization.
 - **`SubHeaderActions`:** A component in the sub-header that contains the "Save" button.
+- **`SaveConfirmationDialog`**: A modern, animated dialog that confirms the successful saving of a chart. It provides options for the user to either continue editing or navigate back to the charts list. The dialog features a "glassmorphism" overlay, a "lifted" card design, and interactive "glow" effects on buttons to align with the project's premium design guidelines.
 
 ### Styling
 - **CSS Variables:** The project uses CSS variables for consistent theming and spacing.
