@@ -7,11 +7,13 @@ export interface Chart {
   name: string;
   type: string;
   dataset: string;
+  datasetId: string,
+  chartType: string,
   onDashboards: string;
   tags: string;
   owners: string;
   lastModified: string;
-  controls?: Record<string, unknown>; // Optional property to store chart-specific controls
+  controls?: Record<string, unknown> | undefined; // Optional property to store chart-specific controls
 }
 
 interface ChartsState {

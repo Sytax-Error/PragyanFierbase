@@ -14,7 +14,7 @@ const SubHeaderActions: React.FC = () => {
   const navigate = useNavigate();
   const editorState = useSelector(selectChartEditor);
   const { datasets, loading } = useSelector((state: RootState) => state.datasets);
-
+  console.log('editorState:',editorState)
   useEffect(() => {
     // Fetch datasets if they haven't been loaded yet
     if (datasets.length === 0 && !loading) {
@@ -34,6 +34,8 @@ const SubHeaderActions: React.FC = () => {
         name: editorState.controls.headerText as string,
         type: chartName,
         dataset: datasetName,
+        datasetId: editorState.datasetId,
+        chartType: editorState.chartType,
         onDashboards: 'N/A',
         tags: '',
         owners: 'Me',
@@ -43,6 +45,8 @@ const SubHeaderActions: React.FC = () => {
 
       dispatch(addChart(newChart));
       navigate('/charts');
+    }else{
+      console.log("else part 1")
     }
   };
 

@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useMemo } from "react";
 import { useParams } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { vizRegistry, type VizPlugin } from "@/core/visualization";
 import { runChart } from "@/core/chart-engine";
 import { useTheme } from "@/hooks/theme/useTheme";
@@ -10,30 +10,87 @@ import { StatusIndicator } from "@/components";
 import { EditChartSidebar, EditChartMain } from "./components";
 import "@/features/charts/EditChartPage/EditChartPage.css";
 import { validateControls } from "@/core/validation/validation";
-import { setEditorState, resetEditor } from "@/store/slices/chartEditorSlice";
+import { setEditorState } from "@/store/slices/chartEditorSlice";
+import type { RootState } from "@/store";
 
 type Status = "loading" | "found" | "not-found";
 
 const EditChartPage: React.FC = () => {
-  const params = useParams<{ datasetId: string; chartType: string }>();
+  const params = useParams<{
+    datasetId?: string;
+    chartType?: string;
+    chartId?: string;
+  }>();
+
+  const isEditMode = Boolean(params.chartId);
+
+  const existingChart = useSelector((state: RootState) =>
+    state.charts.charts.find((chart) => chart.id === params.chartId)
+  );
+
   const dispatch = useDispatch();
   const { theme } = useTheme();
+
+  // FIX: Moved useState hooks to the top of the component
+  const [ChartComponent, setChartComponent] =
+    useState<React.ComponentType<unknown> | null>(null);
+  const [chartProps, setChartProps] = useState<unknown>(null);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [userModifiedControls, setUserModifiedControls] = useState<
+    Record<string, unknown> | undefined
+  >({});
+
+  const effectiveDatasetId = isEditMode
+    ? existingChart?.datasetId
+    : params.datasetId;
+
+  const effectiveChartType = isEditMode
+    ? existingChart?.chartType
+    : params.chartType;
   const {
     dataset,
     data: currentDatasetData,
     loading: dataLoading,
-  } = useDataset(params.datasetId);
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  } = useDataset(effectiveDatasetId);
 
-  const chartType = params.chartType;
   const plugin: VizPlugin | null = useMemo(
-    () => (chartType ? vizRegistry.get(chartType) ?? null : null),
-    [chartType]
+    () =>
+      effectiveChartType ? (vizRegistry.get(effectiveChartType) ?? null) : null,
+    [effectiveChartType]
   );
+
   const status: Status = useMemo(() => {
-    if (!chartType) return "loading";
+    if (!effectiveChartType) return "loading";
     return plugin ? "found" : "not-found";
-  }, [chartType, plugin]);
+  }, [effectiveChartType, plugin]);
+
+  useEffect(() => {
+    if (isEditMode && existingChart) {
+      setUserModifiedControls(existingChart.controls);
+    }
+  }, [isEditMode, existingChart]);
+
+  useEffect(() => {
+    const renderChart = async () => {
+      if (
+        isEditMode &&
+        existingChart &&
+        currentDatasetData &&
+        effectiveChartType
+      ) {
+        const { Component, props } = await runChart({
+          dataset: currentDatasetData,
+          chartType: effectiveChartType,
+          controls: existingChart.controls,
+        });
+
+        setChartComponent(() => Component);
+        setChartProps(props);
+      }
+    };
+
+    renderChart();
+  }, [isEditMode, existingChart, currentDatasetData, effectiveChartType]);
 
   const initialControls = useMemo(() => {
     if (!plugin) return {};
@@ -42,15 +99,6 @@ const EditChartPage: React.FC = () => {
       controls[field.key] = field.defaultValue;
     });
     return controls;
-  }, [plugin]);
-
-  const [userModifiedControls, setUserModifiedControls] = useState<
-    Record<string, unknown>
-  >({});
-
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setUserModifiedControls({});
   }, [plugin]);
 
   const controls = useMemo(
@@ -64,22 +112,12 @@ const EditChartPage: React.FC = () => {
   useEffect(() => {
     dispatch(
       setEditorState({
-        datasetId: params.datasetId,
-        chartType: params.chartType,
+        datasetId: effectiveDatasetId,
+        chartType: effectiveChartType,
         controls: controls,
       })
     );
-  }, [dispatch, params.datasetId, params.chartType, controls]);
-
-  useEffect(() => {
-    return () => {
-      dispatch(resetEditor());
-    };
-  }, [dispatch]);
-
-  const [ChartComponent, setChartComponent] =
-    useState<React.ComponentType<unknown> | null>(null);
-  const [chartProps, setChartProps] = useState<unknown>(null);
+  }, [dispatch, effectiveDatasetId, effectiveChartType, controls]);
 
   const handleControlChange = (controlName: string, value: unknown) => {
     setUserModifiedControls((prevControls) => ({
@@ -89,10 +127,10 @@ const EditChartPage: React.FC = () => {
   };
 
   const handleCreateChart = async () => {
-    if (currentDatasetData && params.chartType && plugin) {
+    if (currentDatasetData && effectiveChartType && plugin) {
       const { Component, props } = await runChart({
         dataset: currentDatasetData,
-        chartType: params.chartType,
+        chartType: effectiveChartType,
         controls,
       });
       setChartComponent(() => Component);

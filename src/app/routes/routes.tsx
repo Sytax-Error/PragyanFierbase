@@ -1,3 +1,4 @@
+
 import MainLayout from "@/shared/layouts/MainLayout";
 import Dashboard from "@/features/dashboard/Dashboard";
 import ChartsPage from "@/features/charts/ChartsPage/ChartsPage";
@@ -49,6 +50,18 @@ const routes = [
       },
       {
         path: "edit-chart/:datasetId/:chartType",
+        element: <EditChartPage />,
+        handle: {
+          subHeader: (
+            <>
+              <span className="text-xl font-semibold">Edit Chart</span>
+              <EditChartSubHeaderActions />
+            </>
+          ),
+        },
+      },
+      {
+        path: "edit-chart/:chartId",
         element: <EditChartPage />,
         handle: {
           subHeader: (

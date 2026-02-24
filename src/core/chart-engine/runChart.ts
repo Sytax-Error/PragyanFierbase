@@ -7,7 +7,7 @@ type DataRecord = Record<string, unknown>;
 interface RunChartParams {
   dataset: DataRecord[]; // The actual dataset
   chartType: string;
-  controls: Record<string, unknown>;
+  controls: Record<string, unknown> | undefined;
 }
 
 export const runChart = async ({ dataset, chartType, controls }: RunChartParams) => {
