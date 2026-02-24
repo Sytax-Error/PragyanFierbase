@@ -8,7 +8,7 @@ const ChartCard = ({ chart }) => {
   const navigate = useNavigate();
 
   const handleNavigate = () => {
-    navigate(`/edit-chart/${chart.id}`);
+    navigate(`/charts/edit/${chart.id}`);
   };
 
   // Stop propagation to prevent navigation when clicking on icons

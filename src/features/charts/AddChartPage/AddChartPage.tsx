@@ -5,7 +5,7 @@ import { useTheme } from '@/hooks/theme/useTheme';
 import { Search, Plus, CheckCircle, Circle } from 'lucide-react';
 import { CustomSelect, Button } from '@/components';
 import { vizRegistry } from '@/core/visualization';
-import { mockDatasets } from '@/data/mockDatasets'; // Import mockDatasets
+import { mockDatasets } from '@/data/mockDatasets';
 import '@/features/charts/AddChartPage/AddChartPage.css';
 
 const AddChartPage: React.FC = () => {
@@ -23,7 +23,8 @@ const AddChartPage: React.FC = () => {
 
   const handleAddChart = () => {
     if (selectedChart && selectedDataset) {
-      navigate(`/edit-chart/${selectedDataset}/${selectedChart}`);
+      // Navigate to the new, dedicated create route
+      navigate(`/charts/create/${selectedDataset}/${selectedChart}`);
     }
   };
 

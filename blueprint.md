@@ -4,6 +4,22 @@
 
 This document outlines the architecture and implementation details of the Pragyan application, a powerful and flexible data visualization tool. It serves as a living document, updated with each significant change to reflect the current state of the project.
 
+## Current Task: Refactor Create/Edit Flow
+
+### Problem Statement
+The previous implementation for creating and editing charts was complex. A single `EditChartPage` component was responsible for both workflows, determined by the URL parameters. This led to convoluted routing and a component with high internal complexity.
+
+### Solution: Separate Create and Edit Pages
+To simplify the architecture, we are refactoring the application to use distinct pages and routes for each workflow:
+
+1.  **`AddChartPage` (`/add-chart`):** A wizard page where the user selects a dataset and a chart type.
+2.  **`CreateChartPage` (`/charts/create/:datasetId/:chartType`):** A new, dedicated page that takes the dataset and chart type from the URL and handles the entire creation and configuration process for a *new* chart.
+3.  **`EditChartPage` (`/charts/edit/:chartId`):** A refactored page that is solely responsible for fetching an existing chart by its ID, allowing modification, and saving the updates.
+
+This change will simplify the components, clarify the routing, and align the codebase with the "Single Responsibility Principle."
+
+---
+
 ## Features and Design
 
 ### Core Architecture
@@ -24,16 +40,3 @@ This document outlines the architecture and implementation details of the Pragya
 ### Styling
 - **CSS Variables:** The project uses CSS variables for consistent theming and spacing.
 - **`card` class:** A reusable class for creating card-like UI elements with a border and background. Its styles are defined in `src/styles/layout.css` and imported globally in `src/main.tsx`.
-
-## Completed Task: Implement Chart Saving
-
-### Problem Statement
-The "Save" button in the chart editor was not functional. It only logged a message to the console and did not save the chart.
-
-### Solution Implemented
-1.  **`chartEditorSlice` Creation**: A new Redux slice, `chartEditorSlice`, was created to hold the temporary state of the chart being edited. This decouples the editor's state from the `EditChartPage` component.
-2.  **Store Integration**: The new slice was added to the Redux store, but it is explicitly excluded from `redux-persist` to avoid saving incomplete charts.
-3.  **State Synchronization**: The `EditChartPage` was updated to dispatch actions to the `chartEditorSlice`, keeping the editor's state in Redux.
-4.  **Save Button Logic**: The `SubHeaderActions` component was modified. The "Save" button now reads the chart's data from the `chartEditorSlice`, creates a new chart object, and dispatches the `addChart` action to save it.
-5.  **Type Safety**: The `Chart` interface was updated to include the `controls` property, ensuring type safety when saving charts.
-6.  **Navigation**: After saving, the user is redirected to the `/charts` page to see their newly saved chart.

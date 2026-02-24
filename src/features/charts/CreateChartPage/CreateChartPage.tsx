@@ -1,23 +1,25 @@
 
 import React, { useState, useEffect, useMemo } from "react";
-import { useParams, Navigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { vizRegistry, type VizPlugin } from "@/core/visualization";
 import { runChart } from "@/core/chart-engine";
 import { useTheme } from "@/hooks/theme/useTheme";
 import { useDataset } from "@/hooks/data/useDataset";
 import { StatusIndicator } from "@/components";
-import { EditChartSidebar, EditChartMain } from "./components";
-import "@/features/charts/EditChartPage/EditChartPage.css";
+import { EditChartSidebar, EditChartMain } from "@/features/charts/EditChartPage/components";
+import "@/features/charts/EditChartPage/EditChartPage.css"; // We can reuse the same CSS
 import { validateControls } from "@/core/validation/validation";
 import { setEditorState } from "@/store/slices/chartEditorSlice";
-import type { RootState } from "@/store";
 
 type Status = "loading" | "found" | "not-found";
 
-const EditChartPage: React.FC = () => {
+const CreateChartPage: React.FC = () => {
   // --- Params and Hooks ---
-  const { chartId } = useParams<{ chartId: string }>();
+  const { datasetId, chartType } = useParams<{
+    datasetId: string;
+    chartType: string;
+  }>();
   const dispatch = useDispatch();
   const { theme } = useTheme();
 
@@ -25,28 +27,24 @@ const EditChartPage: React.FC = () => {
   const [ChartComponent, setChartComponent] = useState<React.ComponentType<unknown> | null>(null);
   const [chartProps, setChartProps] = useState<unknown>(null);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
-  const [userModifiedControls, setUserModifiedControls] = useState<Record<string, unknown> | undefined>(undefined);
+  const [userModifiedControls, setUserModifiedControls] = useState<Record<string, unknown>>({});
 
-  // --- Data Loading ---
-  const existingChart = useSelector((state: RootState) =>
-    state.charts.charts.find((chart) => chart.id === chartId)
-  );
-
+  // --- Data and Plugin Loading ---
   const {
     dataset,
     data: currentDatasetData,
     loading: dataLoading,
-  } = useDataset(existingChart?.datasetId);
+  } = useDataset(datasetId);
 
   const plugin: VizPlugin | null = useMemo(
-    () => (existingChart ? vizRegistry.get(existingChart.chartType) ?? null : null),
-    [existingChart]
+    () => (chartType ? vizRegistry.get(chartType) ?? null : null),
+    [chartType]
   );
 
   const status: Status = useMemo(() => {
-    if (!existingChart) return "loading"; // Could also be a "not-found" state
+    if (!chartType) return "loading";
     return plugin ? "found" : "not-found";
-  }, [existingChart, plugin]);
+  }, [chartType, plugin]);
 
   // --- Controls Management ---
   const initialControls = useMemo(() => {
@@ -61,48 +59,43 @@ const EditChartPage: React.FC = () => {
   const controls = useMemo(
     () => ({
       ...initialControls,
-      ...(userModifiedControls ?? existingChart?.controls),
+      ...userModifiedControls,
     }),
-    [initialControls, userModifiedControls, existingChart]
+    [initialControls, userModifiedControls]
   );
 
-  // --- State Synchronization and Effects ---
+  // --- State Synchronization ---
   useEffect(() => {
-    if (existingChart) {
-      dispatch(
-        setEditorState({
-          datasetId: existingChart.datasetId,
-          chartType: existingChart.chartType,
-          controls: controls,
-        })
-      );
-    }
-  }, [dispatch, existingChart, controls]);
-
-  useEffect(() => {
-    const renderChart = async () => {
-      if (existingChart && currentDatasetData && plugin) {
-        const { Component, props } = await runChart({
-          dataset: currentDatasetData,
-          chartType: existingChart.chartType,
-          controls: controls, // Use the latest controls
-        });
-        setChartComponent(() => Component);
-        setChartProps(props);
-      }
-    };
-    renderChart();
-  }, [existingChart, currentDatasetData, plugin, controls]); // Rerun on control changes
+    dispatch(
+      setEditorState({
+        datasetId: datasetId,
+        chartType: chartType,
+        controls: controls,
+      })
+    );
+  }, [dispatch, datasetId, chartType, controls]);
 
   // --- Event Handlers ---
   const handleControlChange = (controlName: string, value: unknown) => {
     setUserModifiedControls((prevControls) => ({
-      ...(prevControls ?? existingChart?.controls),
+      ...prevControls,
       [controlName]: value,
     }));
   };
 
-  const isSaveDisabled = useMemo(() => {
+  const handlePreviewChart = async () => {
+    if (currentDatasetData && chartType && plugin) {
+      const { Component, props } = await runChart({
+        dataset: currentDatasetData,
+        chartType: chartType,
+        controls,
+      });
+      setChartComponent(() => Component);
+      setChartProps(props);
+    }
+  };
+  
+  const isPreviewDisabled = useMemo(() => {
     if (!plugin?.controlPanel?.fields) {
       return true;
     }
@@ -114,19 +107,15 @@ const EditChartPage: React.FC = () => {
   };
   
   // --- Render Logic ---
-  if (dataLoading) {
-      return <StatusIndicator status="loading" message="Loading chart data..." />;
-  }
-
-  if (!existingChart) {
-      return <Navigate to="/charts" replace />;
+  if (status === "loading") {
+    return <StatusIndicator status="loading" message="Loading plugin..." />;
   }
 
   if (status === "not-found") {
     return (
       <StatusIndicator
         status="not-found"
-        message={`Plugin "${existingChart.chartType}" not found.`}
+        message={`Plugin "${chartType}" not found.`}
       />
     );
   }
@@ -147,12 +136,12 @@ const EditChartPage: React.FC = () => {
         dataset={dataset}
         controls={controls}
         handleControlChange={handleControlChange}
-        onCreateChart={() => {}} // No create functionality on this page
+        onCreateChart={handlePreviewChart} // Renamed for clarity in this context
         isLoading={dataLoading}
         isCollapsed={isSidebarCollapsed}
         onToggle={toggleSidebar}
-        isCreationDisabled={isSaveDisabled}
-        isEditMode={true} // Explicitly true
+        isCreationDisabled={isPreviewDisabled}
+        isEditMode={false} // Explicitly false
       />
       <EditChartMain
         dataLoading={dataLoading}
@@ -163,4 +152,4 @@ const EditChartPage: React.FC = () => {
   );
 };
 
-export default EditChartPage;
+export default CreateChartPage;
