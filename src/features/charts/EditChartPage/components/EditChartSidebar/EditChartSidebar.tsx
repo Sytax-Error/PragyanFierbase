@@ -18,6 +18,7 @@ interface EditChartSidebarProps {
   isCollapsed: boolean;
   onToggle: () => void;
   isCreationDisabled: boolean;
+  isEditMode: boolean;
 }
 
 const EditChartSidebar: React.FC<EditChartSidebarProps> = ({ 
@@ -30,7 +31,8 @@ const EditChartSidebar: React.FC<EditChartSidebarProps> = ({
   isLoading,
   isCollapsed,
   onToggle,
-  isCreationDisabled
+  isCreationDisabled,
+  isEditMode
 }) => {
 
   const getColumnsByKind = (kind: 'dimension' | 'measure') => {
@@ -78,7 +80,7 @@ const EditChartSidebar: React.FC<EditChartSidebarProps> = ({
         </div>
         <div className="sidebar-footer">
           <Button onClick={onCreateChart} disabled={isLoading || isCreationDisabled}>
-            {isLoading ? 'Loading Data...' : 'Create Chart'}
+            {isLoading ? 'Loading Data...' : isEditMode ? 'Update Chart' : 'Create Chart'}
           </Button>
         </div>
       </div>

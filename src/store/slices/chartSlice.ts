@@ -7,13 +7,13 @@ export interface Chart {
   name: string;
   type: string;
   dataset: string;
-  datasetId: string,
-  chartType: string,
+  datasetId: string;
+  chartType: string;
   onDashboards: string;
   tags: string;
   owners: string;
   lastModified: string;
-  controls?: Record<string, unknown> | undefined; // Optional property to store chart-specific controls
+  controls?: Record<string, unknown> | undefined;
 }
 
 interface ChartsState {
@@ -30,20 +30,27 @@ const chartsSlice = createSlice({
   name: 'charts',
   initialState,
   reducers: {
+    // Reducer for adding a new chart
     addChart: (state, action: PayloadAction<Chart>) => {
-      const newChart = action.payload;
-      // Remove any existing chart with the same ID to handle updates
-      const updatedCharts = state.charts.filter(chart => chart.id !== newChart.id);
-      // Add the new or updated chart
-      updatedCharts.push(newChart);
-      state.charts = updatedCharts;
+      state.charts.push(action.payload);
     },
-    // Add other chart-related reducers here
+    
+    // Reducer for updating an existing chart
+    updateChart: (state, action: PayloadAction<{ id: string; changes: Partial<Chart> }>) => {
+      const { id, changes } = action.payload;
+      const existingChart = state.charts.find(chart => chart.id === id);
+      if (existingChart) {
+        // Apply the changes to the existing chart
+        Object.assign(existingChart, changes);
+      }
+    },
   },
 });
 
-export const { addChart } = chartsSlice.actions;
+// Export the actions
+export const { addChart, updateChart } = chartsSlice.actions;
 
+// Selector to get all charts
 export const selectCharts = (state: RootState) => state.charts.charts;
 
 export default chartsSlice.reducer;

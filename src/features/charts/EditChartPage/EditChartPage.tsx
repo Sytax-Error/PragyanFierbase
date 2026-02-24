@@ -183,6 +183,7 @@ const EditChartPage: React.FC = () => {
         isCollapsed={isSidebarCollapsed}
         onToggle={toggleSidebar}
         isCreationDisabled={isCreateChartDisabled}
+        isEditMode={isEditMode}
       />
       <EditChartMain
         dataLoading={dataLoading}
