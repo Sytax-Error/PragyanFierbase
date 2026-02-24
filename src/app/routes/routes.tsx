@@ -1,12 +1,17 @@
 
 import MainLayout from "@/shared/layouts/MainLayout";
-import Dashboard from "@/features/dashboard/Dashboard";
+import DashboardsListPage from "@/features/dashboard/DashboardsListPage/DashboardsListPage";
+import AddDashboardPage from "@/features/dashboard/AddDashboardPage/AddDashboardPage";
+import CreateDashboardPage from "@/features/dashboard/CreateDashboardPage/CreateDashboardPage";
+import EditDashboardPage from "@/features/dashboard/EditDashboardPage/EditDashboardPage";
+import DashboardDetailPage from "@/features/dashboard/DashboardDetailPage/DashboardDetailPage";
 import ChartsPage from "@/features/charts/ChartsPage/ChartsPage";
 import AddChartPage from "@/features/charts/AddChartPage/AddChartPage";
-import CreateChartPage from "@/features/charts/CreateChartPage/CreateChartPage"; // Import the new Create page
+import CreateChartPage from "@/features/charts/CreateChartPage/CreateChartPage";
 import EditChartPage from "@/features/charts/EditChartPage/EditChartPage";
 import DatasetTable from "@/features/datasets/DatasetTable.tsx";
-import SubHeaderActions from "@/features/charts/ChartsPage/SubHeaderActions";
+import ChartsSubHeaderActions from "@/features/charts/ChartsPage/SubHeaderActions";
+import DashboardsSubHeaderActions from "@/features/dashboard/SubHeaderActions/SubHeaderActions";
 import EditChartSubHeaderActions from "@/features/charts/EditChartPage/components/SubHeaderActions";
 
 const routes = [
@@ -16,16 +21,57 @@ const routes = [
     children: [
       {
         index: true,
-        element: <Dashboard />,
+        element: <DashboardsListPage />,
         handle: {
           subHeader: <span className="text-xl font-semibold">Dashboards</span>,
         },
       },
       {
         path: "dashboards",
-        element: <Dashboard />,
+        element: <DashboardsListPage />,
         handle: {
-          subHeader: <span className="text-xl font-semibold">Dashboards</span>,
+          subHeader: (
+            <>
+              <span className="text-xl font-semibold">Dashboards</span>
+              <DashboardsSubHeaderActions />
+            </>
+          ),
+        },
+      },
+      {
+        path: "dashboards/add",
+        element: <AddDashboardPage />,
+        handle: {
+          subHeader: (
+            <span className="text-xl font-semibold">Add New Dashboard</span>
+          ),
+        },
+      },
+      {
+        path: "dashboards/create",
+        element: <CreateDashboardPage />,
+        handle: {
+          subHeader: (
+            <span className="text-xl font-semibold">Create Dashboard</span>
+          ),
+        },
+      },
+      {
+        path: "dashboards/edit/:dashboardId",
+        element: <EditDashboardPage />,
+        handle: {
+          subHeader: (
+            <span className="text-xl font-semibold">Edit Dashboard</span>
+          ),
+        },
+      },
+      {
+        path: "dashboards/:dashboardId",
+        element: <DashboardDetailPage />,
+        handle: {
+          subHeader: (
+            <span className="text-xl font-semibold">Dashboard Details</span>
+          ),
         },
       },
       {
@@ -35,13 +81,13 @@ const routes = [
           subHeader: (
             <>
               <span className="text-xl font-semibold">Charts</span>
-              <SubHeaderActions />
+              <ChartsSubHeaderActions />
             </>
           ),
         },
       },
       {
-        path: "add-chart", // The initial selection wizard
+        path: "add-chart",
         element: <AddChartPage />,
         handle: {
           subHeader: (
@@ -50,7 +96,7 @@ const routes = [
         },
       },
       {
-        path: "charts/create/:datasetId/:chartType", // The new, dedicated create page
+        path: "charts/create/:datasetId/:chartType",
         element: <CreateChartPage />,
         handle: {
           subHeader: (
@@ -62,7 +108,7 @@ const routes = [
         },
       },
       {
-        path: "charts/edit/:chartId", // The dedicated edit page
+        path: "charts/edit/:chartId",
         element: <EditChartPage />,
         handle: {
           subHeader: (

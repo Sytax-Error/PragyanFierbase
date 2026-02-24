@@ -1,0 +1,17 @@
+
+.edit-dashboard-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 3rem;
+}
+
+/* Reusing the same form styles from CreateDashboardPage */
+.dashboard-form {
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}

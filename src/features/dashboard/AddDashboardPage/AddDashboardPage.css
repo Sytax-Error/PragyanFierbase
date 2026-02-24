@@ -1,0 +1,40 @@
+
+.add-dashboard-page {
+  text-align: center;
+  padding: 3rem;
+}
+
+.creation-options {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.option-card {
+  background-color: var(--card-bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 2rem;
+  width: 250px;
+  text-align: left;
+  transition: all 0.2s ease-in-out;
+  text-decoration: none;
+  color: inherit;
+}
+
+.option-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+}
+
+.option-card h3 {
+  margin-top: 0;
+}
+
+.option-card.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
