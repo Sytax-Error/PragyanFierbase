@@ -4,7 +4,7 @@ import path from 'path'
 
 // https://vite.dev/config/
 export default defineConfig({
-  // Restart server
+  // Restart server to clear cache
   plugins: [react()],
   resolve: {
     alias: {

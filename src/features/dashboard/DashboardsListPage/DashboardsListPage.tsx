@@ -1,52 +1,45 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import './DashboardsListPage.css';
 
-interface Dashboard {
-  id: string;
-  name: string;
-  charts: string[];
-}
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { LayoutGrid, List } from 'lucide-react';
+import { selectDashboards } from '@/store/slices/dashboardSlice';
+import './DashboardsListPage.css';
+import DashboardCard from '@/components/DashboardCard/DashboardCard';
+import DashboardRow from '@/components/DashboardRow/DashboardRow';
 
 const DashboardsListPage: React.FC = () => {
-  const [dashboards, setDashboards] = useState<Dashboard[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const dashboards = useSelector(selectDashboards);
+  const [isGridView, setIsGridView] = useState(true);
 
-  useEffect(() => {
-    const fetchDashboards = async () => {
-      try {
-        const data = await import('../../../data/dashboards.json');
-        setDashboards(data.default);
-      } catch (err) {
-        console.error("Error fetching dashboards:", err);
-        setError("Failed to load dashboards.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchDashboards();
-  }, []);
-
-  if (loading) {
-    return <div>Loading dashboards...</div>;
-  }
-
-  if (error) {
-    return <div>{error}</div>;
-  }
+  const toggleView = () => {
+    setIsGridView(!isGridView);
+  };
 
   return (
-    <div className="dashboards-list-page">
-      <h2>Dashboards</h2>
-      <div className="dashboards-grid">
-        {dashboards.map(dashboard => (
-          <Link to={`/dashboards/${dashboard.id}`} key={dashboard.id} className="dashboard-card">
-            <h3>{dashboard.name}</h3>
-          </Link>
-        ))}
+    <div className="dashboards-container">
+      <div className="filter-section">
+        <div className="view-toggle">
+          <button onClick={toggleView} className="active">
+            {isGridView ? <List /> : <LayoutGrid />}
+          </button>
+        </div>
+        <div className="filters">
+          {/* Filters remain the same */}
+        </div>
       </div>
+      {isGridView ? (
+        <div className="dashboards-grid">
+          {dashboards.map(dashboard => (
+            <DashboardCard key={dashboard.id} dashboard={dashboard} />
+          ))}
+        </div>
+      ) : (
+        <div className="dashboards-list">
+          {dashboards.map(dashboard => (
+            <DashboardRow key={dashboard.id} dashboard={dashboard} />
+          ))}
+        </div>
+      )}
     </div>
   );
 };

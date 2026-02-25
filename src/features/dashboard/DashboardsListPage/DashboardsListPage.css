@@ -1,32 +1,103 @@
 
-.dashboards-list-page .dashboard-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1.5rem;
-  padding: 2rem 0;
+.dashboards-container {
+    background-color: #f9f9f9;
 }
 
-.dashboard-card {
-  background-color: var(--card-bg-color);
-  border-radius: 8px;
-  padding: 1.5rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+.dark .dashboards-container {
+    background-color: #121212;
 }
 
-.dashboard-card h3 {
-  margin-top: 0;
-  margin-bottom: 0.5rem;
+.dashboards-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
 }
 
-.dashboard-card p {
-  color: var(--text-color-secondary);
-  margin-bottom: 1.5rem;
+.dashboards-header h1 {
+    font-size: 2rem;
+    font-weight: 700;
 }
 
-.card-actions {
-  display: flex;
-  gap: 0.5rem;
+.filter-section {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.dark .filter-section {
+    background-color: #1e1e1e;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.view-toggle {
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.view-toggle button {
+    background: none;
+    border: 1px solid #ccc;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.view-toggle button.active {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #007bff;
+}
+
+
+.filters {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.filter-item label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.filter-item input,
+.filter-item select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.dark .filter-item input,
+.dark .filter-item select {
+    background-color: #333;
+    border-color: #555;
+    color: #fff;
+}
+
+.dashboards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.dashboards-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+@media (max-width: 768px) {
+    .dashboards-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .filters {
+        grid-template-columns: 1fr;
+    }
 }
