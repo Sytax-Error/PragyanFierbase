@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { LayoutGrid, List } from 'lucide-react';
-import { selectDashboards } from '@/store/slices/dashboardSlice';
+import { selectDashboards, type Dashboard } from '@/store/slices/dashboardSlice';
 import './DashboardsListPage.css';
 import DashboardCard from '@/components/DashboardCard/DashboardCard';
 import DashboardRow from '@/components/DashboardRow/DashboardRow';
@@ -29,13 +29,13 @@ const DashboardsListPage: React.FC = () => {
       </div>
       {isGridView ? (
         <div className="dashboards-grid">
-          {dashboards.map(dashboard => (
-            <DashboardCard key={dashboard.id} dashboard={dashboard} />
+          {dashboards.map((dashboard: Dashboard, index: number) => (
+            <DashboardCard key={dashboard.id} dashboard={dashboard} index={index} />
           ))}
         </div>
       ) : (
         <div className="dashboards-list">
-          {dashboards.map(dashboard => (
+          {dashboards.map((dashboard: Dashboard) => (
             <DashboardRow key={dashboard.id} dashboard={dashboard} />
           ))}
         </div>

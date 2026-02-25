@@ -27,12 +27,12 @@ const dashboardsSlice = createSlice({
   name: 'dashboards',
   initialState,
   reducers: {
-    addDashboard: (state, action: PayloadAction<Dashboard>) => {
+    addDashboard: (state: { dashboards: unknown[]; }, action: PayloadAction<Dashboard>) => {
       state.dashboards.push(action.payload);
     },
-    updateDashboard: (state, action: PayloadAction<{ id: string; changes: Partial<Dashboard> }>) => {
+    updateDashboard: (state: { dashboards: never[]; }, action: PayloadAction<{ id: string; changes: Partial<Dashboard> }>) => {
       const { id, changes } = action.payload;
-      const existingDashboard = state.dashboards.find(dashboard => dashboard.id === id);
+      const existingDashboard = state.dashboards.find((dashboard: { id: unknown; }) => dashboard.id === id);
       if (existingDashboard) {
         Object.assign(existingDashboard, changes);
       }
