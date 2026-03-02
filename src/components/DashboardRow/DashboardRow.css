@@ -1,72 +1,108 @@
+/* === DashboardRow.css: REFACTORED FOR 5-COLUMN MODERN LAYOUT === */
 
 .dashboard-row-link {
   text-decoration: none;
   color: inherit;
   display: block;
+  border-radius: var(--radius-lg); /* Match the row's radius */
+  transition: background-color 0.2s ease-in-out;
+}
+
+.dashboard-row-link:hover {
+  /* Subtle hover effect */
+  background-color: var(--background-light-alt);
+}
+
+.dark .dashboard-row-link:hover {
+  background-color: var(--background-dark-alt);
 }
 
 .dashboard-row {
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
-  padding: 16px 24px;
-  margin-bottom: 16px;
+  /* Card and Grid Styling */
+  background-color: var(--card-bg-light);
+  border: 1px solid var(--border-color-light);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg) var(--spacing-xl);
+  margin-bottom: var(--spacing-lg);
   display: grid;
-  grid-template-columns: 2fr 1fr 1.5fr;
+  /* 5-column layout: Name, Tags, Charts, Owner, Last Modified */
+  grid-template-columns: 2.5fr 2fr 1fr 1.5fr 1.5fr;
   align-items: center;
-  gap: 20px;
-  transition: all 0.3s ease;
+  gap: var(--spacing-xl);
+  transition: border-color 0.2s ease-in-out;
 }
 
-.dashboard-row:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+.dark .dashboard-row {
+  background-color: var(--card-bg-dark);
+  border-color: var(--border-color-dark);
 }
 
-.row-header h3 {
-  margin: 0 0 4px 0;
+/* A generic cell style for vertical alignment */
+.dashboard-cell {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  overflow: hidden; /* Prevent content from breaking the layout */
+}
+
+/* --- Column-specific styles --- */
+
+.name-cell {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-xs);
+}
+
+.dashboard-name {
+  margin: 0;
   font-size: 1.1rem;
   font-weight: 600;
-  color: #333;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  color: var(--text-primary);
 }
 
-.row-header .description {
-  font-size: 0.9rem;
-  color: #666;
+.dashboard-description {
   margin: 0;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  width: 100%;
 }
 
-.row-body .tags {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+.tags-cell {
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
 }
 
-.row-body .tags .tag {
-  background-color: #f0f0f0;
-  color: #555;
-  padding: 4px 10px;
-  border-radius: 15px;
+.tag {
+  background-color: var(--background-light-alt);
+  color: var(--text-secondary);
+  padding: 4px 12px;
+  border-radius: 999px; /* Pill shape */
   font-size: 0.8rem;
   font-weight: 500;
+  white-space: nowrap;
 }
 
-.row-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 0.85rem;
-  color: #777;
+.dark .tag {
+  background-color: var(--background-dark-alt);
+  color: var(--text-dark-secondary);
 }
 
-.footer-item {
-  display: flex;
-  align-items: center;
-  gap: 6px;
+.owner-cell,
+.chart-cell,
+.modified-cell {
+  white-space: nowrap;
+}
+
+.dark .dashboard-name {
+  color: var(--text-dark-primary);
+}
+
+.dark .dashboard-description,
+.dark .dashboard-cell {
+  color: var(--text-dark-secondary);
 }
