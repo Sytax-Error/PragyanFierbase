@@ -1,33 +1,18 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { Responsive, WidthProvider, Layout } from 'react-grid-layout';
-import { Button } from '@/components';
+
+import { Button, ChartRenderer } from '@/components';
 import { useTheme } from '@/hooks/theme/useTheme';
-import { vizRegistry } from '@/core/visualization';
+import { selectCharts, type Chart as ChartFromSlice } from '@/store/slices/chartSlice';
+
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import './AddDashboardPage.css';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
-
-interface Chart {
-  id: string;
-  name: string;
-  type: string;
-}
-
-const ChartComponent = ({ chart }: { chart: Chart }) => {
-  const plugin = vizRegistry.get(chart.type);
-  const thumbnail = plugin?.metadata.thumbnail || '';
-
-  return (
-    <div className="chart-placeholder">
-      <img src={thumbnail} alt={chart.name} style={{ width: '80px', height: 'auto', marginBottom: '10px' }} />
-      <h4>{chart.name}</h4>
-    </div>
-  );
-};
 
 interface LayoutItem extends Layout {
   chartId: string;
@@ -35,19 +20,12 @@ interface LayoutItem extends Layout {
 
 const AddDashboardPage: React.FC = () => {
   const [dashboardName, setDashboardName] = useState('New Dashboard');
-  const [availableCharts, setAvailableCharts] = useState<Chart[]>([]);
   const [layout, setLayout] = useState<LayoutItem[]>([]);
   const { theme } = useTheme();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const chartsFromRegistry = vizRegistry.list().map(plugin => ({
-      id: plugin.type,
-      name: plugin.metadata.name,
-      type: plugin.type,
-    }));
-    setAvailableCharts(chartsFromRegistry);
-  }, []);
+  // Get the list of saved charts from the Redux store
+  const availableCharts = useSelector(selectCharts);
 
   const onLayoutChange = (newLayout: Layout[]) => {
     const newLayoutItems = newLayout.map(item => {
@@ -71,7 +49,7 @@ const AddDashboardPage: React.FC = () => {
     navigate(`/dashboards`);
   };
 
-  const addChartToGrid = (chart: Chart) => {
+  const addChartToGrid = (chart: ChartFromSlice) => {
     const isChartInLayout = layout.some(item => item.chartId === chart.id);
     if (isChartInLayout) return;
 
@@ -95,21 +73,25 @@ const AddDashboardPage: React.FC = () => {
       <aside className="charts-panel">
         <h3>Available Charts</h3>
         <div className="chart-list">
-          {availableCharts.map(chart => {
-            const isChartInLayout = layout.some(item => item.chartId === chart.id);
-            return (
-              <div key={chart.id} className="chart-list-item">
-                <p>{chart.name}</p>
-                <Button 
-                  onClick={() => addChartToGrid(chart)} 
-                  className="btn-add-chart"
-                  disabled={isChartInLayout}
-                >
-                  {isChartInLayout ? 'Added' : 'Add'}
-                </Button>
-              </div>
-            );
-          })}
+          {availableCharts.length === 0 ? (
+            <p className="no-charts-message">No saved charts. Go to "Add Chart" to create one.</p>
+          ) : (
+            availableCharts.map(chart => {
+              const isChartInLayout = layout.some(item => item.chartId === chart.id);
+              return (
+                <div key={chart.id} className="chart-list-item">
+                  <p>{chart.name}</p>
+                  <Button 
+                    onClick={() => addChartToGrid(chart)} 
+                    className="btn-add-chart"
+                    disabled={isChartInLayout}
+                  >
+                    {isChartInLayout ? 'Added' : 'Add'}
+                  </Button>
+                </div>
+              );
+            })
+          )}
         </div>
       </aside>
 
@@ -138,9 +120,7 @@ const AddDashboardPage: React.FC = () => {
                 isResizable={true}
                 compactType="vertical"
             >
-                {layout.map((item) => {
-                const chart = availableCharts.find(c => c.id === item.chartId);
-                return (
+                {layout.map((item) => (
                     <div key={item.i} className="grid-item">
                         <button 
                             className="remove-chart-button"
@@ -149,10 +129,9 @@ const AddDashboardPage: React.FC = () => {
                         >
                             &times;
                         </button>
-                        {chart ? <ChartComponent chart={chart} /> : <p>Chart not found</p>}
+                        <ChartRenderer chartId={item.chartId} mode="dashboard" />
                     </div>
-                );
-                })}
+                ))}
             </ResponsiveGridLayout>
         </div>
       </main>

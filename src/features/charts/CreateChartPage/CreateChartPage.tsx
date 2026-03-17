@@ -64,7 +64,40 @@ const CreateChartPage: React.FC = () => {
     [initialControls, userModifiedControls]
   );
 
-  // --- State Synchronization ---
+  // --- Real-Time Chart Rendering Engine ---
+  useEffect(() => {
+    const renderChart = async () => {
+      // Ensure we have all necessary data before proceeding
+      if (dataLoading || !currentDatasetData || !chartType || !plugin) {
+        return;
+      }
+      
+      // If controls are invalid, clear the chart preview
+      if (plugin.controlPanel?.fields && !validateControls(plugin.controlPanel.fields, controls)) {
+        if (ChartComponent) {
+            setChartComponent(null);
+            setChartProps(null);
+        }
+        return;
+      }
+
+      // Run the chart engine to get the component and its props
+      const { Component, props } = await runChart({
+        dataset: currentDatasetData,
+        chartType: chartType,
+        controls,
+      });
+
+      // Update state to re-render the chart preview
+      setChartComponent(() => Component);
+      setChartProps(props);
+    };
+
+    renderChart();
+  // This effect re-runs whenever the underlying data or controls change
+  }, [currentDatasetData, chartType, plugin, controls, dataLoading, ChartComponent]);
+
+  // --- State Synchronization with Redux Editor Slice ---
   useEffect(() => {
     dispatch(
       setEditorState({
@@ -83,22 +116,11 @@ const CreateChartPage: React.FC = () => {
     }));
   };
 
-  const handlePreviewChart = async () => {
-    if (currentDatasetData && chartType && plugin) {
-      const { Component, props } = await runChart({
-        dataset: currentDatasetData,
-        chartType: chartType,
-        controls,
-      });
-      setChartComponent(() => Component);
-      setChartProps(props);
-    }
-  };
-  
-  const isPreviewDisabled = useMemo(() => {
+  const isSaveDisabled = useMemo(() => {
     if (!plugin?.controlPanel?.fields) {
-      return true;
+      return true; // Cannot save if there are no controls to validate
     }
+    // Disable saving if controls are invalid
     return !validateControls(plugin.controlPanel.fields, controls);
   }, [controls, plugin]);
 
@@ -136,12 +158,15 @@ const CreateChartPage: React.FC = () => {
         dataset={dataset}
         controls={controls}
         handleControlChange={handleControlChange}
-        onCreateChart={handlePreviewChart} // Renamed for clarity in this context
+        // The "Create" button is now for saving the chart.
+        // The actual save logic will be implemented in the SubHeaderActions.
+        onCreateChart={() => { console.log("Save chart logic to be implemented"); }}
         isLoading={dataLoading}
         isCollapsed={isSidebarCollapsed}
         onToggle={toggleSidebar}
-        isCreationDisabled={isPreviewDisabled}
-        isEditMode={false} // Explicitly false
+        // This prop now controls the save button
+        isCreationDisabled={isSaveDisabled}
+        isEditMode={false} // Explicitly false for creation
       />
       <EditChartMain
         dataLoading={dataLoading}
