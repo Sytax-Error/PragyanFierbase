@@ -12,7 +12,7 @@ const SubHeaderActions: React.FC = () => {
 
   return (
     <button 
-      className="btn btn-primary" 
+      className="add-chart" 
       onClick={handleAddClick}
     >
       + Add Dashboard

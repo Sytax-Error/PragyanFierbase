@@ -1,26 +1,28 @@
-.layout {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  overflow: hidden; /* Prevents the whole page from scrolling */
-}
-
-.content {
-  flex-grow: 1;
-  overflow-y: auto; /* Allows only the content area to scroll if it overflows */
-  padding: var(--spacing-md); /* Using a larger padding for better layout */
-  background-color: var(--background-light);
-  color: var(--text-light);
-  transition: background-color var(--transition-medium), color var(--transition-medium);
-}
-
-.dark .content {
-  background-color: var(--background-dark);
-  color: var(--text-dark);
-}
-
-/* Ensures Header and Footer have a fixed height and don't shrink */
-.layout > header,
-.layout > footer {
-  flex-shrink: 0;
-}
+      .layout {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        overflow: hidden; /* Prevents the whole page from scrolling */
+      }
+      
+      .content {
+        flex-grow: 1;
+        overflow-y: auto; /* Allows only the content area to scroll if it overflows */
+        padding: var(--spacing-md); /* Using a larger padding for better layout */
+        background-color: var(--background-light);
+        color: var(--text-light);
+        transition: background-color var(--transition-medium), color var(--transition-medium);
+        display: flex;
+        flex-direction: column;
+      }
+      
+      .dark .content {
+        background-color: var(--background-dark);
+        color: var(--text-dark);
+      }
+      
+      /* Ensures Header and Footer have a fixed height and don't shrink */
+      .layout > header,
+      .layout > footer {
+        flex-shrink: 0;
+      }
