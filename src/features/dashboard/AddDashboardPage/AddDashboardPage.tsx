@@ -10,8 +10,9 @@ import {
   FiX, 
   FiGrid, 
   FiSearch, 
-  FiBarChart2, 
+  FiBarChart2,
 } from 'react-icons/fi';
+import { MdDragIndicator } from 'react-icons/md';
 
 import { Button, ChartRenderer } from '@/components';
 import { useTheme } from '@/hooks/theme/useTheme';
@@ -46,22 +47,24 @@ const AddDashboardPage: React.FC = () => {
   const availableCharts = useSelector(selectCharts);
 
   const onLayoutChange = (_currentLayout: Layout[], allLayouts: any) => {
-    const updatedLayouts: any = {};
+    setLayouts((prevLayouts) => {
+      const updatedLayouts: any = {};
 
-    Object.keys(allLayouts).forEach((bp) => {
-      updatedLayouts[bp] = allLayouts[bp].map((item: Layout) => {
-        const existingItem =
-          layouts[bp]?.find((l) => l.i === item.i) ||
-          Object.values(layouts).flat().find((l) => l.i === item.i);
+      Object.keys(allLayouts).forEach((bp) => {
+        updatedLayouts[bp] = allLayouts[bp].map((item: Layout) => {
+          const existingItem =
+            prevLayouts[bp]?.find((l) => l.i === item.i) ||
+            Object.values(prevLayouts).flat().find((l) => l.i === item.i);
 
-        return {
-          ...item,
-          chartId: existingItem ? existingItem.chartId : 'unknown',
-        };
+          return {
+            ...item,
+            chartId: existingItem ? existingItem.chartId : 'unknown',
+          };
+        });
       });
-    });
 
-    setLayouts(updatedLayouts);
+      return updatedLayouts;
+    });
   };
 
   const handleSaveDashboard = () => {
@@ -97,15 +100,16 @@ const AddDashboardPage: React.FC = () => {
       Object.keys(layouts).forEach((bp) => {
         const current = layouts[bp];
 
+        const w = bp === 'lg' ? 4 : bp === 'md' ? 5 : 2;
         newLayouts[bp] = [
           ...current,
           {
             i: `${chart.id}-${Date.now()}`,
             chartId: chart.id,
-            x: (current.length * 2) % colsMap[bp],
+            x: (current.length * w) % colsMap[bp],
             y: Infinity,
-            w: bp === 'lg' ? 4 : bp === 'md' ? 5 : 2,
-            h: 3,
+            w,
+            h: 7,
           },
         ];
       });
@@ -200,14 +204,20 @@ const AddDashboardPage: React.FC = () => {
             onLayoutChange={onLayoutChange}
             breakpoints={breakpoints}
             cols={cols}
-            rowHeight={100}
-            preventCollision={true}
+            rowHeight={30}
+            margin={[16, 16]}
+            containerPadding={[16, 16]}
+            preventCollision={false}
             compactType="vertical"
-            draggableHandle={`.${styles.gridItemContent}`}
+            draggableHandle={`.${styles.chartDragHandle}`}
             useCSSTransforms={true}
+            resizeHandles={['s', 'w', 'e', 'sw', 'se']}
           >
             {(layouts.lg || []).map((item) => (
               <div key={item.i} className={styles.gridItemWrapper}>
+                <div className={styles.chartDragHandle} title="Drag to move">
+                  <MdDragIndicator className={styles.dragIcon} />
+                </div>
                 <div className={styles.gridItemContent}>
                   <ChartRenderer chartId={item.chartId} mode="dashboard" />
                 </div>
