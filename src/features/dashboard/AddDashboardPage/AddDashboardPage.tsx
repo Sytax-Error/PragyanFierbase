@@ -27,24 +27,41 @@ interface LayoutItem extends Layout {
   chartId: string;
 }
 
+const breakpoints = { lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 };
+const cols = { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 };
+
 const AddDashboardPage: React.FC = () => {
   const [dashboardName, setDashboardName] = useState('New Dashboard');
-  const [layout, setLayout] = useState<LayoutItem[]>([]);
+  const [layouts, setLayouts] = useState<{ [key: string]: LayoutItem[] }>({
+    lg: [],
+    md: [],
+    sm: [],
+    xs: [],
+    xxs: [],
+  });
   const [searchTerm, setSearchTerm] = useState('');
   const { theme } = useTheme();
   const navigate = useNavigate();
 
   const availableCharts = useSelector(selectCharts);
 
-  const onLayoutChange = (newLayout: Layout[]) => {
-    const newLayoutItems = newLayout.map(item => {
-      const existingItem = layout.find(l => l.i === item.i);
-      return {
-        ...item,
-        chartId: existingItem ? existingItem.chartId : 'unknown',
-      };
+  const onLayoutChange = (_currentLayout: Layout[], allLayouts: any) => {
+    const updatedLayouts: any = {};
+
+    Object.keys(allLayouts).forEach((bp) => {
+      updatedLayouts[bp] = allLayouts[bp].map((item: Layout) => {
+        const existingItem =
+          layouts[bp]?.find((l) => l.i === item.i) ||
+          Object.values(layouts).flat().find((l) => l.i === item.i);
+
+        return {
+          ...item,
+          chartId: existingItem ? existingItem.chartId : 'unknown',
+        };
+      });
     });
-    setLayout(newLayoutItems);
+
+    setLayouts(updatedLayouts);
   };
 
   const handleSaveDashboard = () => {
@@ -53,44 +70,70 @@ const AddDashboardPage: React.FC = () => {
       return;
     }
     const newDashboardId = `db-${Date.now()}`;
-    console.log(`Saving new dashboard: ${dashboardName} with id: ${newDashboardId} and layout:`, layout);
+    console.log(`Saving new dashboard: ${dashboardName} with id: ${newDashboardId} and layouts:`, layouts);
     alert(`Dashboard "${dashboardName}" and its layout saved successfully! (Simulation)`);
     navigate(`/dashboards`);
   };
 
   const toggleChartInGrid = (chart: ChartFromSlice) => {
-    const isChartInLayout = layout.some(item => item.chartId === chart.id);
+    const exists = Object.values(layouts)
+      .flat()
+      .some((item) => item.chartId === chart.id);
 
-    if (isChartInLayout) {
-      const itemToRemove = layout.find(item => item.chartId === chart.id);
-      if (itemToRemove) {
-        setLayout(layout.filter(item => item.i !== itemToRemove.i));
-      }
+    if (exists) {
+      // REMOVE
+      const newLayouts: any = {};
+      Object.keys(layouts).forEach((bp) => {
+        newLayouts[bp] = layouts[bp].filter(
+          (item) => item.chartId !== chart.id
+        );
+      });
+      setLayouts(newLayouts);
     } else {
-      const newGridItem: LayoutItem = {
-        i: `${chart.id}-${Date.now()}`,
-        chartId: chart.id,
-        x: (layout.length * 4) % 12, 
-        y: Infinity, 
-        w: 4, 
-        h: 3, 
-      };
-      setLayout([...layout, newGridItem]);
+      // ADD
+      const newLayouts: any = {};
+      const colsMap: any = { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 };
+
+      Object.keys(layouts).forEach((bp) => {
+        const current = layouts[bp];
+
+        newLayouts[bp] = [
+          ...current,
+          {
+            i: `${chart.id}-${Date.now()}`,
+            chartId: chart.id,
+            x: (current.length * 2) % colsMap[bp],
+            y: Infinity,
+            w: bp === 'lg' ? 4 : bp === 'md' ? 5 : 2,
+            h: 3,
+          },
+        ];
+      });
+
+      setLayouts(newLayouts);
     }
   };
 
   const removeChartFromGrid = (itemId: string) => {
-    setLayout(layout.filter(item => item.i !== itemId));
-  };
+    const newLayouts: any = {};
 
+    Object.keys(layouts).forEach((bp) => {
+      newLayouts[bp] = layouts[bp].filter((item) => item.i !== itemId);
+    });
+
+    setLayouts(newLayouts);
+  };
+  
   const filteredCharts = useMemo(() => 
     availableCharts.filter(chart =>
         chart.name.toLowerCase().includes(searchTerm.toLowerCase())
     ), [availableCharts, searchTerm]);
 
+  const isGridEmpty = (layouts.lg || []).length === 0;
+
   return (
     <div className={`${styles.addDashboardPageContainer} ${theme === 'dark' ? styles.dark : ''}`}>
-      <aside className={`${styles.chartsPanel} ${layout.length === 0 ? styles.disabledScroll : ''}`}>
+      <aside className={`${styles.chartsPanel} ${isGridEmpty ? styles.disabledScroll : ''}`}>
         <h3 className={styles.panelTitle}>Available Charts</h3>
         <div className={styles.searchBar}>
           <FiSearch className={styles.searchIcon} />
@@ -108,7 +151,7 @@ const AddDashboardPage: React.FC = () => {
         </div>
         <div className={styles.chartList}>
           {filteredCharts.map(chart => {
-            const isChartInLayout = layout.some(item => item.chartId === chart.id);
+            const isChartInLayout = (layouts.lg || []).some(item => item.chartId === chart.id);
             return (
               <div 
                 key={chart.id} 
@@ -128,7 +171,7 @@ const AddDashboardPage: React.FC = () => {
         </div>
       </aside>
 
-      <main className={`${styles.dashboardCanvas} ${layout.length === 0 ? styles.disabledScroll : ''}`}>
+      <main className={`${styles.dashboardCanvas} ${isGridEmpty ? styles.disabledScroll : ''}`}>
         <header className={styles.dashboardHeader}>
             <input
               type="text"
@@ -137,46 +180,47 @@ const AddDashboardPage: React.FC = () => {
               placeholder="Enter Dashboard Name"
               className={styles.dashboardNameInput}
             />
-          <Button onClick={handleSaveDashboard} disabled={layout.length === 0} variant="primary" glow>
+          <Button onClick={handleSaveDashboard} disabled={isGridEmpty} variant="primary" glow>
             <FiSave />
             <span>Save</span>
           </Button>
         </header>
 
-        <div className={`${styles.gridContainer} ${layout.length === 0 ? styles.isEmpty : ''}`}>
-          {layout.length === 0 && (
+        <div className={`${styles.gridContainer} ${isGridEmpty ? styles.isEmpty : ''}`}>
+          {isGridEmpty && (
             <div className={styles.emptyDashboardMessage}>
               <FiGrid className={styles.icon} />
               <h2>Empty Dashboard</h2>
               <p>Add charts from the left panel to build your dashboard.</p>
             </div>
           )}
-            <ResponsiveGridLayout
-              layouts={{ lg: layout }}
-              breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
-              cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
-              rowHeight={100}
-              onLayoutChange={onLayoutChange}
-              draggableHandle={`.${styles.gridItemContent}`}
-              compactType="vertical"
-              useCSSTransforms={true}
-              className="layout"
-            >
-              {layout.map((item) => (
-                <div key={item.i} className={styles.gridItemWrapper}>
-                  <div className={styles.gridItemContent}>
-                    <ChartRenderer chartId={item.chartId} mode="dashboard" />
-                  </div>
-                  <button 
-                    className={styles.removeChartButton}
-                    onClick={() => removeChartFromGrid(item.i)}
-                    title="Remove chart"
-                  >
-                    <FiX size={18} />
-                  </button>
+          <ResponsiveGridLayout
+            className="layout"
+            layouts={layouts}
+            onLayoutChange={onLayoutChange}
+            breakpoints={breakpoints}
+            cols={cols}
+            rowHeight={100}
+            preventCollision={true}
+            compactType="vertical"
+            draggableHandle={`.${styles.gridItemContent}`}
+            useCSSTransforms={true}
+          >
+            {(layouts.lg || []).map((item) => (
+              <div key={item.i} className={styles.gridItemWrapper}>
+                <div className={styles.gridItemContent}>
+                  <ChartRenderer chartId={item.chartId} mode="dashboard" />
                 </div>
-              ))}
-            </ResponsiveGridLayout>
+                <button 
+                  className={styles.removeChartButton}
+                  onClick={() => removeChartFromGrid(item.i)}
+                  title="Remove chart"
+                >
+                  <FiX size={18} />
+                </button>
+              </div>
+            ))}
+          </ResponsiveGridLayout>
         </div>
       </main>
     </div>

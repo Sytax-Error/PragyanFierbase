@@ -8,10 +8,12 @@ export type Dataset = {
   id: string;
   name: string;
   description: string;
-  columns: {
-    name: string;
-    type: string;
-  }[];
+  columns: Column[];
+};
+
+export type Column = {
+  name: string;
+  type: string;
 };
 
 export type DatasetResponse = {

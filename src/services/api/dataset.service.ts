@@ -30,7 +30,7 @@ const generateMockData = (columns: Column[], numRows: number = 50): DataRecord[]
           row[col.name] = faker.number.int({ min: 0, max: 100 });
           break;
         case 'number':
-          row[col.name] = faker.number.float({ min: 0, max: 500, precision: 0.01 });
+          row[col.name] = faker.number.float({ min: 0, max: 500, fractionDigits: 2 });
           break;
         default:
           row[col.name] = null;

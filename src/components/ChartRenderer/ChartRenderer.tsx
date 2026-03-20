@@ -30,7 +30,8 @@ export const ChartRenderer: React.FC<ChartRendererProps> = ({ chartId, mode }) =
     return <StatusIndicator status="not-found" message={`Chart plugin "${pluginKey}" not found.`} />;
   }
 
-  const { Component, transformProps } = plugin;
+  const Component = plugin.Component as React.ComponentType<any>;
+  const transformProps = plugin.transformProps;
 
   if (!Component || !transformProps) {
     return <StatusIndicator status="error" message="Chart plugin is not correctly configured." />;

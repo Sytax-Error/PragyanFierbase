@@ -26,6 +26,7 @@ export interface VizPlugin {
   type: string;
   metadata: VizPluginMetadata;
   controlPanel?: ControlPanelDef;
-  transformProps?: (...args: unknown[]) => unknown;
+  transformProps?: (...args: any[]) => any;
+  Component?: React.ComponentType<any>;
   [key: string]: unknown;
 }

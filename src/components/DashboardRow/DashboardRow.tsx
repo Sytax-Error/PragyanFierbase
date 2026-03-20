@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Tag, BarChart2, User, Clock } from 'lucide-react';
+import { BarChart2, User, Clock } from 'lucide-react';
 import type { Dashboard } from '@/store/slices/dashboardSlice';
 import './DashboardRow.css';
 import { formatTimeAgo } from '@/utils/formatTimeAgo';

@@ -1,4 +1,4 @@
-import React from 'react';
+// src/app/App.tsx
 import { Outlet } from 'react-router-dom';
 import '@/app/App.css';
 import { useTheme } from '@/hooks/theme/useTheme';

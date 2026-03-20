@@ -4,7 +4,9 @@ import { Star, Trash2, Upload, FilePenLine, BarChart, Database, LayoutGrid } fro
 import { formatTimeAgo } from '@/utils/formatTimeAgo';
 import '@/components/ChartCard/ChartCard.css';
 
-const ChartCard = ({ chart }) => {
+import type { Chart } from '@/store/slices/chartSlice';
+
+const ChartCard = ({ chart }: { chart: Chart }) => {
   const navigate = useNavigate();
 
   const handleNavigate = () => {
@@ -12,10 +14,11 @@ const ChartCard = ({ chart }) => {
   };
 
   // Stop propagation to prevent navigation when clicking on icons
-  const handleIconClick = (e) => {
+  const handleIconClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     // Add specific logic for each icon click here
-    alert(`${e.currentTarget.dataset.action} action`);
+    const action = (e.currentTarget as HTMLElement).dataset.action;
+    alert(`${action} action`);
   };
 
   return (
