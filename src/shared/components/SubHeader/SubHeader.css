@@ -1,11 +1,13 @@
 /* Base styles for desktop */
 .subheader-container {
   position: sticky;
-  top: 60px; /* Height of main header */
+  top: 60px;
+  /* Height of main header */
   background: var(--header-bg-light);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
-  height: 4rem; /* Match the content height */
+  height: 4rem;
+  /* Match the content height */
   padding: 0 2rem;
   border-bottom: 1px solid var(--border-color, #e5e7eb);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
@@ -19,17 +21,13 @@
 .dark .subheader-container {
   background: var(--header-bg-dark);
   border-bottom: 1px solid var(--card-border-dark);
-  color:var(--header-bg-light)
+  color: var(--header-bg-light)
 }
 
 
-/* Visually hide the subheader when it has no content, but keep its height to prevent layout shifts */
+/* Hide the subheader entirely when it has no content */
 .subheader-container:has(.subheader-content:empty) {
-  background: transparent;
-  border-color: transparent;
-  box-shadow: none;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
+  display: none;
 }
 
 .subheader-content {
@@ -37,13 +35,15 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  height: 5rem; /* Ensure content fills the container height */
+  height: 5rem;
+  /* Ensure content fills the container height */
   gap: 1.5rem;
-  overflow: hidden; /* Prevent content from breaking out */
+  overflow: hidden;
+  /* Prevent content from breaking out */
 }
 
 /* Handle long titles on desktop */
-.subheader-content > :first-child {
+.subheader-content> :first-child {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -70,10 +70,11 @@
   }
 
   /* Allow action buttons to wrap on mobile if needed */
-  .subheader-content > div:last-child {
+  .subheader-content>div:last-child {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
-    justify-content: flex-end; /* Align buttons to the right */
+    justify-content: flex-end;
+    /* Align buttons to the right */
   }
 }

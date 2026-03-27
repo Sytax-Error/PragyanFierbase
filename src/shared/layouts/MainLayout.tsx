@@ -14,7 +14,7 @@ const MainLayout: React.FC = () => {
   return (
     <div className={`layout ${theme}`}>
       <Header />
-      <SubHeader>{handle?.subHeader}</SubHeader>
+      {handle?.subHeader && <SubHeader>{handle.subHeader}</SubHeader>}
       <main className="content">
         <Outlet />
       </main>

@@ -1,53 +1,83 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { BarChart2, User, Clock } from 'lucide-react';
-import type { Dashboard } from '@/store/slices/dashboardSlice';
-import './DashboardRow.css';
+import { useNavigate } from 'react-router-dom';
+import { 
+  Star, 
+  Trash2, 
+  Upload, 
+  FilePenLine, 
+  BarChart2, 
+  User, 
+  Clock 
+} from 'lucide-react';
+import { useDispatch } from 'react-redux';
+import { removeDashboard, type Dashboard } from '@/store/slices/dashboardSlice';
 import { formatTimeAgo } from '@/utils/formatTimeAgo';
+
+import './DashboardRow.css';
 
 interface DashboardRowProps {
   dashboard: Dashboard;
 }
 
-// This component is now restructured with a 5-column layout in mind.
 const DashboardRow: React.FC<DashboardRowProps> = ({ dashboard }) => {
-  const { id, name, description, tags, charts, owner, lastModified } = dashboard;
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { id, name, description, charts, owner, lastModified } = dashboard;
+
+  const handleNavigate = () => {
+    navigate(`/dashboards/${id}`);
+  };
+
+  const handleDelete = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (window.confirm(`Are you sure you want to delete dashboard "${name}"?`)) {
+      dispatch(removeDashboard(id));
+    }
+  };
+
+  const handleExport = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    alert(`Exporting dashboard "${name}"...`);
+  };
+
+  const handleEdit = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    navigate(`/dashboards/edit/${id}`);
+  };
 
   return (
-    <Link to={`/dashboards/${id}`} className="dashboard-row-link">
-      <div className="dashboard-row">
-        {/* Column 1: Name and Description */}
-        <div className="dashboard-cell name-cell">
-          <h3 className="dashboard-name">{name}</h3>
-          <p className="dashboard-description">{description}</p>
+    <div className="dashboard-row" onClick={handleNavigate}>
+      <div className="dashboard-row-main">
+        <Star className="star-icon" size={18} />
+        <div className="name-container">
+          <span className="dashboard-name">{name}</span>
+          {description && <span className="dashboard-description-mini">{description}</span>}
         </div>
-
-        {/* Column 2: Tags */}
-        <div className="dashboard-cell tags-cell">
-          {tags?.map(tag => (
-            <span key={tag} className="tag">{tag}</span>
-          ))}
+      </div>
+      
+      <div className="dashboard-row-details">
+        <div className="dashboard-info" title="Charts count">
+          <BarChart2 size={16} className="info-icon" />
+          <span>{charts?.length || 0}</span>
         </div>
-
-        {/* Column 3: Chart Count */}
-        <div className="dashboard-cell chart-cell">
-          <BarChart2 size={16} />
-          <span>{charts.length}</span>
-        </div>
-
-        {/* Column 4: Owner */}
-        <div className="dashboard-cell owner-cell">
-          <User size={16} />
+        
+        <div className="dashboard-info" title="Owner">
+          <User size={16} className="info-icon" />
           <span>{owner}</span>
         </div>
-
-        {/* Column 5: Last Modified */}
-        <div className="dashboard-cell modified-cell">
-          <Clock size={16} />
+        
+        <div className="dashboard-info time-info" title="Last modified">
+          <Clock size={14} className="info-icon" />
           <span>{formatTimeAgo(lastModified)}</span>
         </div>
       </div>
-    </Link>
+
+      <div className="action-icons">
+        <Trash2 className="action-icon delete" onClick={handleDelete} size={18} />
+        <Upload className="action-icon export" onClick={handleExport} size={18} />
+        <FilePenLine className="action-icon edit" onClick={handleEdit} size={18} />
+      </div>
+    </div>
   );
 };
 

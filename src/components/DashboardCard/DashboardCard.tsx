@@ -1,10 +1,17 @@
-
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { BarChart2, User, Clock } from 'lucide-react';
-import type { Dashboard } from '@/store/slices/dashboardSlice';
+import { useNavigate } from 'react-router-dom';
+import { 
+  Star, 
+  Trash2, 
+  Upload, 
+  FilePenLine, 
+  BarChart2, 
+  User, 
+  Clock 
+} from 'lucide-react';
+import { useDispatch } from 'react-redux';
+import { removeDashboard, type Dashboard } from '@/store/slices/dashboardSlice';
 import { formatTimeAgo } from '@/utils/formatTimeAgo';
-import { generateModernColor } from '@/utils/colorUtils';
 
 import './DashboardCard.css';
 
@@ -14,53 +21,64 @@ interface DashboardCardProps {
 }
 
 const DashboardCard: React.FC<DashboardCardProps> = ({ dashboard, index }) => {
-  const { id, name, description, tags, charts, owner, lastModified } = dashboard;
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { id, name, description, charts, owner, lastModified } = dashboard;
 
-  // Generate a modern, vibrant color with H, S, L values
-  const accentColor = generateModernColor(name);
+  const handleNavigate = () => {
+    navigate(`/dashboards/${id}`);
+  };
+
+  const handleDelete = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (window.confirm(`Are you sure you want to delete dashboard "${name}"?`)) {
+      dispatch(removeDashboard(id));
+    }
+  };
+
+  const handleExport = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    alert(`Exporting dashboard "${name}"...`);
+  };
+
+  const handleEdit = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    navigate(`/dashboards/edit/${id}`);
+  };
 
   const cardStyle = {
-    '--accent-color-hsl': `${accentColor.h}, ${accentColor.s}%, ${accentColor.l}%`,
-    '--accent-color': accentColor.hsl,
-    '--animation-delay': `${index * 80}ms`, // Slightly faster stagger
+    '--animation-delay': `${index * 80}ms`,
   } as React.CSSProperties;
 
   return (
-    <Link to={`/dashboards/${id}`} className="dashboard-card-link">
-      <div className="dashboard-card" style={cardStyle}>
-        <div className="card-glow" />
-        <div className="card-border" />
-        <div className="card-content">
-          <div className="card-header">
-            <h3>{name}</h3>
-          </div>
-          <div className="card-body">
-            <p className="description">{description}</p>
-            <div className="tags">
-              {tags?.map(tag => (
-                <span key={tag} className="tag">{tag}</span>
-              ))}
-            </div>
-          </div>
-          <div className="card-footer">
-            <div className="footer-meta">
-              <div className="footer-item">
-                <BarChart2 size={16} />
-                <span>{charts.length} Charts</span>
-              </div>
-              <div className="footer-item">
-                <User size={16} />
-                <span>{owner}</span>
-              </div>
-            </div>
-            <div className="footer-item">
-              <Clock size={16} />
-              <span>{formatTimeAgo(lastModified)}</span>
-            </div>
-          </div>
+    <div className="dashboard-card" style={cardStyle} onClick={handleNavigate}>
+      <div className="dashboard-card-header">
+        <Star className="star-icon" size={18} />
+        <h3 className="dashboard-name">{name}</h3>
+      </div>
+      <div className="dashboard-card-body">
+        {description && <p className="description">{description}</p>}
+        <div className="dashboard-info">
+          <BarChart2 size={16} className="info-icon" />
+          <span>{charts?.length || 0} Charts</span>
+        </div>
+        <div className="dashboard-info">
+          <User size={16} className="info-icon" />
+          <span>{owner}</span>
         </div>
       </div>
-    </Link>
+      <div className="dashboard-card-footer">
+        <div className="footer-left">
+          <Clock size={14} className="time-icon" />
+          <span className="last-modified">{formatTimeAgo(lastModified)}</span>
+        </div>
+        <div className="action-icons">
+          <Trash2 onClick={handleDelete} size={18} />
+          <Upload onClick={handleExport} size={18} />
+          <FilePenLine onClick={handleEdit} size={18} />
+        </div>
+      </div>
+    </div>
   );
 };
 

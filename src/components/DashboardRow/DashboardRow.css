@@ -1,108 +1,145 @@
-/* === DashboardRow.css: REFACTORED FOR 5-COLUMN MODERN LAYOUT === */
-
-.dashboard-row-link {
-  text-decoration: none;
-  color: inherit;
-  display: block;
-  border-radius: var(--radius-lg); /* Match the row's radius */
-  transition: background-color 0.2s ease-in-out;
-}
-
-.dashboard-row-link:hover {
-  /* Subtle hover effect */
-  background-color: var(--background-light-alt);
-}
-
-.dark .dashboard-row-link:hover {
-  background-color: var(--background-dark-alt);
-}
-
 .dashboard-row {
-  /* Card and Grid Styling */
-  background-color: var(--card-bg-light);
-  border: 1px solid var(--border-color-light);
-  border-radius: var(--radius-lg);
-  padding: var(--spacing-lg) var(--spacing-xl);
-  margin-bottom: var(--spacing-lg);
-  display: grid;
-  /* 5-column layout: Name, Tags, Charts, Owner, Last Modified */
-  grid-template-columns: 2.5fr 2fr 1fr 1.5fr 1.5fr;
-  align-items: center;
-  gap: var(--spacing-xl);
-  transition: border-color 0.2s ease-in-out;
-}
-
-.dark .dashboard-row {
-  background-color: var(--card-bg-dark);
-  border-color: var(--border-color-dark);
-}
-
-/* A generic cell style for vertical alignment */
-.dashboard-cell {
   display: flex;
   align-items: center;
-  gap: var(--spacing-sm);
-  font-size: 0.9rem;
-  color: var(--text-secondary);
-  overflow: hidden; /* Prevent content from breaking the layout */
+  background-color: var(--card-bg-light);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md) var(--spacing-lg);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+  cursor: pointer;
+  border: 1px solid var(--card-border-light);
+  gap: var(--spacing-lg);
 }
 
-/* --- Column-specific styles --- */
+:global(.dark) .dashboard-row {
+  background-color: var(--card-bg-dark);
+  border-color: var(--card-border-dark);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
 
-.name-cell {
+.dashboard-row:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-color: var(--primary-light);
+}
+
+.dashboard-row-main {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  flex: 1;
+  min-width: 0;
+}
+
+.name-container {
+  display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: var(--spacing-xs);
+  min-width: 0;
 }
 
 .dashboard-name {
-  margin: 0;
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 600;
-  color: var(--text-primary);
-}
-
-.dashboard-description {
-  margin: 0;
-  font-size: 0.9rem;
-  color: var(--text-secondary);
+  color: var(--text-light);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  width: 100%;
 }
 
-.tags-cell {
-  flex-wrap: wrap;
-  gap: var(--spacing-sm);
+:global(.dark) .dashboard-name {
+  color: var(--text-dark);
 }
 
-.tag {
-  background-color: var(--background-light-alt);
-  color: var(--text-secondary);
-  padding: 4px 12px;
-  border-radius: 999px; /* Pill shape */
-  font-size: 0.8rem;
-  font-weight: 500;
+.dashboard-description-mini {
+  font-size: 0.75rem;
+  color: var(--text-light-secondary);
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  opacity: 0.8;
 }
 
-.dark .tag {
-  background-color: var(--background-dark-alt);
+:global(.dark) .dashboard-description-mini {
   color: var(--text-dark-secondary);
 }
 
-.owner-cell,
-.chart-cell,
-.modified-cell {
-  white-space: nowrap;
+.star-icon {
+  color: #fbbf24;
+  flex-shrink: 0;
 }
 
-.dark .dashboard-name {
-  color: var(--text-dark-primary);
+.dashboard-row-details {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xl);
+  color: var(--text-light-secondary);
 }
 
-.dark .dashboard-description,
-.dark .dashboard-cell {
+:global(.dark) .dashboard-row-details {
   color: var(--text-dark-secondary);
+}
+
+.dashboard-info {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-size: 0.85rem;
+  min-width: 60px;
+}
+
+.time-info {
+  min-width: 120px;
+  justify-content: flex-end;
+}
+
+.info-icon {
+  color: #94a3b8;
+  opacity: 0.7;
+}
+
+.action-icons {
+  display: flex;
+  gap: var(--spacing-md);
+  padding-left: var(--spacing-md);
+  border-left: 1px solid var(--card-border-light);
+}
+
+:global(.dark) .action-icons {
+  border-left-color: var(--card-border-dark);
+}
+
+.action-icon {
+  color: var(--text-light-secondary);
+  transition: all 0.2s ease;
+  opacity: 0.6;
+}
+
+:global(.dark) .action-icon {
+  color: var(--text-dark-secondary);
+}
+
+.action-icon:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.action-icon.delete:hover {
+  color: #ef4444;
+}
+
+.action-icon.edit:hover,
+.action-icon.export:hover {
+  color: var(--primary-light);
+}
+
+@media (max-width: 1024px) {
+  .dashboard-row-details {
+    gap: var(--spacing-md);
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-row-details {
+    display: none;
+  }
 }

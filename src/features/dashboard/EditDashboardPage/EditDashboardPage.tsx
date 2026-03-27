@@ -216,7 +216,7 @@ const EditDashboardPage: React.FC = () => {
             cols={cols}
             rowHeight={30}
             margin={[16, 16]}
-            containerPadding={[16, 16]}
+            containerPadding={[0, 0]}
             draggableHandle={`.${styles.chartDragHandle}`}
             useCSSTransforms={true}
             resizeHandles={['s', 'w', 'e', 'sw', 'se']}

@@ -258,7 +258,7 @@ const AddDashboardPage: React.FC = () => {
             cols={cols}
             rowHeight={30}
             margin={[16, 16]}
-            containerPadding={[16, 16]}
+            containerPadding={[0, 0]}
             preventCollision={false}
             compactType="vertical"
             draggableHandle={`.${styles.chartDragHandle}`}

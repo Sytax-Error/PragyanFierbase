@@ -1,6 +1,6 @@
-
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Plus } from 'lucide-react';
 import './SubHeaderActions.css';
 
 const SubHeaderActions: React.FC = () => {
@@ -15,7 +15,8 @@ const SubHeaderActions: React.FC = () => {
       className="add-chart" 
       onClick={handleAddClick}
     >
-      + Add Dashboard
+      <Plus size={18} style={{ marginRight: '8px' }} />
+      New Dashboard
     </button>
   );
 };

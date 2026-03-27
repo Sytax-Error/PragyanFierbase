@@ -1,53 +1,67 @@
-
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Star, Trash2, Upload, FilePenLine, BarChart, Database, LayoutGrid } from 'lucide-react';
+import { Star, Trash2, Upload, FilePenLine, BarChart, Database, LayoutGrid, Clock } from 'lucide-react';
 import { formatTimeAgo } from '@/utils/formatTimeAgo';
 import '@/components/ChartCard/ChartCard.css';
 
 import type { Chart } from '@/store/slices/chartSlice';
 
-const ChartCard = ({ chart }: { chart: Chart }) => {
+interface ChartCardProps {
+  chart: Chart;
+  index: number;
+}
+
+const ChartCard: React.FC<ChartCardProps> = ({ chart, index }) => {
   const navigate = useNavigate();
 
   const handleNavigate = () => {
     navigate(`/charts/edit/${chart.id}`);
   };
 
-  // Stop propagation to prevent navigation when clicking on icons
   const handleIconClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    // Add specific logic for each icon click here
     const action = (e.currentTarget as HTMLElement).dataset.action;
-    alert(`${action} action`);
+    alert(`${action} action for chart "${chart.name}"`);
   };
 
+  const cardStyle = {
+    '--animation-delay': `${index * 80}ms`,
+  } as React.CSSProperties;
+
   return (
-    <div className="chart-card" onClick={handleNavigate}>
+    <div className="chart-card" style={cardStyle} onClick={handleNavigate}>
       <div className="chart-card-header">
-        <Star className="star-icon" />
+        <Star className="star-icon" size={18} />
         <h3 className="chart-name">{chart.name}</h3>
       </div>
       <div className="chart-card-body">
         <div className="chart-info">
-          <BarChart className="chart-info-icon" />
+          <BarChart size={16} className="info-icon" />
           <span>{chart.type}</span>
         </div>
         <div className="chart-info">
-          <Database className="chart-info-icon" />
+          <Database size={16} className="info-icon" />
           <span>{chart.dataset}</span>
         </div>
-        <div className="chart-info">
-          <LayoutGrid className="chart-info-icon" />
-          <span>{chart.onDashboards}</span>
-        </div>
+        {chart.onDashboards !== undefined && (
+          <div className="chart-info">
+            <LayoutGrid size={16} className="info-icon" />
+            <span>{chart.onDashboards} Dashboards</span>
+          </div>
+        )}
       </div>
       <div className="chart-card-footer">
-        <span className="owner-initials">{chart.owners}</span>
-        <span className="last-modified">{formatTimeAgo(chart.lastModified)}</span>
+        <div className="footer-left">
+          <span className="owner-initials">{chart.owners?.charAt(0) || 'U'}</span>
+          <div className="time-meta">
+            <Clock size={12} className="time-icon" />
+            <span className="last-modified">{formatTimeAgo(chart.lastModified)}</span>
+          </div>
+        </div>
         <div className="action-icons">
-          <Trash2 data-action="Delete" onClick={handleIconClick} />
-          <Upload data-action="Upload" onClick={handleIconClick} />
-          <FilePenLine data-action="Edit" onClick={handleIconClick} />
+          <Trash2 data-action="Delete" onClick={handleIconClick} size={18} />
+          <Upload data-action="Upload" onClick={handleIconClick} size={18} />
+          <FilePenLine data-action="Edit" onClick={handleIconClick} size={18} />
         </div>
       </div>
     </div>

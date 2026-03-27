@@ -14,6 +14,7 @@ import EditChartPage from "@/features/charts/EditChartPage/EditChartPage";
 import DatasetTable from "@/features/datasets/DatasetTable";
 import ChartsSubHeaderActions from "@/features/charts/ChartsPage/SubHeaderActions";
 import EditChartSubHeaderActions from "@/features/charts/EditChartPage/components/SubHeaderActions";
+import SubHeaderActions from "@/features/dashboard/SubHeaderActions/SubHeaderActions";
 
 const routes = [
   {
@@ -28,7 +29,12 @@ const routes = [
         path: "dashboards",
         element: <DashboardsListPage />,
         handle: {
-          subHeader: <span className="text-xl font-semibold">Dashboards</span>,
+          subHeader: (
+            <>
+              <span className="text-xl font-semibold">Dashboards</span>
+              <SubHeaderActions />
+            </>
+          ),
         },
       },
       {
