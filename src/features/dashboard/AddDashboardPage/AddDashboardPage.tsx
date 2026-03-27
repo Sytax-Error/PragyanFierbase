@@ -1,7 +1,7 @@
 
 import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Responsive, WidthProvider, type Layout } from 'react-grid-layout';
 import {
   FiPlusCircle, 
@@ -17,6 +17,8 @@ import { MdDragIndicator } from 'react-icons/md';
 import { Button, ChartRenderer } from '@/components';
 import { useTheme } from '@/hooks/theme/useTheme';
 import { selectCharts, type Chart as ChartFromSlice } from '@/store/slices/chartSlice';
+import { addDashboard } from '@/store/slices/dashboardSlice';
+import DashboardSaveDialog from './DashboardSaveDialog';
 
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
@@ -41,11 +43,13 @@ const AddDashboardPage: React.FC = () => {
     xxs: [],
   });
   const [searchTerm, setSearchTerm] = useState('');
+  const [isSaveDialogOpen, setIsSaveDialogOpen] = useState(false);
   const { theme } = useTheme();
   const navigate = useNavigate();
 
   const availableCharts = useSelector(selectCharts);
   const scrollContainerRef = React.useRef<HTMLDivElement>(null);
+  const dispatch = useDispatch();
 
   const handleResizeOrDrag = (
     _layout: Layout[],
@@ -100,10 +104,22 @@ const AddDashboardPage: React.FC = () => {
       alert('Please enter a name for the dashboard.');
       return;
     }
-    const newDashboardId = `db-${Date.now()}`;
-    console.log(`Saving new dashboard: ${dashboardName} with id: ${newDashboardId} and layouts:`, layouts);
-    alert(`Dashboard "${dashboardName}" and its layout saved successfully! (Simulation)`);
-    navigate(`/dashboards`);
+    
+    const chartsInDashboard = (layouts.lg || []).map(item => item.chartId);
+    
+    const newDashboard = {
+      id: `db-${Date.now()}`,
+      name: dashboardName,
+      description: '',
+      charts: chartsInDashboard,
+      layouts,
+      tags: [],
+      owner: 'Admin',
+      lastModified: new Date().toISOString(),
+    };
+
+    dispatch(addDashboard(newDashboard));
+    setIsSaveDialogOpen(true);
   };
 
   const toggleChartInGrid = (chart: ChartFromSlice) => {
@@ -160,7 +176,7 @@ const AddDashboardPage: React.FC = () => {
   };
   
   const filteredCharts = useMemo(() => 
-    availableCharts.filter(chart =>
+    availableCharts.filter((chart: ChartFromSlice) =>
         chart.name.toLowerCase().includes(searchTerm.toLowerCase())
     ), [availableCharts, searchTerm]);
 
@@ -185,7 +201,7 @@ const AddDashboardPage: React.FC = () => {
           )}
         </div>
         <div className={styles.chartList}>
-          {filteredCharts.map(chart => {
+          {filteredCharts.map((chart: ChartFromSlice) => {
             const isChartInLayout = (layouts.lg || []).some(item => item.chartId === chart.id);
             return (
               <div 
@@ -250,7 +266,7 @@ const AddDashboardPage: React.FC = () => {
             resizeHandles={['s', 'w', 'e', 'sw', 'se']}
           >
             {(layouts.lg || []).map((item) => {
-              const chart = availableCharts.find(c => c.id === item.chartId);
+              const chart = availableCharts.find((c: ChartFromSlice) => c.id === item.chartId);
               const title = chart ? chart.name : 'Unknown Chart';
               
               return (
@@ -284,6 +300,13 @@ const AddDashboardPage: React.FC = () => {
             })}
           </ResponsiveGridLayout>
         </div>
+        <DashboardSaveDialog 
+          isOpen={isSaveDialogOpen}
+          onClose={() => setIsSaveDialogOpen(false)}
+          onConfirmAndNavigate={() => navigate('/dashboards')}
+          onStay={() => setIsSaveDialogOpen(false)}
+          dashboardName={dashboardName}
+        />
       </main>
     </div>
   );

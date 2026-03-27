@@ -1,13 +1,12 @@
-
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '../../store';
-import { mockDashboards } from '../../data/mockDashboards';
 
 export interface Dashboard {
   id: string;
   name: string;
-  description: string;
+  description?: string;
   charts: string[];
+  layouts?: { [key: string]: any[] };
   tags: string[];
   owner: string;
   lastModified: string;
@@ -19,7 +18,7 @@ interface DashboardsState {
 }
 
 const initialState: DashboardsState = {
-  dashboards: mockDashboards,
+  dashboards: [], // Start with empty list as requested
   status: 'idle',
 };
 
@@ -37,10 +36,13 @@ const dashboardsSlice = createSlice({
         Object.assign(dashboard, changes);
       }
     },
+    removeDashboard: (state, action: PayloadAction<string>) => {
+      state.dashboards = state.dashboards.filter((d) => d.id !== action.payload);
+    },
   },
 });
 
-export const { addDashboard, updateDashboard } = dashboardsSlice.actions;
+export const { addDashboard, updateDashboard, removeDashboard } = dashboardsSlice.actions;
 
 export const selectDashboards = (state: RootState) => state.dashboards.dashboards;
 
