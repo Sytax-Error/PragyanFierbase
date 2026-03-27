@@ -1,0 +1,37 @@
+.container {
+    padding: 4px 8px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+}
+
+.title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin: 0 0 8px 0;
+    color: var(--text-light);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+:global(.dark) .title {
+    color: var(--text-dark);
+}
+
+.dataPreview {
+    margin: 0;
+    font-size: 0.8rem;
+    line-height: 1.4;
+    font-family: 'Inter', 'Roboto Mono', monospace;
+    background-color: rgba(0, 0, 0, 0.03);
+    padding: 8px;
+    border-radius: 6px;
+    overflow: auto;
+    flex-grow: 1;
+}
+
+:global(.dark) .dataPreview {
+    background-color: rgba(255, 255, 255, 0.03);
+}

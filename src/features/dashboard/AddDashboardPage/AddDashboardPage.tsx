@@ -96,20 +96,23 @@ const AddDashboardPage: React.FC = () => {
       // ADD
       const newLayouts: any = {};
       const colsMap: any = { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 };
+      const widthMap: any = { lg: 4, md: 3, sm: 3, xs: 4, xxs: 2 };
 
       Object.keys(layouts).forEach((bp) => {
         const current = layouts[bp];
+        const w = widthMap[bp];
+        const colCount = Math.floor(colsMap[bp] / w);
+        const colIndex = current.length % colCount;
 
-        const w = bp === 'lg' ? 4 : bp === 'md' ? 5 : 2;
         newLayouts[bp] = [
           ...current,
           {
             i: `${chart.id}-${Date.now()}`,
             chartId: chart.id,
-            x: (current.length * w) % colsMap[bp],
+            x: colIndex * w,
             y: Infinity,
             w,
-            h: 7,
+            h: 6,
           },
         ];
       });
