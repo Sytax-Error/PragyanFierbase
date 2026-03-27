@@ -211,7 +211,7 @@
   overflow: hidden;
 }
 
-.addDashboardPageContainer.dark .gridContainer.isEmpty {
+:global(.dark) .gridContainer.isEmpty {
   border-color: var(--card-border-dark);
   background-color: rgba(255, 255, 255, 0.02);
 }
@@ -227,7 +227,7 @@
   padding: 0 var(--spacing-md);
 }
 
-.addDashboardPageContainer.dark .emptyDashboardMessage {
+:global(.dark) .emptyDashboardMessage {
   color: var(--text-dark-secondary);
 }
 
@@ -248,10 +248,10 @@
 }
 
 .gridItemWrapper {
-  background-color: var(--card-bg-light, #ffffff);
+  background-color: var(--card-bg-light);
   border-radius: 12px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 1px 4px rgba(0, 0, 0, 0.05);
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--card-border-light);
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   display: flex;
   flex-direction: column;
@@ -260,15 +260,10 @@
   overflow: hidden;
 }
 
-.gridItemWrapper:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(var(--primary-color-rgb, 59, 130, 246), 0.1);
-}
-
-.addDashboardPageContainer.dark .gridItemWrapper {
+:global(.dark) .gridItemWrapper {
   background-color: var(--card-bg-dark);
   border-color: var(--card-border-dark);
-  box-shadow: var(--card-shadow-dark);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .light .gridItemWrapper:hover {
@@ -336,14 +331,14 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 8px 0 4px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid var(--card-border-light);
   user-select: none;
   -webkit-user-select: none;
 }
 
-.addDashboardPageContainer.dark .chartDragHandle {
-  background: rgba(45, 45, 45, 0.7);
-  border-bottom-color: rgba(255, 255, 255, 0.05);
+:global(.dark) .chartDragHandle {
+  background: rgba(30, 41, 59, 0.7);
+  border-bottom-color: var(--card-border-dark);
 }
 
 .headerLeft {
@@ -366,7 +361,7 @@
   opacity: 0.8;
 }
 
-.addDashboardPageContainer.dark .chartTitle {
+:global(.dark) .chartTitle {
   color: var(--text-dark);
 }
 
@@ -386,7 +381,7 @@
   opacity: 0.6;
 }
 
-.addDashboardPageContainer.dark .removeChartButtonInline {
+:global(.dark) .removeChartButtonInline {
   color: var(--text-dark-secondary);
 }
 

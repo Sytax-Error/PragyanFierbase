@@ -38,12 +38,16 @@
   transition: all 0.2s ease;
 }
 
+:global(.dark) .back-btn {
+  color: var(--text-dark-secondary);
+}
+
 .back-btn:hover {
   background-color: rgba(0, 0, 0, 0.05);
   color: var(--text-light);
 }
 
-.dark .back-btn:hover {
+:global(.dark) .back-btn:hover {
   background-color: rgba(255, 255, 255, 0.05);
   color: var(--text-dark);
 }

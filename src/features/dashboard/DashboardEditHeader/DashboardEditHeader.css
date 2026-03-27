@@ -16,7 +16,7 @@
 .back-btn-header {
     background: transparent;
     border: none;
-    color: #94a3b8;
+    color: var(--text-light-secondary);
     cursor: pointer;
     padding: 4px;
     border-radius: 10px;
@@ -27,15 +27,19 @@
     flex-shrink: 0;
 }
 
+:global(.dark) .back-btn-header {
+    color: var(--text-dark-secondary);
+}
+
 .back-btn-header:hover {
     background: rgba(0, 0, 0, 0.05);
-    color: #1e293b;
+    color: var(--text-light);
     transform: translateX(-2px);
 }
 
-.dark .back-btn-header:hover {
+:global(.dark) .back-btn-header:hover {
     background: rgba(255, 255, 255, 0.05);
-    color: #f1f5f9;
+    color: var(--text-dark);
 }
 
 .dashboard-editable-title-container {
@@ -50,8 +54,12 @@
 .dashboard-label {
     font-size: 1.25rem;
     font-weight: 500;
-    color: #64748b;
+    color: var(--text-light-secondary);
     white-space: nowrap;
+}
+
+:global(.dark) .dashboard-label {
+    color: var(--text-dark-secondary);
 }
 
 .input-group-editing {
@@ -65,22 +73,26 @@
 }
 
 .input-group-editing:hover {
-    border-bottom-color: rgba(59, 130, 246, 0.3);
+    border-bottom-color: rgba(var(--primary-light-rgb), 0.3);
 }
 
 .input-group-editing:focus-within {
-    border-bottom-color: #3b82f6;
+    border-bottom-color: var(--primary-light);
 }
 
 .edit-icon-pencil {
-    color: #94a3b8;
+    color: var(--text-light-secondary);
     opacity: 0.4;
     transition: all 0.2s ease;
     flex-shrink: 0;
 }
 
+:global(.dark) .edit-icon-pencil {
+    color: var(--text-dark-secondary);
+}
+
 .input-group-editing:hover .edit-icon-pencil {
-    color: #3b82f6;
+    color: var(--primary-light);
     opacity: 1;
 }
 
@@ -90,7 +102,7 @@
     font-weight: 700;
     border: none;
     background-color: transparent;
-    color: #1e293b;
+    color: var(--text-light);
     width: 200px;
     /* Base width */
     max-width: 400px;
@@ -105,8 +117,8 @@
     /* Expand slightly on focus if needed */
 }
 
-.dark .dashboard-name-input-header {
-    color: #f1f5f9;
+:global(.dark) .dashboard-name-input-header {
+    color: var(--text-dark);
 }
 
 .header-right {

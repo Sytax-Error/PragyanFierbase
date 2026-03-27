@@ -16,7 +16,7 @@
 .back-btn-header {
     background: transparent;
     border: none;
-    color: #64748b;
+    color: var(--text-light-secondary);
     cursor: pointer;
     padding: 6px;
     border-radius: 8px;
@@ -27,27 +27,31 @@
     flex-shrink: 0;
 }
 
-.back-btn-header:hover {
-    background-color: rgba(0, 0, 0, 0.05);
-    color: #1e293b;
+:global(.dark) .back-btn-header {
+    color: var(--text-dark-secondary);
 }
 
-.dark .back-btn-header:hover {
+.back-btn-header:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: var(--text-light);
+}
+
+:global(.dark) .back-btn-header:hover {
     background-color: rgba(255, 255, 255, 0.05);
-    color: #f1f5f9;
+    color: var(--text-dark);
 }
 
 .dashboard-name-header {
     font-size: 1.25rem;
     font-weight: 700;
-    color: #1e293b;
+    color: var(--text-light);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-.dark .dashboard-name-header {
-    color: #f1f5f9;
+:global(.dark) .dashboard-name-header {
+    color: var(--text-dark);
 }
 
 .header-right {
