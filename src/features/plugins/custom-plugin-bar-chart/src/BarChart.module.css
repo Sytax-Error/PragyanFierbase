@@ -1,5 +1,5 @@
 .container {
-    padding: 4px 8px;
+    padding: 4px;
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -7,13 +7,13 @@
 }
 
 .title {
-    font-size: 0.95rem;
-    font-weight: 600;
-    margin: 0 0 8px 0;
+    font-size: 0.8rem;
+    font-weight: 700;
+    margin: 2px 0 6px 4px;
     color: var(--text-light);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    opacity: 0.7;
 }
 
 :global(.dark) .title {
@@ -22,16 +22,20 @@
 
 .dataPreview {
     margin: 0;
-    font-size: 0.8rem;
+    font-family: "Fira Code", "JetBrains Mono", source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+    font-size: 0.7rem;
     line-height: 1.4;
-    font-family: 'Inter', 'Roboto Mono', monospace;
-    background-color: rgba(0, 0, 0, 0.03);
+    background-color: rgba(var(--primary-color-rgb, 59, 130, 246), 0.03);
+    border-radius: 8px;
     padding: 8px;
-    border-radius: 6px;
     overflow: auto;
+    border: 1px solid rgba(var(--primary-color-rgb, 59, 130, 246), 0.05);
+    color: var(--text-light);
     flex-grow: 1;
 }
 
 :global(.dark) .dataPreview {
-    background-color: rgba(255, 255, 255, 0.03);
+    background-color: rgba(255, 255, 255, 0.02);
+    border-color: rgba(255, 255, 255, 0.05);
+    color: var(--text-dark);
 }

@@ -7,9 +7,10 @@ import { StatusIndicator } from '@/components';
 interface ChartRendererProps {
   chartId: string;
   mode: 'dashboard' | 'explore';
+  hideHeader?: boolean;
 }
 
-export const ChartRenderer: React.FC<ChartRendererProps> = ({ chartId, mode }) => {
+export const ChartRenderer: React.FC<ChartRendererProps> = ({ chartId, mode, hideHeader }) => {
   const { loading, error, data, formData, pluginKey, name } = useChartData(chartId);
 
   if (loading) {
@@ -37,11 +38,12 @@ export const ChartRenderer: React.FC<ChartRendererProps> = ({ chartId, mode }) =
     return <StatusIndicator status="error" message="Chart plugin is not correctly configured." />;
   }
 
-  // Add the mode to the controls/formData so it can be used by the plugin
+  // Add the mode and hideHeader to the controls/formData so it can be used by the plugin
   const finalFormData = {
     ...formData,
     headerText: name,
     mode, 
+    hideHeader,
   };
 
   const chartProps = transformProps({

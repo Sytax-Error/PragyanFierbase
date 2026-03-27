@@ -2,13 +2,15 @@ export type DataRecord = Record<string, unknown>;
 
 export interface BarChartProps {
   data: DataRecord[];
-  headerText:string;
+  headerText: string;
+  hideHeader?: boolean;
 }
 
 export interface BarChartPluginConfig {
   dimension: string;
   measure: string;
-  headerText:string;
+  headerText: string;
+  hideHeader?: boolean;
 }
 
 export interface TransformPropsOptions {

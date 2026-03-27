@@ -248,18 +248,20 @@
 
 .gridItemWrapper {
   background-color: var(--card-bg-light, #ffffff);
-  border-radius: 16px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  transition: box-shadow 0.25s ease;
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 1px 4px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   display: flex;
   flex-direction: column;
   position: relative;
-  padding: 8px;
+  padding: 0;
+  overflow: hidden;
 }
 
 .gridItemWrapper:hover {
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(var(--primary-color-rgb, 59, 130, 246), 0.1);
 }
 
 .addDashboardPageContainer.dark .gridItemWrapper {
@@ -276,23 +278,9 @@
   box-shadow: 0 12px 50px rgba(0, 0, 0, 0.4), 0 0 30px rgba(59, 130, 246, 0.3);
 }
 
+/* Removed old remove button styles as it's now inline in the header */
 .removeChartButton {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  background: transparent;
-  color: var(--text-light-secondary, #9ca3af);
-  border: none;
-  cursor: pointer;
-  border-radius: 8px;
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
-  opacity: 0;
-  z-index: 20;
+  display: none;
 }
 
 .gridItemWrapper:hover .removeChartButton {
@@ -305,16 +293,75 @@
 }
 
 .chartDragHandle {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 40px;
+  position: relative;
+  height: 34px;
   cursor: grab;
   z-index: 15;
-  background: transparent;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 8px 0 4px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   user-select: none;
   -webkit-user-select: none;
+}
+
+.addDashboardPageContainer.dark .chartDragHandle {
+  background: rgba(45, 45, 45, 0.7);
+  border-bottom-color: rgba(255, 255, 255, 0.05);
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  min-width: 0;
+  flex: 1;
+}
+
+.chartTitle {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-light);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  opacity: 0.8;
+}
+
+.addDashboardPageContainer.dark .chartTitle {
+  color: var(--text-dark);
+}
+
+.removeChartButtonInline {
+  background: transparent;
+  color: var(--text-light-secondary);
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  opacity: 0.6;
+}
+
+.addDashboardPageContainer.dark .removeChartButtonInline {
+  color: var(--text-dark-secondary);
+}
+
+.removeChartButtonInline:hover {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  opacity: 1;
 }
 
 .chartDragHandle:active {
@@ -322,13 +369,21 @@
 }
 
 .dragIcon {
-  display: none;
+  display: block;
+  color: var(--text-light-secondary);
+  font-size: 1rem;
+  opacity: 0.4;
+  flex-shrink: 0;
+}
+
+.addDashboardPageContainer.dark .dragIcon {
+  color: var(--text-dark-secondary);
 }
 
 .gridItemContent {
   flex: 1 1 0;
   min-height: 0;
-  padding: 0;
+  padding: 4px 8px;
   overflow: auto;
 }
 
@@ -435,6 +490,6 @@
   }
 
   .chartListItem {
-    padding: 10px 12px;
+    padding: 0 12px;
   }
 }

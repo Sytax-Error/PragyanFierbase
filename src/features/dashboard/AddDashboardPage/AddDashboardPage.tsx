@@ -45,6 +45,34 @@ const AddDashboardPage: React.FC = () => {
   const navigate = useNavigate();
 
   const availableCharts = useSelector(selectCharts);
+  const scrollContainerRef = React.useRef<HTMLDivElement>(null);
+
+  const handleResizeOrDrag = (
+    _layout: Layout[],
+    _oldItem: Layout,
+    _newItem: Layout,
+    _placeholder: Layout,
+    _e: MouseEvent,
+    element: HTMLElement
+  ) => {
+    if (!scrollContainerRef.current) return;
+
+    const container = scrollContainerRef.current;
+    const containerRect = container.getBoundingClientRect();
+    const elementRect = element.getBoundingClientRect();
+    
+    const threshold = 60;
+    const scrollSpeed = 15;
+
+    // Scroll down if resizing/dragging near bottom
+    if (elementRect.bottom > containerRect.bottom - threshold) {
+      container.scrollBy({ top: scrollSpeed, behavior: 'auto' });
+    }
+    // Scroll up if resizing/dragging near top
+    else if (elementRect.top < containerRect.top + threshold) {
+      container.scrollBy({ top: -scrollSpeed, behavior: 'auto' });
+    }
+  };
 
   const onLayoutChange = (_currentLayout: Layout[], allLayouts: any) => {
     setLayouts((prevLayouts) => {
@@ -178,7 +206,10 @@ const AddDashboardPage: React.FC = () => {
         </div>
       </aside>
 
-      <main className={`${styles.dashboardCanvas} ${isGridEmpty ? styles.disabledScroll : ''}`}>
+      <main 
+        ref={scrollContainerRef}
+        className={`${styles.dashboardCanvas} ${isGridEmpty ? styles.disabledScroll : ''}`}
+      >
         <header className={styles.dashboardHeader}>
             <input
               type="text"
@@ -205,6 +236,8 @@ const AddDashboardPage: React.FC = () => {
             className="layout"
             layouts={layouts}
             onLayoutChange={onLayoutChange}
+            onResize={handleResizeOrDrag}
+            onDrag={handleResizeOrDrag}
             breakpoints={breakpoints}
             cols={cols}
             rowHeight={30}
@@ -216,23 +249,39 @@ const AddDashboardPage: React.FC = () => {
             useCSSTransforms={true}
             resizeHandles={['s', 'w', 'e', 'sw', 'se']}
           >
-            {(layouts.lg || []).map((item) => (
-              <div key={item.i} className={styles.gridItemWrapper}>
-                <div className={styles.chartDragHandle} title="Drag to move">
-                  <MdDragIndicator className={styles.dragIcon} />
+            {(layouts.lg || []).map((item) => {
+              const chart = availableCharts.find(c => c.id === item.chartId);
+              const title = chart ? chart.name : 'Unknown Chart';
+              
+              return (
+                <div key={item.i} className={styles.gridItemWrapper}>
+                  <div className={styles.chartDragHandle} title="Drag to move">
+                    <div className={styles.headerLeft}>
+                      <MdDragIndicator className={styles.dragIcon} />
+                      <span className={styles.chartTitle}>{title}</span>
+                    </div>
+                    <button 
+                      className={styles.removeChartButtonInline}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        removeChartFromGrid(item.i);
+                      }}
+                      onMouseDown={(e) => e.stopPropagation()}
+                      title="Remove chart"
+                    >
+                      <FiX size={16} />
+                    </button>
+                  </div>
+                  <div className={styles.gridItemContent}>
+                    <ChartRenderer 
+                      chartId={item.chartId} 
+                      mode="dashboard" 
+                      hideHeader={true}
+                    />
+                  </div>
                 </div>
-                <div className={styles.gridItemContent}>
-                  <ChartRenderer chartId={item.chartId} mode="dashboard" />
-                </div>
-                <button 
-                  className={styles.removeChartButton}
-                  onClick={() => removeChartFromGrid(item.i)}
-                  title="Remove chart"
-                >
-                  <FiX size={18} />
-                </button>
-              </div>
-            ))}
+              );
+            })}
           </ResponsiveGridLayout>
         </div>
       </main>
