@@ -2,7 +2,6 @@ import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { Responsive, WidthProvider } from 'react-grid-layout';
-import { MdDragIndicator } from 'react-icons/md';
 
 import { selectDashboards } from '@/store/slices/dashboardSlice';
 import { selectCharts, type Chart as ChartFromSlice } from '@/store/slices/chartSlice';
@@ -13,6 +12,7 @@ import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import './DashboardDetailPage.css';
 import dashboardStyles from '../AddDashboardPage/AddDashboardPage.module.css';
+import { BarChart2 } from 'lucide-react';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 const breakpoints = { lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 };
@@ -22,10 +22,10 @@ const DashboardDetailPage: React.FC = () => {
   const { dashboardId } = useParams<{ dashboardId: string }>();
   const navigate = useNavigate();
   const { theme } = useTheme();
-  
+
   const dashboards = useSelector(selectDashboards);
   const availableCharts = useSelector(selectCharts);
-  
+
   const dashboard = dashboards.find(d => d.id === dashboardId);
 
   if (!dashboard) {
@@ -60,19 +60,19 @@ const DashboardDetailPage: React.FC = () => {
             {(layouts?.lg || []).map((item: any) => {
               const chart = availableCharts.find((c: ChartFromSlice) => c.id === item.chartId);
               const title = chart ? chart.name : 'Unknown Chart';
-              
+
               return (
                 <div key={item.i} className={dashboardStyles.gridItemWrapper}>
                   <div className={dashboardStyles.chartDragHandle} style={{ cursor: 'default' }}>
                     <div className={dashboardStyles.headerLeft}>
-                      <MdDragIndicator className={dashboardStyles.dragIcon} />
+                      <BarChart2 size={16} className="info-icon" />
                       <span className={dashboardStyles.chartTitle}>{title}</span>
                     </div>
                   </div>
                   <div className={dashboardStyles.gridItemContent}>
-                    <ChartRenderer 
-                      chartId={item.chartId} 
-                      mode="dashboard" 
+                    <ChartRenderer
+                      chartId={item.chartId}
+                      mode="dashboard"
                       hideHeader={true}
                     />
                   </div>

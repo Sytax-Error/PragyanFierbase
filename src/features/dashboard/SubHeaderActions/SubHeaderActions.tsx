@@ -11,12 +11,12 @@ const SubHeaderActions: React.FC = () => {
   };
 
   return (
-    <button 
-      className="add-chart" 
+    <button
+      className="add-chart"
       onClick={handleAddClick}
     >
       <Plus size={18} style={{ marginRight: '8px' }} />
-      New Dashboard
+      Dashboard
     </button>
   );
 };
