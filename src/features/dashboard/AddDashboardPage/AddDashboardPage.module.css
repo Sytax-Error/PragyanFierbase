@@ -167,23 +167,22 @@
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  padding: 0;
-  /* Handled by global .content padding */
+  padding: var(--spacing-lg);
   z-index: 1;
   overflow-y: auto;
   min-height: 0;
+  background-color: #f8fafc;
+}
+
+.addDashboardPageContainer.dark .dashboardCanvas {
+  background-color: var(--background-dark);
 }
 
 .dashboardCanvas.disabledScroll {
   overflow-y: hidden;
 }
 
-.dashboardHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: var(--spacing-lg);
-}
+/* dashboardHeader removed from TSX */
 
 .dashboardNameInput {
   font-size: 2rem;

@@ -9,13 +9,14 @@ import '@/shared/layouts/MainLayout.css';
 const MainLayout: React.FC = () => {
   const { theme } = useTheme();
   const matches = useMatches();
-  const handle = matches.at(-1)?.handle as { subHeader?: React.ReactNode } | undefined;
+  const handle = matches.at(-1)?.handle as { subHeader?: React.ReactNode; noPadding?: boolean } | undefined;
+  const noPadding = handle?.noPadding;
 
   return (
-    <div className={`layout ${theme}`}>
+    <div className={`layout app ${theme}`}>
       <Header />
       {handle?.subHeader && <SubHeader>{handle.subHeader}</SubHeader>}
-      <main className="content">
+      <main className={`content ${noPadding ? 'no-padding' : ''}`}>
         <Outlet />
       </main>
       <Footer />

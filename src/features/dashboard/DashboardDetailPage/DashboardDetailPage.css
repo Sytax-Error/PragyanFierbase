@@ -2,10 +2,6 @@
   min-height: 100%;
 }
 
-.dashboard-detail-page.dark {
-  /* Background handled by global .content */
-}
-
 .detail-header {
   display: flex;
   justify-content: space-between;

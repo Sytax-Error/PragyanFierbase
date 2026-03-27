@@ -1,12 +1,10 @@
 
-import React, { useState, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Responsive, WidthProvider, type Layout } from 'react-grid-layout';
 import {
   FiPlusCircle, 
   FiCheckCircle, 
-  FiSave, 
   FiX, 
   FiGrid, 
   FiSearch, 
@@ -14,11 +12,14 @@ import {
 } from 'react-icons/fi';
 import { MdDragIndicator } from 'react-icons/md';
 
-import { Button, ChartRenderer } from '@/components';
+import { ChartRenderer } from '@/components';
 import { useTheme } from '@/hooks/theme/useTheme';
 import { selectCharts, type Chart as ChartFromSlice } from '@/store/slices/chartSlice';
-import { addDashboard } from '@/store/slices/dashboardSlice';
-import DashboardSaveDialog from './DashboardSaveDialog';
+import { 
+  setActiveEditor, 
+  selectActiveEditor, 
+  updateActiveEditor 
+} from '@/store/slices/dashboardSlice';
 
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
@@ -26,30 +27,34 @@ import styles from './AddDashboardPage.module.css';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
-interface LayoutItem extends Layout {
-  chartId: string;
-}
 
 const breakpoints = { lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 };
 const cols = { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 };
 
 const AddDashboardPage: React.FC = () => {
-  const [dashboardName, setDashboardName] = useState('New Dashboard');
-  const [layouts, setLayouts] = useState<{ [key: string]: LayoutItem[] }>({
-    lg: [],
-    md: [],
-    sm: [],
-    xs: [],
-    xxs: [],
-  });
-  const [searchTerm, setSearchTerm] = useState('');
-  const [isSaveDialogOpen, setIsSaveDialogOpen] = useState(false);
-  const { theme } = useTheme();
-  const navigate = useNavigate();
-
-  const availableCharts = useSelector(selectCharts);
-  const scrollContainerRef = React.useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
+  const activeEditor = useSelector(selectActiveEditor);
+  const availableCharts = useSelector(selectCharts);
+  const [searchTerm, setSearchTerm] = useState('');
+  const { theme } = useTheme();
+  const scrollContainerRef = React.useRef<HTMLDivElement>(null);
+
+  // Initialize active editor if null
+  useEffect(() => {
+    if (!activeEditor) {
+      dispatch(setActiveEditor({
+        id: `db-${Date.now()}`,
+        name: 'New Dashboard',
+        description: '',
+        charts: [],
+        layouts: { lg: [], md: [], sm: [], xs: [], xxs: [] },
+        tags: [],
+        owner: 'Admin',
+        lastModified: new Date().toISOString(),
+      }));
+    }
+  }, [activeEditor, dispatch]);
+
 
   const handleResizeOrDrag = (
     _layout: Layout[],
@@ -79,63 +84,43 @@ const AddDashboardPage: React.FC = () => {
   };
 
   const onLayoutChange = (_currentLayout: Layout[], allLayouts: any) => {
-    setLayouts((prevLayouts) => {
-      const updatedLayouts: any = {};
+    const updatedLayouts: any = {};
+    Object.keys(allLayouts).forEach((bp) => {
+      updatedLayouts[bp] = allLayouts[bp].map((item: Layout) => {
+        const existingItem =
+          layouts[bp]?.find((l: any) => l.i === item.i) ||
+          Object.values(layouts).flat().find((l: any) => l.i === item.i);
 
-      Object.keys(allLayouts).forEach((bp) => {
-        updatedLayouts[bp] = allLayouts[bp].map((item: Layout) => {
-          const existingItem =
-            prevLayouts[bp]?.find((l) => l.i === item.i) ||
-            Object.values(prevLayouts).flat().find((l) => l.i === item.i);
-
-          return {
-            ...item,
-            chartId: existingItem ? existingItem.chartId : 'unknown',
-          };
-        });
+        return {
+          ...item,
+          chartId: existingItem ? (existingItem as any).chartId : 'unknown',
+        };
       });
-
-      return updatedLayouts;
     });
-  };
 
-  const handleSaveDashboard = () => {
-    if (!dashboardName.trim()) {
-      alert('Please enter a name for the dashboard.');
-      return;
-    }
-    
-    const chartsInDashboard = (layouts.lg || []).map(item => item.chartId);
-    
-    const newDashboard = {
-      id: `db-${Date.now()}`,
-      name: dashboardName,
-      description: '',
-      charts: chartsInDashboard,
-      layouts,
-      tags: [],
-      owner: 'Admin',
-      lastModified: new Date().toISOString(),
-    };
-
-    dispatch(addDashboard(newDashboard));
-    setIsSaveDialogOpen(true);
+    dispatch(updateActiveEditor({ 
+      layouts: updatedLayouts,
+      charts: (updatedLayouts.lg || []).map((item: any) => item.chartId)
+    }));
   };
 
   const toggleChartInGrid = (chart: ChartFromSlice) => {
     const exists = Object.values(layouts)
       .flat()
-      .some((item) => item.chartId === chart.id);
+      .some((item: any) => item.chartId === chart.id);
 
     if (exists) {
       // REMOVE
       const newLayouts: any = {};
       Object.keys(layouts).forEach((bp) => {
-        newLayouts[bp] = layouts[bp].filter(
+        newLayouts[bp] = (layouts[bp] as any[]).filter(
           (item) => item.chartId !== chart.id
         );
       });
-      setLayouts(newLayouts);
+      dispatch(updateActiveEditor({ 
+        layouts: newLayouts,
+        charts: (newLayouts.lg || []).map((item: any) => item.chartId)
+      }));
     } else {
       // ADD
       const newLayouts: any = {};
@@ -143,7 +128,7 @@ const AddDashboardPage: React.FC = () => {
       const widthMap: any = { lg: 4, md: 3, sm: 3, xs: 4, xxs: 2 };
 
       Object.keys(layouts).forEach((bp) => {
-        const current = layouts[bp];
+        const current = (layouts[bp] as any[]) || [];
         const w = widthMap[bp];
         const colCount = Math.floor(colsMap[bp] / w);
         const colIndex = current.length % colCount;
@@ -161,18 +146,22 @@ const AddDashboardPage: React.FC = () => {
         ];
       });
 
-      setLayouts(newLayouts);
+      dispatch(updateActiveEditor({ 
+        layouts: newLayouts,
+        charts: (newLayouts.lg || []).map((item: any) => item.chartId)
+      }));
     }
   };
 
   const removeChartFromGrid = (itemId: string) => {
     const newLayouts: any = {};
-
     Object.keys(layouts).forEach((bp) => {
-      newLayouts[bp] = layouts[bp].filter((item) => item.i !== itemId);
+      newLayouts[bp] = (layouts[bp] as any[]).filter((item) => item.i !== itemId);
     });
-
-    setLayouts(newLayouts);
+    dispatch(updateActiveEditor({ 
+      layouts: newLayouts,
+      charts: (newLayouts.lg || []).map((item: any) => item.chartId)
+    }));
   };
   
   const filteredCharts = useMemo(() => 
@@ -180,6 +169,9 @@ const AddDashboardPage: React.FC = () => {
         chart.name.toLowerCase().includes(searchTerm.toLowerCase())
     ), [availableCharts, searchTerm]);
 
+  if (!activeEditor) return <div className={styles.loading}>Loading...</div>;
+
+  const layouts = activeEditor.layouts || { lg: [], md: [], sm: [], xs: [], xxs: [] };
   const isGridEmpty = (layouts.lg || []).length === 0;
 
   return (
@@ -202,7 +194,7 @@ const AddDashboardPage: React.FC = () => {
         </div>
         <div className={styles.chartList}>
           {filteredCharts.map((chart: ChartFromSlice) => {
-            const isChartInLayout = (layouts.lg || []).some(item => item.chartId === chart.id);
+            const isChartInLayout = (layouts.lg || []).some((item: any) => item.chartId === chart.id);
             return (
               <div 
                 key={chart.id} 
@@ -226,20 +218,7 @@ const AddDashboardPage: React.FC = () => {
         ref={scrollContainerRef}
         className={`${styles.dashboardCanvas} ${isGridEmpty ? styles.disabledScroll : ''}`}
       >
-        <header className={styles.dashboardHeader}>
-            <input
-              type="text"
-              value={dashboardName}
-              onChange={(e) => setDashboardName(e.target.value)}
-              placeholder="Enter Dashboard Name"
-              className={styles.dashboardNameInput}
-            />
-          <Button onClick={handleSaveDashboard} disabled={isGridEmpty} variant="primary" glow>
-            <FiSave />
-            <span>Save</span>
-          </Button>
-        </header>
-
+        {/* Header removed - now in SubHeader */}
         <div className={`${styles.gridContainer} ${isGridEmpty ? styles.isEmpty : ''}`}>
           {isGridEmpty && (
             <div className={styles.emptyDashboardMessage}>
@@ -265,7 +244,7 @@ const AddDashboardPage: React.FC = () => {
             useCSSTransforms={true}
             resizeHandles={['s', 'w', 'e', 'sw', 'se']}
           >
-            {(layouts.lg || []).map((item) => {
+            {(layouts.lg || []).map((item: any) => {
               const chart = availableCharts.find((c: ChartFromSlice) => c.id === item.chartId);
               const title = chart ? chart.name : 'Unknown Chart';
               
@@ -300,13 +279,6 @@ const AddDashboardPage: React.FC = () => {
             })}
           </ResponsiveGridLayout>
         </div>
-        <DashboardSaveDialog 
-          isOpen={isSaveDialogOpen}
-          onClose={() => setIsSaveDialogOpen(false)}
-          onConfirmAndNavigate={() => navigate('/dashboards')}
-          onStay={() => setIsSaveDialogOpen(false)}
-          dashboardName={dashboardName}
-        />
       </main>
     </div>
   );

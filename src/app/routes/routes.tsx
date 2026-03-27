@@ -5,6 +5,7 @@ import AddDashboardPage from "@/features/dashboard/AddDashboardPage/AddDashboard
 import CreateDashboardPage from "@/features/dashboard/CreateDashboardPage/CreateDashboardPage";
 import EditDashboardPage from "@/features/dashboard/EditDashboardPage/EditDashboardPage";
 import DashboardEditHeader from "@/features/dashboard/DashboardEditHeader/DashboardEditHeader";
+import DashboardAddHeader from "@/features/dashboard/AddDashboardPage/DashboardAddHeader";
 import DashboardDetailPage from "@/features/dashboard/DashboardDetailPage/DashboardDetailPage";
 import DashboardDetailHeader from "@/features/dashboard/DashboardDetailHeader/DashboardDetailHeader";
 import ChartsPage from "@/features/charts/ChartsPage/ChartsPage";
@@ -41,9 +42,8 @@ const routes = [
         path: "dashboards/add",
         element: <AddDashboardPage />,
         handle: {
-          subHeader: (
-            <span className="text-xl font-semibold">Add New Dashboard</span>
-          ),
+          subHeader: <DashboardAddHeader />,
+          noPadding: true,
         },
       },
       {
@@ -60,6 +60,7 @@ const routes = [
         element: <EditDashboardPage />,
         handle: {
           subHeader: <DashboardEditHeader />,
+          noPadding: true,
         },
       },
       {

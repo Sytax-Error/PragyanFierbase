@@ -3,11 +3,11 @@ import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { Responsive, WidthProvider, type Layout } from 'react-grid-layout';
 import {
-  FiPlusCircle, 
-  FiCheckCircle, 
-  FiX, 
-  FiGrid, 
-  FiSearch, 
+  FiPlusCircle,
+  FiCheckCircle,
+  FiX,
+  FiGrid,
+  FiSearch,
   FiBarChart2,
 } from 'react-icons/fi';
 import { MdDragIndicator } from 'react-icons/md';
@@ -15,11 +15,11 @@ import { MdDragIndicator } from 'react-icons/md';
 import { ChartRenderer } from '@/components';
 import { useTheme } from '@/hooks/theme/useTheme';
 import { selectCharts, type Chart as ChartFromSlice } from '@/store/slices/chartSlice';
-import { 
-  selectDashboards, 
-  setActiveEditor, 
-  selectActiveEditor, 
-  updateActiveEditor 
+import {
+  selectDashboards,
+  setActiveEditor,
+  selectActiveEditor,
+  updateActiveEditor
 } from '@/store/slices/dashboardSlice';
 
 import 'react-grid-layout/css/styles.css';
@@ -71,7 +71,7 @@ const EditDashboardPage: React.FC = () => {
 
   const onLayoutChange = (_currentLayout: Layout[], allLayouts: any) => {
     if (!activeEditor) return;
-    
+
     // Create new layouts object with chartId persisted
     const updatedLayouts: any = {};
     Object.keys(allLayouts).forEach((bp) => {
@@ -94,21 +94,21 @@ const EditDashboardPage: React.FC = () => {
     if (!activeEditor) return;
     const layouts = (activeEditor.layouts || {}) as any;
     const exists = Object.values(layouts).flat().some((item: any) => item.chartId === chart.id);
-    
+
     if (exists) {
       const newLayouts: any = {};
       Object.keys(layouts).forEach((bp) => {
         newLayouts[bp] = layouts[bp].filter((item: any) => item.chartId !== chart.id);
       });
-      dispatch(updateActiveEditor({ 
-        layouts: newLayouts, 
-        charts: (newLayouts.lg || []).map((item: any) => item.chartId) 
+      dispatch(updateActiveEditor({
+        layouts: newLayouts,
+        charts: (newLayouts.lg || []).map((item: any) => item.chartId)
       }));
     } else {
       const newLayouts: any = {};
       const colsMap: any = { lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 };
       const widthMap: any = { lg: 4, md: 3, sm: 3, xs: 4, xxs: 2 };
-      
+
       const breakpoints = ['lg', 'md', 'sm', 'xs', 'xxs'];
       breakpoints.forEach((bp) => {
         const current = layouts[bp] || [];
@@ -124,9 +124,9 @@ const EditDashboardPage: React.FC = () => {
           },
         ];
       });
-      dispatch(updateActiveEditor({ 
-        layouts: newLayouts, 
-        charts: (newLayouts.lg || []).map((item: any) => item.chartId) 
+      dispatch(updateActiveEditor({
+        layouts: newLayouts,
+        charts: (newLayouts.lg || []).map((item: any) => item.chartId)
       }));
     }
   };
@@ -138,16 +138,18 @@ const EditDashboardPage: React.FC = () => {
     Object.keys(layouts).forEach((bp) => {
       newLayouts[bp] = layouts[bp].filter((item: any) => item.i !== itemId);
     });
-    dispatch(updateActiveEditor({ 
-      layouts: newLayouts, 
-      charts: (newLayouts.lg || []).map((item: any) => item.chartId) 
+    dispatch(updateActiveEditor({
+      layouts: newLayouts,
+      charts: (newLayouts.lg || []).map((item: any) => item.chartId)
     }));
   };
-  
-  const filteredCharts = useMemo(() => 
+
+  const filteredCharts = useMemo(() =>
     availableCharts.filter((chart: ChartFromSlice) =>
-        chart.name.toLowerCase().includes(searchTerm.toLowerCase())
+      chart.name.toLowerCase().includes(searchTerm.toLowerCase())
     ), [availableCharts, searchTerm]);
+
+  const isGridEmpty = ((activeEditor?.layouts as any)?.lg || []).length === 0;
 
   if (!activeEditor) {
     return (
@@ -158,8 +160,6 @@ const EditDashboardPage: React.FC = () => {
       </div>
     );
   }
-
-  const isGridEmpty = (activeEditor.layouts as any)?.lg?.length === 0;
 
   return (
     <div className={`${styles.addDashboardPageContainer} ${theme === 'dark' ? styles.dark : ''}`}>
@@ -203,7 +203,7 @@ const EditDashboardPage: React.FC = () => {
             <div className={styles.emptyDashboardMessage}>
               <FiGrid className={styles.icon} />
               <h2>Empty Dashboard</h2>
-              <p>Add charts to build your dashboard.</p>
+              <p>Add charts from the left panel to build your dashboard.</p>
             </div>
           )}
           <ResponsiveGridLayout
@@ -231,7 +231,7 @@ const EditDashboardPage: React.FC = () => {
                       <MdDragIndicator className={styles.dragIcon} />
                       <span className={styles.chartTitle}>{title}</span>
                     </div>
-                    <button 
+                    <button
                       className={styles.removeChartButtonInline}
                       onClick={(e) => { e.stopPropagation(); removeChartFromGrid(item.i); }}
                       onMouseDown={(e) => e.stopPropagation()}

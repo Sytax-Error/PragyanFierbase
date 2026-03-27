@@ -7,16 +7,18 @@
       }
 
       .content {
-        flex-grow: 1;
+        flex: 1;
         overflow-y: auto;
         /* Allows only the content area to scroll if it overflows */
         padding: var(--spacing-xl);
-        /* Standardized larger padding for all pages */
+        position: relative;
         background-color: var(--background-light);
-        color: var(--text-light);
-        transition: background-color var(--transition-medium), color var(--transition-medium);
         display: flex;
         flex-direction: column;
+      }
+
+      .content.no-padding {
+        padding: 0;
       }
 
       .dark .content {

@@ -1,5 +1,5 @@
 .charts-container {
-    /* Layout handled by global .content */
+    display: block;
 }
 
 .filter-section {
@@ -15,7 +15,7 @@
     gap: 20px;
 }
 
-:global(.dark) .filter-section {
+.dark .filter-section {
     background-color: var(--card-bg-dark);
     border-color: var(--card-border-dark);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
@@ -35,7 +35,7 @@
     transition: all 0.2s ease;
 }
 
-:global(.dark) .search-box {
+.dark .search-box {
     background-color: rgba(255, 255, 255, 0.03);
     border-color: var(--card-border-dark);
     color: var(--text-dark-secondary);
@@ -47,7 +47,7 @@
     box-shadow: 0 0 0 3px rgba(var(--primary-light-rgb), 0.1);
 }
 
-:global(.dark) .search-box:focus-within {
+.dark .search-box:focus-within {
     background-color: rgba(255, 255, 255, 0.05);
 }
 
@@ -60,7 +60,7 @@
     font-size: 0.95rem;
 }
 
-:global(.dark) .search-box input {
+.dark .search-box input {
     color: var(--text-dark);
 }
 
@@ -83,7 +83,7 @@
     transition: all 0.2s ease;
 }
 
-:global(.dark) .view-toggle button {
+.dark .view-toggle button {
     border-color: var(--card-border-dark);
     color: var(--text-dark-secondary);
 }
@@ -116,7 +116,7 @@
     color: var(--text-light-secondary);
 }
 
-:global(.dark) .empty-state {
+.dark .empty-state {
     color: var(--text-dark-secondary);
 }
 
@@ -127,7 +127,7 @@
     color: var(--text-light);
 }
 
-:global(.dark) .empty-state h3 {
+.dark .empty-state h3 {
     color: var(--text-dark);
 }
 
