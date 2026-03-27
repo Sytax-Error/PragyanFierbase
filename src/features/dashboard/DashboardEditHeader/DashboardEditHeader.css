@@ -1,0 +1,115 @@
+.dashboard-edit-header-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-grow: 1;
+    min-width: 0;
+}
+
+.back-btn-header {
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    flex-shrink: 0;
+}
+
+.back-btn-header:hover {
+    background: rgba(0, 0, 0, 0.05);
+    color: #1e293b;
+    transform: translateX(-2px);
+}
+
+.dark .back-btn-header:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: #f1f5f9;
+}
+
+.dashboard-editable-title-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-grow: 1;
+    min-width: 0;
+    margin-left: 4px;
+}
+
+.dashboard-label {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: #64748b;
+    white-space: nowrap;
+}
+
+.input-group-editing {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border-bottom: 2px solid transparent;
+    padding-bottom: 2px;
+    transition: all 0.2s ease;
+    max-width: 100%;
+}
+
+.input-group-editing:hover {
+    border-bottom-color: rgba(59, 130, 246, 0.3);
+}
+
+.input-group-editing:focus-within {
+    border-bottom-color: #3b82f6;
+}
+
+.edit-icon-pencil {
+    color: #94a3b8;
+    opacity: 0.4;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.input-group-editing:hover .edit-icon-pencil {
+    color: #3b82f6;
+    opacity: 1;
+}
+
+.dashboard-name-input-header {
+    font-size: 1.25rem;
+    /* Exactly match the detail page title size */
+    font-weight: 700;
+    border: none;
+    background-color: transparent;
+    color: #1e293b;
+    width: 200px;
+    /* Base width */
+    max-width: 400px;
+    padding: 0;
+    line-height: normal;
+    outline: none;
+    transition: width 0.2s ease;
+}
+
+.dashboard-name-input-header:focus {
+    width: 300px;
+    /* Expand slightly on focus if needed */
+}
+
+.dark .dashboard-name-input-header {
+    color: #f1f5f9;
+}
+
+.header-right {
+    flex-shrink: 0;
+    margin-left: 16px;
+}

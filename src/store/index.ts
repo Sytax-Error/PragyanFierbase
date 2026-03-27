@@ -29,10 +29,9 @@ console.log('Store: Configuring Redux store with persistence...');
 const persistConfig = {
   key: 'root', // The key for the persisted state in local storage.
   storage, // The storage engine to use (localStorage for web).
-  // The 'charts' slice is persisted. The 'dashboards' slice is NOT persisted
-  // to ensure the rich mock data is loaded on every refresh.
-  whitelist: ['charts'],
-  blacklist: ['chartEditor', 'dashboards'] // Explicitly blacklist dashboards as well for clarity.
+  // The 'charts' and 'dashboards' slices are persisted.
+  whitelist: ['charts', 'dashboards'],
+  blacklist: ['chartEditor'] // Explicitly blacklist chartEditor for clarity.
 };
 
 const rootReducer = combineReducers({

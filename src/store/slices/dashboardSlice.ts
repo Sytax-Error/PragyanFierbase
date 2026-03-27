@@ -14,11 +14,13 @@ export interface Dashboard {
 
 interface DashboardsState {
   dashboards: Dashboard[];
+  activeEditor: Dashboard | null;
   status: 'idle' | 'loading' | 'failed';
 }
 
 const initialState: DashboardsState = {
-  dashboards: [], // Start with empty list as requested
+  dashboards: [],
+  activeEditor: null,
   status: 'idle',
 };
 
@@ -39,11 +41,26 @@ const dashboardsSlice = createSlice({
     removeDashboard: (state, action: PayloadAction<string>) => {
       state.dashboards = state.dashboards.filter((d) => d.id !== action.payload);
     },
+    setActiveEditor: (state, action: PayloadAction<Dashboard | null>) => {
+      state.activeEditor = action.payload;
+    },
+    updateActiveEditor: (state, action: PayloadAction<Partial<Dashboard>>) => {
+      if (state.activeEditor) {
+        state.activeEditor = { ...state.activeEditor, ...action.payload };
+      }
+    },
   },
 });
 
-export const { addDashboard, updateDashboard, removeDashboard } = dashboardsSlice.actions;
+export const { 
+  addDashboard, 
+  updateDashboard, 
+  removeDashboard, 
+  setActiveEditor, 
+  updateActiveEditor 
+} = dashboardsSlice.actions;
 
 export const selectDashboards = (state: RootState) => state.dashboards.dashboards;
+export const selectActiveEditor = (state: RootState) => state.dashboards.activeEditor;
 
 export default dashboardsSlice.reducer;

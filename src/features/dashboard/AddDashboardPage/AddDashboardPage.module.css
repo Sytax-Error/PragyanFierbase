@@ -191,7 +191,8 @@
   background-color: transparent;
   color: var(--text-light);
   width: 100%;
-  padding: var(--spacing-sm) 0;
+  padding: 0;
+  line-height: normal;
 }
 
 .addDashboardPageContainer.dark .dashboardNameInput {
@@ -290,6 +291,37 @@
 .removeChartButton:hover {
   background: rgba(239, 68, 68, 0.1);
   color: #ef4444;
+}
+
+.chartDragHandle .headerLeft .chartTitle {
+  max-width: 120px;
+}
+
+.headerLeftAction {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.backButtonCompact {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 4px;
+  /* Reduced from 8px to align better with large text */
+  margin-right: 4px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.backButtonCompact:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #f1f5f9;
+  transform: translateX(-2px);
 }
 
 .chartDragHandle {
