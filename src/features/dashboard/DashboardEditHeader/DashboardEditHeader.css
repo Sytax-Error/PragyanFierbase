@@ -117,8 +117,8 @@
     /* Expand slightly on focus if needed */
 }
 
-:global(.dark) .dashboard-name-input-header {
-    color: var(--text-dark);
+.dashboard-name-input-header.dark {
+    color: var(--text-dark-secondary);
 }
 
 .header-right {

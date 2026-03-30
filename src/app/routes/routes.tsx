@@ -43,7 +43,6 @@ const routes = [
         element: <AddDashboardPage />,
         handle: {
           subHeader: <DashboardAddHeader />,
-          noPadding: true,
         },
       },
       {
@@ -60,7 +59,6 @@ const routes = [
         element: <EditDashboardPage />,
         handle: {
           subHeader: <DashboardEditHeader />,
-          noPadding: true,
         },
       },
       {

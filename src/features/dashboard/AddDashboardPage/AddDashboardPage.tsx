@@ -1,24 +1,20 @@
-
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Responsive, WidthProvider, type Layout } from 'react-grid-layout';
 import {
-  FiPlusCircle, 
-  FiCheckCircle, 
-  FiX, 
-  FiGrid, 
-  FiSearch, 
-  FiBarChart2,
+  FiX,
+  FiGrid,
 } from 'react-icons/fi';
 import { MdDragIndicator } from 'react-icons/md';
 
 import { ChartRenderer } from '@/components';
 import { useTheme } from '@/hooks/theme/useTheme';
 import { selectCharts, type Chart as ChartFromSlice } from '@/store/slices/chartSlice';
-import { 
-  setActiveEditor, 
-  selectActiveEditor, 
-  updateActiveEditor 
+import DashboardSidebar from '../components/DashboardSidebar/DashboardSidebar';
+import {
+  setActiveEditor,
+  selectActiveEditor,
+  updateActiveEditor
 } from '@/store/slices/dashboardSlice';
 
 import 'react-grid-layout/css/styles.css';
@@ -35,9 +31,11 @@ const AddDashboardPage: React.FC = () => {
   const dispatch = useDispatch();
   const activeEditor = useSelector(selectActiveEditor);
   const availableCharts = useSelector(selectCharts);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const { theme } = useTheme();
   const scrollContainerRef = React.useRef<HTMLDivElement>(null);
+
+  const toggleSidebar = () => setIsSidebarCollapsed(!isSidebarCollapsed);
 
   // Initialize active editor if null
   useEffect(() => {
@@ -69,7 +67,7 @@ const AddDashboardPage: React.FC = () => {
     const container = scrollContainerRef.current;
     const containerRect = container.getBoundingClientRect();
     const elementRect = element.getBoundingClientRect();
-    
+
     const threshold = 60;
     const scrollSpeed = 15;
 
@@ -98,7 +96,7 @@ const AddDashboardPage: React.FC = () => {
       });
     });
 
-    dispatch(updateActiveEditor({ 
+    dispatch(updateActiveEditor({
       layouts: updatedLayouts,
       charts: (updatedLayouts.lg || []).map((item: any) => item.chartId)
     }));
@@ -117,7 +115,7 @@ const AddDashboardPage: React.FC = () => {
           (item) => item.chartId !== chart.id
         );
       });
-      dispatch(updateActiveEditor({ 
+      dispatch(updateActiveEditor({
         layouts: newLayouts,
         charts: (newLayouts.lg || []).map((item: any) => item.chartId)
       }));
@@ -146,7 +144,7 @@ const AddDashboardPage: React.FC = () => {
         ];
       });
 
-      dispatch(updateActiveEditor({ 
+      dispatch(updateActiveEditor({
         layouts: newLayouts,
         charts: (newLayouts.lg || []).map((item: any) => item.chartId)
       }));
@@ -158,16 +156,11 @@ const AddDashboardPage: React.FC = () => {
     Object.keys(layouts).forEach((bp) => {
       newLayouts[bp] = (layouts[bp] as any[]).filter((item) => item.i !== itemId);
     });
-    dispatch(updateActiveEditor({ 
+    dispatch(updateActiveEditor({
       layouts: newLayouts,
       charts: (newLayouts.lg || []).map((item: any) => item.chartId)
     }));
   };
-  
-  const filteredCharts = useMemo(() => 
-    availableCharts.filter((chart: ChartFromSlice) =>
-        chart.name.toLowerCase().includes(searchTerm.toLowerCase())
-    ), [availableCharts, searchTerm]);
 
   if (!activeEditor) return <div className={styles.loading}>Loading...</div>;
 
@@ -175,48 +168,18 @@ const AddDashboardPage: React.FC = () => {
   const isGridEmpty = (layouts.lg || []).length === 0;
 
   return (
-    <div className={`${styles.addDashboardPageContainer} ${theme === 'dark' ? styles.dark : ''}`}>
-      <aside className={`${styles.chartsPanel} ${isGridEmpty ? styles.disabledScroll : ''}`}>
-        <h3 className={styles.panelTitle}>Available Charts</h3>
-        <div className={styles.searchBar}>
-          <FiSearch className={styles.searchIcon} />
-          <input
-            type="text"
-            placeholder="Search charts..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-          {searchTerm && (
-            <button onClick={() => setSearchTerm('')} className={styles.clearBtn}>
-              <FiX />
-            </button>
-          )}
-        </div>
-        <div className={styles.chartList}>
-          {filteredCharts.map((chart: ChartFromSlice) => {
-            const isChartInLayout = (layouts.lg || []).some((item: any) => item.chartId === chart.id);
-            return (
-              <div 
-                key={chart.id} 
-                className={styles.chartListItem}
-                onClick={() => toggleChartInGrid(chart)}
-              >
-                <FiBarChart2 />
-                <span>{chart.name}</span>
-                {isChartInLayout ? (
-                  <FiCheckCircle className={styles.addedChartIndicator} />
-                ) : (
-                  <FiPlusCircle className={styles.addChartIndicator} />
-                )}
-              </div>
-            );
-          })}
-        </div>
-      </aside>
+    <div className={`${styles.addDashboardPageContainer} ${theme === 'dark' ? styles.dark : ''} ${isSidebarCollapsed ? styles.sidebarCollapsed : ''}`}>
+      <DashboardSidebar
+        availableCharts={availableCharts}
+        layoutsLg={layouts.lg || []}
+        isCollapsed={isSidebarCollapsed}
+        onToggle={toggleSidebar}
+        onToggleChart={toggleChartInGrid}
+      />
 
-      <main 
+      <main
         ref={scrollContainerRef}
-        className={`${styles.dashboardCanvas} ${isGridEmpty ? styles.disabledScroll : ''}`}
+        className={`${styles.dashboardCanvas} card ${isGridEmpty ? styles.disabledScroll : ''}`}
       >
         {/* Header removed - now in SubHeader */}
         <div className={`${styles.gridContainer} ${isGridEmpty ? styles.isEmpty : ''}`}>
@@ -247,7 +210,7 @@ const AddDashboardPage: React.FC = () => {
             {(layouts.lg || []).map((item: any) => {
               const chart = availableCharts.find((c: ChartFromSlice) => c.id === item.chartId);
               const title = chart ? chart.name : 'Unknown Chart';
-              
+
               return (
                 <div key={item.i} className={styles.gridItemWrapper}>
                   <div className={styles.chartDragHandle} title="Drag to move">
@@ -255,7 +218,7 @@ const AddDashboardPage: React.FC = () => {
                       <MdDragIndicator className={styles.dragIcon} />
                       <span className={styles.chartTitle}>{title}</span>
                     </div>
-                    <button 
+                    <button
                       className={styles.removeChartButtonInline}
                       onClick={(e) => {
                         e.stopPropagation();
@@ -268,9 +231,9 @@ const AddDashboardPage: React.FC = () => {
                     </button>
                   </div>
                   <div className={styles.gridItemContent}>
-                    <ChartRenderer 
-                      chartId={item.chartId} 
-                      mode="dashboard" 
+                    <ChartRenderer
+                      chartId={item.chartId}
+                      mode="dashboard"
                       hideHeader={true}
                     />
                   </div>

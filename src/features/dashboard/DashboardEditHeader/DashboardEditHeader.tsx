@@ -2,21 +2,23 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { FiArrowLeft, FiSave, FiEdit2 } from 'react-icons/fi';
-import { 
-  selectActiveEditor, 
-  updateActiveEditor, 
+import {
+  selectActiveEditor,
+  updateActiveEditor,
   updateDashboard,
   setActiveEditor
 } from '@/store/slices/dashboardSlice';
 import { Button } from '@/components';
 import DashboardSaveDialog from '../AddDashboardPage/DashboardSaveDialog';
 import './DashboardEditHeader.css';
+import { useTheme } from '@/hooks/theme/useTheme';
 
 const DashboardEditHeader: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const activeEditor = useSelector(selectActiveEditor);
   const [isSaveDialogOpen, setIsSaveDialogOpen] = React.useState(false);
+  const { theme } = useTheme();
 
   if (!activeEditor) return null;
 
@@ -52,7 +54,7 @@ const DashboardEditHeader: React.FC = () => {
               value={activeEditor.name}
               onChange={(e) => dispatch(updateActiveEditor({ name: e.target.value }))}
               placeholder="Enter Dashboard Name"
-              className="dashboard-name-input-header"
+              className={`dashboard-name-input-header ${theme === 'dark' ? 'dark' : 'light'}`}
             />
             <FiEdit2 size={14} className="edit-icon-pencil" />
           </div>
@@ -64,7 +66,7 @@ const DashboardEditHeader: React.FC = () => {
           <span>Update</span>
         </Button>
       </div>
-      <DashboardSaveDialog 
+      <DashboardSaveDialog
         isOpen={isSaveDialogOpen}
         onClose={() => setIsSaveDialogOpen(false)}
         onConfirmAndNavigate={() => {

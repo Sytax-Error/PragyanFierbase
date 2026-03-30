@@ -1,14 +1,10 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { Responsive, WidthProvider, type Layout } from 'react-grid-layout';
 import {
-  FiPlusCircle,
-  FiCheckCircle,
   FiX,
-  FiGrid,
-  FiSearch,
-  FiBarChart2,
+  FiGrid
 } from 'react-icons/fi';
 import { MdDragIndicator } from 'react-icons/md';
 
@@ -21,6 +17,8 @@ import {
   selectActiveEditor,
   updateActiveEditor
 } from '@/store/slices/dashboardSlice';
+
+import DashboardSidebar from '../components/DashboardSidebar/DashboardSidebar';
 
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
@@ -40,8 +38,10 @@ const EditDashboardPage: React.FC = () => {
   const activeEditor = useSelector(selectActiveEditor);
   const availableCharts = useSelector(selectCharts);
 
-  const [searchTerm, setSearchTerm] = useState('');
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const scrollContainerRef = React.useRef<HTMLDivElement>(null);
+
+  const toggleSidebar = () => setIsSidebarCollapsed(!isSidebarCollapsed);
 
   useEffect(() => {
     const existingDashboard = dashboards.find((d) => d.id === dashboardId);
@@ -144,11 +144,6 @@ const EditDashboardPage: React.FC = () => {
     }));
   };
 
-  const filteredCharts = useMemo(() =>
-    availableCharts.filter((chart: ChartFromSlice) =>
-      chart.name.toLowerCase().includes(searchTerm.toLowerCase())
-    ), [availableCharts, searchTerm]);
-
   const isGridEmpty = ((activeEditor?.layouts as any)?.lg || []).length === 0;
 
   if (!activeEditor) {
@@ -162,42 +157,16 @@ const EditDashboardPage: React.FC = () => {
   }
 
   return (
-    <div className={`${styles.addDashboardPageContainer} ${theme === 'dark' ? styles.dark : ''}`}>
-      <aside className={`${styles.chartsPanel} ${isGridEmpty ? styles.disabledScroll : ''}`}>
-        <h3 className={styles.panelTitle}>Available Charts</h3>
-        <div className={styles.searchBar}>
-          <FiSearch className={styles.searchIcon} />
-          <input
-            type="text"
-            placeholder="Search charts..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-          {searchTerm && (
-            <button onClick={() => setSearchTerm('')} className={styles.clearBtn}>
-              <FiX />
-            </button>
-          )}
-        </div>
-        <div className={styles.chartList}>
-          {filteredCharts.map((chart: ChartFromSlice) => {
-            const isChartInLayout = ((activeEditor.layouts as any)?.lg || []).some((item: any) => item.chartId === chart.id);
-            return (
-              <div key={chart.id} className={styles.chartListItem} onClick={() => toggleChartInGrid(chart)}>
-                <FiBarChart2 />
-                <span>{chart.name}</span>
-                {isChartInLayout ? (
-                  <FiCheckCircle className={styles.addedChartIndicator} />
-                ) : (
-                  <FiPlusCircle className={styles.addChartIndicator} />
-                )}
-              </div>
-            );
-          })}
-        </div>
-      </aside>
+    <div className={`${styles.addDashboardPageContainer} ${theme === 'dark' ? styles.dark : ''} ${isSidebarCollapsed ? styles.sidebarCollapsed : ''}`}>
+      <DashboardSidebar
+        availableCharts={availableCharts}
+        layoutsLg={(activeEditor.layouts as any)?.lg || []}
+        isCollapsed={isSidebarCollapsed}
+        onToggle={toggleSidebar}
+        onToggleChart={toggleChartInGrid}
+      />
 
-      <main ref={scrollContainerRef} className={`${styles.dashboardCanvas} ${isGridEmpty ? styles.disabledScroll : ''}`}>
+      <main ref={scrollContainerRef} className={`${styles.dashboardCanvas} card ${isGridEmpty ? styles.disabledScroll : ''}`}>
         <div className={`${styles.gridContainer} ${isGridEmpty ? styles.isEmpty : ''}`}>
           {isGridEmpty && (
             <div className={styles.emptyDashboardMessage}>

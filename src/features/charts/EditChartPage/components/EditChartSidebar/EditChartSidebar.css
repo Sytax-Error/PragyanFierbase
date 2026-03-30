@@ -1,4 +1,3 @@
-
 .edit-chart-sidebar {
   position: relative;
   width: 22rem;
@@ -74,7 +73,11 @@
     right: -1.25rem;
     transform: translateY(-50%);
   }
-  
+
+  .edit-chart-sidebar.collapsed .sidebar-toggle {
+    right: -2rem;
+  }
+
   .sidebar-toggle:hover {
     transform: translateY(-50%) scale(1.1);
     background-color: var(--primary-color);
@@ -90,11 +93,13 @@
   .edit-chart-sidebar {
     width: 100%;
     height: auto;
-    max-height: 70vh; /* Allow more height for controls */
+    max-height: 70vh;
+    /* Allow more height for controls */
   }
 
   .edit-chart-sidebar.collapsed {
-    height: 3.5rem; /* Height of the header */
+    height: 3.5rem;
+    /* Height of the header */
     max-height: 3.5rem;
   }
 
@@ -104,7 +109,7 @@
     left: 50%;
     transform: translateX(-50%);
   }
-  
+
   .sidebar-toggle:hover {
     transform: translateX(-50%) scale(1.1);
     background-color: var(--primary-color);
@@ -125,5 +130,5 @@
 }
 
 .dark .sidebar-content {
-    color: var(--text-dark);
+  color: var(--text-dark);
 }
