@@ -34,7 +34,9 @@ const chartsSlice = createSlice({
     addChart: (state, action: PayloadAction<Chart>) => {
       state.charts.push(action.payload);
     },
-    
+    removeChart: (state, action: PayloadAction<string>) => {
+      state.charts = state.charts.filter((d) => d.id !== action.payload);
+    },
     // Reducer for updating an existing chart
     updateChart: (state, action: PayloadAction<{ id: string; changes: Partial<Chart> }>) => {
       const { id, changes } = action.payload;
@@ -48,7 +50,7 @@ const chartsSlice = createSlice({
 });
 
 // Export the actions
-export const { addChart, updateChart } = chartsSlice.actions;
+export const { addChart, removeChart, updateChart } = chartsSlice.actions;
 
 // Selector to get all charts
 export const selectCharts = (state: RootState) => state.charts.charts;

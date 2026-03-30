@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { Star, Trash2, Upload, FilePenLine, BarChart, Database, LayoutGrid, Clock } from 'lucide-react';
 import { formatTimeAgo } from '@/utils/formatTimeAgo';
 import '@/components/ChartCard/ChartCard.css';
-
+import { useDispatch } from 'react-redux';
+import { removeChart } from '@/store/slices/chartSlice';
 import type { Chart } from '@/store/slices/chartSlice';
 
 interface ChartCardProps {
@@ -13,6 +14,7 @@ interface ChartCardProps {
 
 const ChartCard: React.FC<ChartCardProps> = ({ chart, index }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleNavigate = () => {
     navigate(`/charts/edit/${chart.id}`);
@@ -27,6 +29,13 @@ const ChartCard: React.FC<ChartCardProps> = ({ chart, index }) => {
   const cardStyle = {
     '--animation-delay': `${index * 80}ms`,
   } as React.CSSProperties;
+
+  const handleDelete = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (window.confirm(`Are you sure you want to delete chart "${chart.name}"?`)) {
+      dispatch(removeChart(chart.id));
+    }
+  };
 
   return (
     <div className="chart-card" style={cardStyle} onClick={handleNavigate}>
@@ -59,9 +68,9 @@ const ChartCard: React.FC<ChartCardProps> = ({ chart, index }) => {
           </div>
         </div>
         <div className="action-icons">
-          <Trash2 data-action="Delete" onClick={handleIconClick} size={18} />
+          <Trash2 data-action="Delete" onClick={handleDelete} size={18} />
           <Upload data-action="Upload" onClick={handleIconClick} size={18} />
-          <FilePenLine data-action="Edit" onClick={handleIconClick} size={18} />
+          <FilePenLine data-action="Edit" onClick={handleNavigate} size={18} />
         </div>
       </div>
     </div>
