@@ -159,14 +159,14 @@
 }
 
 .chart-list-item .chart-name {
-    font-weight: 600;
+    font-weight: 500;
     flex-grow: 1;
     color: var(--text-light);
 
 }
 
 .chart-list-item .chart-name.dark {
-    font-weight: 600;
+    font-weight: 500;
     flex-grow: 1;
     color: var(--text-dark-secondary);
 
@@ -205,7 +205,7 @@
 
     .sidebar-toggle {
         top: 50%;
-        right: -1.25rem;
+        right: -1.7rem;
         transform: translateY(-50%);
     }
 
