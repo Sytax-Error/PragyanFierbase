@@ -8,15 +8,15 @@ interface EditChartMainProps {
   chartProps: unknown;
 }
 
-const EditChartMain: React.FC<EditChartMainProps> = ({ 
-  dataLoading, 
-  ChartComponent, 
-  chartProps 
+const EditChartMain: React.FC<EditChartMainProps> = ({
+  dataLoading,
+  ChartComponent,
+  chartProps
 }) => {
   return (
     <div className="edit-chart-main card">
       {dataLoading ? (
-        <StatusIndicator status="loading" message="Fetching data..." />
+        <StatusIndicator status="loading" message="Loading chart data..." />
       ) : ChartComponent ? (
         <ChartComponent {...chartProps as object} />
       ) : (

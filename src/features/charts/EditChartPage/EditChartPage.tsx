@@ -112,14 +112,8 @@ const EditChartPage: React.FC = () => {
   const toggleSidebar = () => {
     setIsSidebarCollapsed(!isSidebarCollapsed);
   };
-  
-  // --- Render Logic ---
-  if (dataLoading) {
-      return <StatusIndicator status="loading" message="Loading chart data..." />;
-  }
-
   if (!existingChart) {
-      return <Navigate to="/charts" replace />;
+    return <Navigate to="/charts" replace />;
   }
 
   if (status === "not-found") {
@@ -137,9 +131,8 @@ const EditChartPage: React.FC = () => {
 
   return (
     <div
-      className={`edit-chart-container ${theme} ${
-        isSidebarCollapsed ? "sidebar-collapsed" : ""
-      }`}
+      className={`edit-chart-container ${theme} ${isSidebarCollapsed ? "sidebar-collapsed" : ""
+        }`}
     >
       <EditChartSidebar
         title="Control Section"
@@ -147,7 +140,7 @@ const EditChartPage: React.FC = () => {
         dataset={dataset}
         controls={controls}
         handleControlChange={handleControlChange}
-        onCreateChart={() => {}} // No create functionality on this page
+        onCreateChart={() => { }} // No create functionality on this page
         isLoading={dataLoading}
         isCollapsed={isSidebarCollapsed}
         onToggle={toggleSidebar}
