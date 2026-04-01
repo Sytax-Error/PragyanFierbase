@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -8,10 +9,10 @@ import {
   addDashboard,
   setActiveEditor
 } from '@/store/slices/dashboardSlice';
-import { Button } from '@/components';
-import DashboardSaveDialog from './DashboardSaveDialog';
+import { Button, ConfirmationDialog } from '@/components';
 import '../DashboardEditHeader/DashboardEditHeader.css';
 import { useTheme } from '@/hooks/theme/useTheme';
+import { List, Save } from 'lucide-react';
 
 const DashboardAddHeader: React.FC = () => {
   const navigate = useNavigate();
@@ -66,16 +67,24 @@ const DashboardAddHeader: React.FC = () => {
           <span>Save Dashboard</span>
         </Button>
       </div>
-      <DashboardSaveDialog
+      <ConfirmationDialog
         isOpen={isSaveDialogOpen}
         onClose={() => setIsSaveDialogOpen(false)}
-        onConfirmAndNavigate={() => {
-          setIsSaveDialogOpen(false);
-          dispatch(setActiveEditor(null));
-          navigate('/dashboards');
+        title="Dashboard Saved!"
+        message={`Your dashboard "${activeEditor.name}" has been saved successfully. What would you like to do next?`}
+        icon={<Save size={32} className="success-icon" />}
+        primaryAction={{
+          text: <><List size={16} /> Go to Dashboards List</>,
+          onClick: () => {
+            setIsSaveDialogOpen(false);
+            dispatch(setActiveEditor(null));
+            navigate('/dashboards');
+          }
         }}
-        onStay={() => setIsSaveDialogOpen(false)}
-        dashboardName={activeEditor.name}
+        secondaryAction={{
+          text: "Stay and Edit",
+          onClick: () => setIsSaveDialogOpen(false)
+        }}
       />
     </div>
   );

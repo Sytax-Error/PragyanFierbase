@@ -1,0 +1,58 @@
+
+.dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.dialog-content {
+  position: relative;
+  padding: 3rem;
+  min-width: 400px;
+  max-width: 90%;
+  text-align: center;
+}
+
+.close-button {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+}
+
+.dialog-icon-wrapper {
+  margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--primary-color);
+}
+
+.dialog-body h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.dialog-body p {
+  margin: 0 0 1.5rem 0;
+  font-size: 1rem;
+  color: var(--text-color-secondary);
+}
+
+.dialog-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 2rem;
+}

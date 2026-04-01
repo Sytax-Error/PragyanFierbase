@@ -2,12 +2,13 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Button, SaveConfirmationDialog } from '@/components';
+import { Button, ConfirmationDialog } from '@/components'; // Correctly import ConfirmationDialog
 import { addChart, updateChart } from '@/store/slices/chartSlice';
 import { selectChartEditor, resetEditor } from '@/store/slices/chartEditorSlice';
 import { fetchDatasets } from '@/store/slices/datasetSlice';
 import { vizRegistry } from '@/core/visualization';
 import type { RootState, AppDispatch } from '@/store';
+import { Save, List } from 'lucide-react'; // Import icons
 
 const SubHeaderActions: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -72,7 +73,6 @@ const SubHeaderActions: React.FC = () => {
   };
 
   const handleConfirmAndNavigate = () => {
-    // The save has already happened, so we just navigate.
     setIsDialogOpen(false);
     if (!isEditMode) {
         dispatch(resetEditor());
@@ -80,10 +80,15 @@ const SubHeaderActions: React.FC = () => {
     navigate('/charts');
   };
 
-  // This handler now just closes the dialog.
   const handleConfirmAndStay = () => {
     setIsDialogOpen(false);
   };
+
+  const headingText = isEditMode ? 'Chart Updated Successfully!' : 'Chart Saved Successfully!';
+  const paragraphText = isEditMode
+    ? 'Your changes have been saved. You can continue editing or return to the charts list.'
+    : 'Your new chart has been saved. You can view it in the charts list or stay to create another.';
+  const stayText = isEditMode ? 'Continue Editing' : 'Save & Create Another';
 
   return (
     <>
@@ -93,12 +98,19 @@ const SubHeaderActions: React.FC = () => {
         </Button>
       </div>
 
-      <SaveConfirmationDialog
+      <ConfirmationDialog
         isOpen={isDialogOpen}
         onClose={handleCloseDialog}
-        onConfirmAndNavigate={handleConfirmAndNavigate}
-        onConfirmAndStay={handleConfirmAndStay}
-        isEditMode={isEditMode}
+        title={headingText}
+        message={paragraphText}
+        primaryAction={{
+          text: <><List size={16} /> Go to Charts List</>,
+          onClick: handleConfirmAndNavigate,
+        }}
+        secondaryAction={{
+          text: <><Save size={16} /> {stayText}</>,
+          onClick: handleConfirmAndStay,
+        }}
       />
     </>
   );
