@@ -20,7 +20,11 @@ import {
   type Dashboard,
 } from "@/store/slices/dashboardSlice";
 import { selectCharts, type Chart } from "@/store/slices/chartSlice";
-import ChartRow from "@/components/ChartRow/ChartRow";
+import { DataListTableHeader } from "@/components/DataListRow/DataListRow";
+import ChartRow, { chartColumns } from "@/components/ChartRow/ChartRow";
+import DashboardRow, {
+  dashboardColumns,
+} from "@/components/DashboardRow/DashboardRow";
 import "./HomePage.css";
 
 const statConfig = [
@@ -243,17 +247,9 @@ const HomePage: React.FC = () => {
           <div className="panel-body">
             {recentlyModified.length > 0 ? (
               <div className="data-list-container">
+                <DataListTableHeader columns={dashboardColumns} />
                 {recentlyModified.map((d) => (
-                  <ChartRow
-                    key={d.id}
-                    chart={
-                      {
-                        ...d,
-                        type: "dashboard",
-                        dataset: "N/A",
-                      } as unknown as Chart
-                    }
-                  />
+                  <DashboardRow key={d.id} dashboard={d} />
                 ))}
               </div>
             ) : (
@@ -291,6 +287,7 @@ const HomePage: React.FC = () => {
           <div className="panel-body">
             {recentCharts.length > 0 ? (
               <div className="data-list-container">
+                <DataListTableHeader columns={chartColumns} />
                 {recentCharts.map((chart) => (
                   <ChartRow key={chart.id} chart={chart} />
                 ))}

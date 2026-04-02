@@ -101,9 +101,53 @@
 }
 
 .charts-list {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  background: var(--card-bg-light);
+  border: 1px solid var(--card-border-light);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.dark .charts-list {
+  background: var(--card-bg-dark);
+  border-color: var(--card-border-dark);
+}
+
+/* Add table header styling */
+.charts-list-header {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr 100px;
+  padding: 12px 24px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-light-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.08);
+  background: #fafbfc;
+}
+
+.dark .charts-list-header {
+  color: var(--text-dark-secondary);
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+  background: rgba(30, 41, 59, 0.5);
+}
+
+.charts-list-col {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  min-width: 0;
+}
+
+.charts-list-col--center {
+  justify-content: center;
+}
+
+.charts-list-col--right {
+  justify-content: flex-end;
 }
 
 .empty-state {

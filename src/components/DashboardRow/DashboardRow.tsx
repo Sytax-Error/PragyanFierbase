@@ -10,10 +10,20 @@ import {
   Clock,
 } from "lucide-react";
 import { formatTimeAgo } from "@/utils/formatTimeAgo";
+import DataListRow, {
+  DataListTableHeader,
+  type DataListColumn,
+} from "@/components/DataListRow/DataListRow";
+import "./DashboardRow.css";
+
 import { useDispatch } from "react-redux";
 import { removeDashboard, type Dashboard } from "@/store/slices/dashboardSlice";
-import DataListRow from "@/components/DataListRow/DataListRow";
-import "./DashboardRow.css";
+
+export const dashboardColumns: DataListColumn[] = [
+  { header: "Charts", key: "charts" },
+  { header: "Owner", key: "owner" },
+  { header: "Modified", key: "modified" },
+];
 
 interface DashboardRowProps {
   dashboard: Dashboard;
@@ -49,52 +59,47 @@ const DashboardRow: React.FC<DashboardRowProps> = ({ dashboard }) => {
 
   return (
     <DataListRow
-      icon={<Star className="star-icon" size={18} />}
+      columns={dashboardColumns}
+      icon={<Star className="star-icon" size={16} />}
       name={name}
       description={description}
       onClick={handleNavigate}
       details={[
-        <div
-          key="charts"
-          style={{ display: "flex", alignItems: "center", gap: "6px" }}
-        >
-          <BarChart2 size={16} className="info-icon" />
+        <div className="data-list-detail-item" key="charts">
+          <BarChart2 size={14} className="icon" />
           <span>{charts?.length || 0}</span>
         </div>,
-        <div
-          key="owner"
-          style={{ display: "flex", alignItems: "center", gap: "6px" }}
-        >
-          <User size={16} className="info-icon" />
+        <div className="data-list-detail-item" key="owner">
+          <User size={14} className="icon" />
           <span>{owner}</span>
         </div>,
-        <div
-          key="modified"
-          style={{ display: "flex", alignItems: "center", gap: "6px" }}
-        >
-          <Clock size={14} className="info-icon" />
+        <div className="data-list-detail-item" key="modified">
+          <Clock size={14} className="icon" />
           <span>{lastModified ? formatTimeAgo(lastModified) : "N/A"}</span>
         </div>,
       ]}
       actions={[
         <button
           key="export"
-          className="data-list-row__action"
+          className="data-list-action-btn"
           onClick={handleExport}
+          title="Export"
         >
           <Upload size={14} />
         </button>,
         <button
           key="edit"
-          className="data-list-row__action"
+          className="data-list-action-btn"
           onClick={handleEdit}
+          title="Edit"
         >
           <FilePenLine size={14} />
         </button>,
         <button
           key="delete"
-          className="data-list-row__action data-list-row__action--delete"
+          className="data-list-action-btn data-list-action-btn--delete"
           onClick={handleDelete}
+          title="Delete"
         >
           <Trash2 size={14} />
         </button>,
@@ -103,4 +108,5 @@ const DashboardRow: React.FC<DashboardRowProps> = ({ dashboard }) => {
   );
 };
 
+export { DashboardRow, DataListTableHeader };
 export default DashboardRow;

@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { LayoutGrid, List, Search } from 'lucide-react';
-import { ChartCard, ChartRow } from '@/components';
-import { selectCharts } from '@/store/slices/chartSlice';
-import { useTheme } from '@/hooks/theme/useTheme';
-import '@/features/charts/ChartsPage/ChartsPage.css';
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import { LayoutGrid, List, Search } from "lucide-react";
+import { ChartCard, ChartRow } from "@/components";
+import { DataListTableHeader } from "@/components/DataListRow/DataListRow";
+import { selectCharts } from "@/store/slices/chartSlice";
+import { useTheme } from "@/hooks/theme/useTheme";
+import { chartColumns } from "@/components/ChartRow/ChartRow";
+import "@/features/charts/ChartsPage/ChartsPage.css";
 
 const ChartsPage: React.FC = () => {
   const [isGridView, setIsGridView] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const charts = useSelector(selectCharts);
   const { theme } = useTheme();
 
@@ -16,28 +18,29 @@ const ChartsPage: React.FC = () => {
     setIsGridView(!isGridView);
   };
 
-  const filteredCharts = charts.filter(c => 
-    c.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    c.dataset.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredCharts = charts.filter(
+    (c) =>
+      c.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      c.dataset.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   return (
-    <div className={`charts-container ${theme === 'dark' ? 'dark' : ''}`}>
+    <div className={`charts-container ${theme === "dark" ? "dark" : ""}`}>
       <div className="filter-section">
         <div className="search-box">
           <Search size={18} />
-          <input 
-            type="text" 
-            placeholder="Search charts..." 
+          <input
+            type="text"
+            placeholder="Search charts..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
         <div className="view-toggle">
-          <button onClick={toggleView} className={isGridView ? '' : 'active'}>
+          <button onClick={toggleView} className={isGridView ? "" : "active"}>
             <List size={20} />
           </button>
-          <button onClick={toggleView} className={isGridView ? 'active' : ''}>
+          <button onClick={toggleView} className={isGridView ? "active" : ""}>
             <LayoutGrid size={20} />
           </button>
         </div>
@@ -56,6 +59,7 @@ const ChartsPage: React.FC = () => {
         </div>
       ) : (
         <div className="charts-list">
+          <DataListTableHeader columns={chartColumns} />
           {filteredCharts.map((chart) => (
             <ChartRow key={chart.id} chart={chart} />
           ))}

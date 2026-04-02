@@ -94,9 +94,18 @@
 }
 
 .dashboards-list {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  background: var(--card-bg-light);
+  border: 1px solid var(--card-border-light);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.dark .dashboards-list {
+  background: var(--card-bg-dark);
+  border-color: var(--card-border-dark);
 }
 
 .empty-state {
