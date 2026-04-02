@@ -1,10 +1,10 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Star, Trash2, Upload, FilePenLine, BarChart2, Database, LayoutGrid, Clock, User } from 'lucide-react';
-import { formatTimeAgo } from '@/utils/formatTimeAgo';
-import './ChartRow.css';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { Trash2, Upload, FilePenLine, BarChart2, Clock } from "lucide-react";
+import { formatTimeAgo } from "@/utils/formatTimeAgo";
+import DataListRow from "@/components/DataListRow/DataListRow";
 
-import type { Chart } from '@/store/slices/chartSlice';
+import type { Chart } from "@/store/slices/chartSlice";
 
 interface ChartRowProps {
   chart: Chart;
@@ -12,7 +12,7 @@ interface ChartRowProps {
 
 const ChartRow: React.FC<ChartRowProps> = ({ chart }) => {
   const navigate = useNavigate();
-  const { id, name, type, dataset, onDashboards, owners, lastModified } = chart;
+  const { id, name, type, dataset, lastModified } = chart;
 
   const handleNavigate = () => {
     navigate(`/edit-chart/${id}`);
@@ -24,47 +24,45 @@ const ChartRow: React.FC<ChartRowProps> = ({ chart }) => {
   };
 
   return (
-    <div className="chart-row" onClick={handleNavigate}>
-      <div className="chart-row-main">
-        <Star className="star-icon" size={18} />
-        <div className="name-container">
-          <span className="chart-name">{name}</span>
-        </div>
-      </div>
-      
-      <div className="chart-row-details">
-        <div className="chart-info" title="Chart Type">
-          <BarChart2 size={16} className="info-icon" />
-          <span>{type}</span>
-        </div>
-        
-        <div className="chart-info" title="Dataset">
-          <Database size={16} className="info-icon" />
-          <span>{dataset}</span>
-        </div>
-        
-        <div className="chart-info" title="Appearances on dashboards">
-          <LayoutGrid size={16} className="info-icon" />
-          <span>{onDashboards}</span>
-        </div>
-
-        <div className="chart-info" title="Owner">
-          <User size={16} className="info-icon" />
-          <span>{owners}</span>
-        </div>
-        
-        <div className="chart-info time-info" title="Last modified">
-          <Clock size={14} className="info-icon" />
-          <span>{formatTimeAgo(lastModified)}</span>
-        </div>
-      </div>
-
-      <div className="action-icons">
-        <Trash2 className="action-icon delete" onClick={(e) => handleAction(e, 'Delete')} size={18} />
-        <Upload className="action-icon export" onClick={(e) => handleAction(e, 'Export')} size={18} />
-        <FilePenLine className="action-icon edit" onClick={(e) => handleAction(e, 'Edit')} size={18} />
-      </div>
-    </div>
+    <DataListRow
+      icon={<BarChart2 size={14} />}
+      name={name}
+      onClick={handleNavigate}
+      details={[
+        <span key="type">{type}</span>,
+        <span key="dataset">{dataset}</span>,
+        <div
+          key="modified"
+          style={{ display: "flex", alignItems: "center", gap: "6px" }}
+        >
+          <Clock size={12} />
+          {formatTimeAgo(lastModified)}
+        </div>,
+      ]}
+      actions={[
+        <button
+          key="export"
+          className="data-list-row__action"
+          onClick={(e) => handleAction(e, "Export")}
+        >
+          <Upload size={14} />
+        </button>,
+        <button
+          key="edit"
+          className="data-list-row__action"
+          onClick={(e) => handleAction(e, "Edit")}
+        >
+          <FilePenLine size={14} />
+        </button>,
+        <button
+          key="delete"
+          className="data-list-row__action data-list-row__action--delete"
+          onClick={(e) => handleAction(e, "Delete")}
+        >
+          <Trash2 size={14} />
+        </button>,
+      ]}
+    />
   );
 };
 

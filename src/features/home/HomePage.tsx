@@ -6,11 +6,9 @@ import {
   LayoutDashboard,
   Plus,
   ArrowRight,
-  Clock,
   PieChart,
   Users,
   Activity,
-  Eye,
   TrendingUp,
   Sparkles,
   ExternalLink,
@@ -22,6 +20,7 @@ import {
   type Dashboard,
 } from "@/store/slices/dashboardSlice";
 import { selectCharts, type Chart } from "@/store/slices/chartSlice";
+import ChartRow from "@/components/ChartRow/ChartRow";
 import "./HomePage.css";
 
 const statConfig = [
@@ -243,34 +242,18 @@ const HomePage: React.FC = () => {
           </div>
           <div className="panel-body">
             {recentlyModified.length > 0 ? (
-              <div className="table-list">
-                <div className="table-head">
-                  <span className="col-name">Name</span>
-                  <span className="col-owner">Owner</span>
-                  <span className="col-time">Modified</span>
-                  <span className="col-action" />
-                </div>
+              <div className="data-list-container">
                 {recentlyModified.map((d) => (
-                  <button
+                  <ChartRow
                     key={d.id}
-                    className="table-item-row"
-                    onClick={() => navigate(`/dashboards/${d.id}`)}
-                  >
-                    <div className="col-name">
-                      <LayoutDashboard size={14} />
-                      <span className="name-text">{d.name}</span>
-                    </div>
-                    <span className="col-owner">{d.owner}</span>
-                    <span className="col-time">
-                      <Clock size={12} />
-                      {d.lastModified}
-                    </span>
-                    <div className="col-action">
-                      <button className="row-icon-btn">
-                        <Eye size={14} />
-                      </button>
-                    </div>
-                  </button>
+                    chart={
+                      {
+                        ...d,
+                        type: "dashboard",
+                        dataset: "N/A",
+                      } as unknown as Chart
+                    }
+                  />
                 ))}
               </div>
             ) : (
@@ -307,34 +290,9 @@ const HomePage: React.FC = () => {
           </div>
           <div className="panel-body">
             {recentCharts.length > 0 ? (
-              <div className="table-list">
-                <div className="table-head">
-                  <span className="col-name">Name</span>
-                  <span className="col-owner">Type</span>
-                  <span className="col-time">Created</span>
-                  <span className="col-action" />
-                </div>
+              <div className="data-list-container">
                 {recentCharts.map((chart) => (
-                  <button
-                    key={chart.id}
-                    className="table-item-row"
-                    onClick={() => navigate("/charts")}
-                  >
-                    <div className="col-name">
-                      <BarChart3 size={14} />
-                      <span className="name-text">{chart.name}</span>
-                    </div>
-                    <span className="col-owner">{chart.chartType}</span>
-                    <span className="col-time">
-                      <Clock size={12} />
-                      {chart.lastModified}
-                    </span>
-                    <div className="col-action">
-                      <button className="row-icon-btn">
-                        <Eye size={14} />
-                      </button>
-                    </div>
-                  </button>
+                  <ChartRow key={chart.id} chart={chart} />
                 ))}
               </div>
             ) : (

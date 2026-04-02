@@ -1,19 +1,19 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { 
-  Star, 
-  Trash2, 
-  Upload, 
-  FilePenLine, 
-  BarChart2, 
-  User, 
-  Clock 
-} from 'lucide-react';
-import { useDispatch } from 'react-redux';
-import { removeDashboard, type Dashboard } from '@/store/slices/dashboardSlice';
-import { formatTimeAgo } from '@/utils/formatTimeAgo';
-
-import './DashboardRow.css';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  Star,
+  Trash2,
+  Upload,
+  FilePenLine,
+  BarChart2,
+  User,
+  Clock,
+} from "lucide-react";
+import { formatTimeAgo } from "@/utils/formatTimeAgo";
+import { useDispatch } from "react-redux";
+import { removeDashboard, type Dashboard } from "@/store/slices/dashboardSlice";
+import DataListRow from "@/components/DataListRow/DataListRow";
+import "./DashboardRow.css";
 
 interface DashboardRowProps {
   dashboard: Dashboard;
@@ -30,7 +30,9 @@ const DashboardRow: React.FC<DashboardRowProps> = ({ dashboard }) => {
 
   const handleDelete = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (window.confirm(`Are you sure you want to delete dashboard "${name}"?`)) {
+    if (
+      window.confirm(`Are you sure you want to delete dashboard "${name}"?`)
+    ) {
       dispatch(removeDashboard(id));
     }
   };
@@ -46,38 +48,58 @@ const DashboardRow: React.FC<DashboardRowProps> = ({ dashboard }) => {
   };
 
   return (
-    <div className="dashboard-row" onClick={handleNavigate}>
-      <div className="dashboard-row-main">
-        <Star className="star-icon" size={18} />
-        <div className="name-container">
-          <span className="dashboard-name">{name}</span>
-          {description && <span className="dashboard-description-mini">{description}</span>}
-        </div>
-      </div>
-      
-      <div className="dashboard-row-details">
-        <div className="dashboard-info" title="Charts count">
+    <DataListRow
+      icon={<Star className="star-icon" size={18} />}
+      name={name}
+      description={description}
+      onClick={handleNavigate}
+      details={[
+        <div
+          key="charts"
+          style={{ display: "flex", alignItems: "center", gap: "6px" }}
+        >
           <BarChart2 size={16} className="info-icon" />
           <span>{charts?.length || 0}</span>
-        </div>
-        
-        <div className="dashboard-info" title="Owner">
+        </div>,
+        <div
+          key="owner"
+          style={{ display: "flex", alignItems: "center", gap: "6px" }}
+        >
           <User size={16} className="info-icon" />
           <span>{owner}</span>
-        </div>
-        
-        <div className="dashboard-info time-info" title="Last modified">
+        </div>,
+        <div
+          key="modified"
+          style={{ display: "flex", alignItems: "center", gap: "6px" }}
+        >
           <Clock size={14} className="info-icon" />
-          <span>{formatTimeAgo(lastModified)}</span>
-        </div>
-      </div>
-
-      <div className="action-icons">
-        <Trash2 className="action-icon delete" onClick={handleDelete} size={18} />
-        <Upload className="action-icon export" onClick={handleExport} size={18} />
-        <FilePenLine className="action-icon edit" onClick={handleEdit} size={18} />
-      </div>
-    </div>
+          <span>{lastModified ? formatTimeAgo(lastModified) : "N/A"}</span>
+        </div>,
+      ]}
+      actions={[
+        <button
+          key="export"
+          className="data-list-row__action"
+          onClick={handleExport}
+        >
+          <Upload size={14} />
+        </button>,
+        <button
+          key="edit"
+          className="data-list-row__action"
+          onClick={handleEdit}
+        >
+          <FilePenLine size={14} />
+        </button>,
+        <button
+          key="delete"
+          className="data-list-row__action data-list-row__action--delete"
+          onClick={handleDelete}
+        >
+          <Trash2 size={14} />
+        </button>,
+      ]}
+    />
   );
 };
 
