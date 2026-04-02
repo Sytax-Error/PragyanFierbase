@@ -1,0 +1,324 @@
+/* ============================================================
+   DELETE CONFIRMATION DIALOG
+   Fully responsive · Light & Dark theme · Accessible
+   ============================================================ */
+
+/* ---------- Overlay ---------- */
+.dd-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1200;
+  padding: 16px;
+  animation: dd-fade-in 0.2s ease;
+}
+
+/* ---------- Modal Card ---------- */
+.dd-modal {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  border-radius: 16px;
+  overflow: hidden;
+  text-align: center;
+  animation: dd-slide-up 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Light */
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.07),
+    0 20px 60px -10px rgba(0, 0, 0, 0.18);
+}
+
+.dark .dd-modal {
+  background: #1e1e2e;
+  border-color: #2e2e3e;
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.4),
+    0 20px 60px -10px rgba(0, 0, 0, 0.6);
+}
+
+/* ---------- Red accent bar at top ---------- */
+.dd-accent-strip {
+  height: 4px;
+  background: linear-gradient(90deg, #ef4444, #f87171);
+  width: 100%;
+}
+
+/* ---------- Close Button ---------- */
+.dd-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.18s ease, transform 0.18s ease, color 0.18s ease;
+  color: #9ca3af;
+  z-index: 1;
+}
+
+.dd-close:hover {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  transform: rotate(90deg);
+}
+
+.dark .dd-close {
+  color: #6b7280;
+}
+
+.dark .dd-close:hover {
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+}
+
+/* ---------- Body ---------- */
+.dd-icon-ring {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: rgba(239, 68, 68, 0.1);
+  margin: 28px auto 14px;
+  color: #ef4444;
+  animation: dd-pulse 2s ease-in-out infinite;
+}
+
+.dark .dd-icon-ring {
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+}
+
+.dd-title {
+  font-family: var(--primary-font);
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin: 0 0 8px;
+  color: #111827;
+}
+
+.dark .dd-title {
+  color: #f3f4f6;
+}
+
+.dd-subtitle {
+  font-family: var(--secondary-font);
+  font-size: 0.9rem;
+  line-height: 1.65;
+  color: #6b7280;
+  margin: 0 24px 0;
+}
+
+.dark .dd-subtitle {
+  color: #9ca3af;
+}
+
+.dd-subtitle strong {
+  color: #374151;
+  font-weight: 600;
+}
+
+.dark .dd-subtitle strong {
+  color: #d1d5db;
+}
+
+.dd-item-name {
+  display: inline-block;
+  margin-top: 4px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #ef4444;
+  word-break: break-all;
+}
+
+.dark .dd-item-name {
+  color: #f87171;
+}
+
+/* ---------- Divider ---------- */
+.dd-divider {
+  height: 1px;
+  background: #e5e7eb;
+  margin: 20px 0 0;
+}
+
+.dark .dd-divider {
+  background: #2e2e3e;
+}
+
+/* ---------- Input Section ---------- */
+.dd-input-group {
+  padding: 20px 24px 4px;
+  text-align: left;
+}
+
+.dd-label {
+  display: block;
+  font-family: var(--secondary-font);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #6b7280;
+  margin-bottom: 8px;
+}
+
+.dark .dd-label {
+  color: #9ca3af;
+}
+
+.dd-label strong {
+  color: #374151;
+  font-weight: 700;
+}
+
+.dark .dd-label strong {
+  color: #d1d5db;
+}
+
+.dd-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 14px;
+  font-size: 0.9375rem;
+  font-family: var(--secondary-font);
+  border-radius: 8px;
+  border: 1.5px solid #d1d5db;
+  outline: none;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+
+  /* Light */
+  background: #f9fafb;
+  color: #111827;
+}
+
+.dark .dd-input {
+  background: #252535;
+  border-color: #374151;
+  color: #f3f4f6;
+}
+
+.dd-input::placeholder {
+  color: #9ca3af;
+  font-style: italic;
+}
+
+.dark .dd-input::placeholder {
+  color: #6b7280;
+}
+
+.dd-input:focus {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15);
+  background: #ffffff;
+}
+
+.dark .dd-input:focus {
+  background: #1a1a2a;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
+}
+
+/* ---------- Actions ---------- */
+.dd-actions {
+  display: flex;
+  gap: 10px;
+  padding: 16px 24px 24px;
+}
+
+.dd-btn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 16px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  font-family: var(--primary-font);
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.18s ease, transform 0.15s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+  white-space: nowrap;
+}
+
+/* Cancel */
+.dd-btn-cancel {
+  background: #f3f4f6;
+  color: #374151;
+  border: 1.5px solid #e5e7eb;
+}
+
+.dd-btn-cancel:hover {
+  background: #e5e7eb;
+  transform: translateY(-1px);
+}
+
+.dark .dd-btn-cancel {
+  background: #252535;
+  color: #d1d5db;
+  border-color: #374151;
+}
+
+.dark .dd-btn-cancel:hover {
+  background: #2e2e45;
+}
+
+/* Delete */
+.dd-btn-delete {
+  background: #ef4444;
+  color: #ffffff;
+  box-shadow: 0 2px 10px -2px rgba(239, 68, 68, 0.45);
+}
+
+.dd-btn-delete:hover:not(:disabled) {
+  background: #dc2626;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px -4px rgba(239, 68, 68, 0.5);
+}
+
+.dd-btn-delete:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.dd-btn-delete:disabled {
+  background: #fca5a5;
+  box-shadow: none;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.dark .dd-btn-delete:disabled {
+  background: #7f1d1d;
+  opacity: 0.55;
+}
+
+/* ---------- Animations ---------- */
+@keyframes dd-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes dd-slide-up {
+  from { opacity: 0; transform: translateY(24px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0)    scale(1);    }
+}
+
+@keyframes dd-pulse {
+  0%, 100% { box-shadow: 0 0 0 0   rgba(239, 68, 68, 0.25); }
+  50%       { box-shadow: 0 0 0 8px rgba(239, 68, 68, 0);    }
+}
