@@ -6,5 +6,6 @@ export { default as ControlPanel } from "./ControlPanel/ControlPanel";
 export { default as CustomSelect } from "./CustomSelect/CustomSelect";
 export { default as PluginCard } from "./PluginCard/PluginCard";
 export { default as StatusIndicator } from "./StatusIndicator/StatusIndicator";
+export { default as DeleteConfirmationDialog } from "./DeleteConfirmationDialog/DeleteConfirmationDialog";
 export * from "./ControlPanel/controls";
 export { ChartRenderer } from "./ChartRenderer/ChartRenderer";

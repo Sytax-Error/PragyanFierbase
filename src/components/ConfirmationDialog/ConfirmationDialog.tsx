@@ -1,14 +1,13 @@
-
-import React from 'react';
-import { createPortal } from 'react-dom';
-import { X } from 'lucide-react';
-import { Button } from '@/components';
-import { useTheme } from '@/hooks/theme/useTheme';
-import './ConfirmationDialog.css';
+import React from "react";
+import { createPortal } from "react-dom";
+import { X } from "lucide-react";
+import { useTheme } from "@/hooks/theme/useTheme";
+import "./ConfirmationDialog.css";
 
 interface Action {
   text: React.ReactNode;
   onClick: () => void;
+  variant?: "primary" | "secondary" | "danger";
 }
 
 interface ConfirmationDialogProps {
@@ -22,15 +21,15 @@ interface ConfirmationDialogProps {
   secondaryAction?: Action;
 }
 
-const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({ 
-  isOpen, 
-  onClose, 
-  title, 
+const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
+  isOpen,
+  onClose,
+  title,
   message,
   children,
-  icon, 
-  primaryAction, 
-  secondaryAction 
+  icon,
+  primaryAction,
+  secondaryAction,
 }) => {
   const { theme } = useTheme();
 
@@ -38,29 +37,63 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
     return null;
   }
 
-  const dialogOverlayClass = `dialog-overlay ${theme}`;
+  const handleClose = () => {
+    onClose();
+  };
+
+  const getButtonClass = (variant?: string) => {
+    switch (variant) {
+      case "primary":
+        return "cd-btn cd-btn-primary";
+      case "secondary":
+        return "cd-btn cd-btn-secondary";
+      case "danger":
+        return "cd-btn cd-btn-danger";
+      default:
+        return "cd-btn cd-btn-primary";
+    }
+  };
 
   const dialogContent = (
-    <div className={dialogOverlayClass} onClick={onClose}>
-      <div className="dialog-content card" onClick={(e) => e.stopPropagation()}>
-        <button onClick={onClose} className="close-button">
-          <X size={24} />
+    <div className={`cd-overlay ${theme}`} onClick={handleClose}>
+      <div className="cd-modal" onClick={(e) => e.stopPropagation()}>
+        {/* Accent strip - color based on primary action variant */}
+        <div
+          className={`cd-accent-strip cd-accent-${primaryAction.variant || "primary"}`}
+        />
+
+        {/* Close button */}
+        <button className="cd-close" onClick={handleClose} aria-label="Close">
+          <X size={18} />
         </button>
-        <div className="dialog-body">
-          {icon && <div className="dialog-icon-wrapper">{icon}</div>}
-          <h3>{title}</h3>
-          {message && <p>{message}</p>}
-          {children}
-        </div>
-        <div className="dialog-actions">
+
+        {/* Icon */}
+        {icon && <div className="cd-icon-ring">{icon}</div>}
+
+        {/* Title & Message */}
+        <h2 className="cd-title">{title}</h2>
+        {message && <p className="cd-message">{message}</p>}
+        {children}
+
+        {/* Divider */}
+        <div className="cd-divider" />
+
+        {/* Actions */}
+        <div className="cd-actions">
           {secondaryAction && (
-            <Button variant="secondary" onClick={secondaryAction.onClick}>
+            <button
+              className={`cd-btn cd-btn-secondary`}
+              onClick={secondaryAction.onClick}
+            >
               {secondaryAction.text}
-            </Button>
+            </button>
           )}
-          <Button variant="primary" onClick={primaryAction.onClick}>
+          <button
+            className={getButtonClass(primaryAction.variant)}
+            onClick={primaryAction.onClick}
+          >
             {primaryAction.text}
-          </Button>
+          </button>
         </div>
       </div>
     </div>

@@ -1,14 +1,16 @@
-
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
-import { Button, ConfirmationDialog } from '@/components'; // Correctly import ConfirmationDialog
-import { addChart, updateChart } from '@/store/slices/chartSlice';
-import { selectChartEditor, resetEditor } from '@/store/slices/chartEditorSlice';
-import { fetchDatasets } from '@/store/slices/datasetSlice';
-import { vizRegistry } from '@/core/visualization';
-import type { RootState, AppDispatch } from '@/store';
-import { Save, List } from 'lucide-react'; // Import icons
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
+import { Button, ConfirmationDialog } from "@/components"; // Correctly import ConfirmationDialog
+import { addChart, updateChart } from "@/store/slices/chartSlice";
+import {
+  selectChartEditor,
+  resetEditor,
+} from "@/store/slices/chartEditorSlice";
+import { fetchDatasets } from "@/store/slices/datasetSlice";
+import { vizRegistry } from "@/core/visualization";
+import type { RootState, AppDispatch } from "@/store";
+import { List, CheckCircle } from "lucide-react";
 
 const SubHeaderActions: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -19,7 +21,9 @@ const SubHeaderActions: React.FC = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const editorState = useSelector(selectChartEditor);
-  const { datasets, loading } = useSelector((state: RootState) => state.datasets);
+  const { datasets, loading } = useSelector(
+    (state: RootState) => state.datasets,
+  );
 
   useEffect(() => {
     if (datasets.length === 0 && !loading) {
@@ -28,11 +32,18 @@ const SubHeaderActions: React.FC = () => {
   }, [dispatch, datasets.length, loading]);
 
   const performSave = () => {
-    if (!editorState.isInitialized || !editorState.datasetId || !editorState.chartType) return;
+    if (
+      !editorState.isInitialized ||
+      !editorState.datasetId ||
+      !editorState.chartType
+    )
+      return;
 
-    const datasetName = datasets.find(d => d.id === editorState.datasetId)?.name || 'Unknown Dataset';
+    const datasetName =
+      datasets.find((d) => d.id === editorState.datasetId)?.name ||
+      "Unknown Dataset";
     const chartPlugin = vizRegistry.get(editorState.chartType);
-    const chartName = chartPlugin?.metadata.name || 'Unknown Chart';
+    const chartName = chartPlugin?.metadata.name || "Unknown Chart";
 
     if (isEditMode && params.chartId) {
       const changes = {
@@ -53,9 +64,9 @@ const SubHeaderActions: React.FC = () => {
         dataset: datasetName,
         datasetId: editorState.datasetId,
         chartType: editorState.chartType,
-        onDashboards: 'N/A',
-        tags: '',
-        owners: 'Me',
+        onDashboards: "N/A",
+        tags: "",
+        owners: "Me",
         lastModified: new Date().toISOString(),
         controls: editorState.controls,
       };
@@ -75,26 +86,31 @@ const SubHeaderActions: React.FC = () => {
   const handleConfirmAndNavigate = () => {
     setIsDialogOpen(false);
     if (!isEditMode) {
-        dispatch(resetEditor());
+      dispatch(resetEditor());
     }
-    navigate('/charts');
+    navigate("/charts");
   };
 
   const handleConfirmAndStay = () => {
     setIsDialogOpen(false);
   };
 
-  const headingText = isEditMode ? 'Chart Updated Successfully!' : 'Chart Saved Successfully!';
+  const headingText = isEditMode
+    ? "Chart Updated Successfully!"
+    : "Chart Saved Successfully!";
   const paragraphText = isEditMode
-    ? 'Your changes have been saved. You can continue editing or return to the charts list.'
-    : 'Your new chart has been saved. You can view it in the charts list or stay to create another.';
-  const stayText = isEditMode ? 'Continue Editing' : 'Save & Create Another';
+    ? "Your changes have been saved. You can continue editing or return to the charts list."
+    : "Your new chart has been saved. You can view it in the charts list or stay to create another.";
+  const stayText = isEditMode ? "Continue Editing" : "Save & Create Another";
 
   return (
     <>
       <div className="sub-header-actions">
-        <Button onClick={handleSaveClick} disabled={!editorState.isInitialized || loading}>
-          {isEditMode ? 'Update' : 'Save'}
+        <Button
+          onClick={handleSaveClick}
+          disabled={!editorState.isInitialized || loading}
+        >
+          {isEditMode ? "Update" : "Save"}
         </Button>
       </div>
 
@@ -103,12 +119,17 @@ const SubHeaderActions: React.FC = () => {
         onClose={handleCloseDialog}
         title={headingText}
         message={paragraphText}
+        icon={<CheckCircle size={32} className="success-icon" />}
         primaryAction={{
-          text: <><List size={16} /> Go to Charts List</>,
+          text: (
+            <>
+              <List size={16} /> Go to Charts List
+            </>
+          ),
           onClick: handleConfirmAndNavigate,
         }}
         secondaryAction={{
-          text: <><Save size={16} /> {stayText}</>,
+          text: stayText,
           onClick: handleConfirmAndStay,
         }}
       />
