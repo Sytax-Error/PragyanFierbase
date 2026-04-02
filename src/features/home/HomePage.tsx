@@ -11,7 +11,7 @@ import {
   Users,
   Activity,
   Eye,
-  Download,
+  TrendingUp,
   Sparkles,
   ExternalLink,
   FileText,
@@ -24,11 +24,25 @@ import {
 import { selectCharts, type Chart } from "@/store/slices/chartSlice";
 import "./HomePage.css";
 
-const statColors = [
-  { primary: "#2563eb", bg: "rgba(37, 99, 235, 0.08)", trend: "positive" },
-  { primary: "#059669", bg: "rgba(5, 150, 105, 0.08)" },
-  { primary: "#d97706", bg: "rgba(217, 119, 6, 0.08)" },
-  { primary: "#7c3aed", bg: "rgba(124, 58, 237, 0.08)" },
+const statConfig = [
+  {
+    icon: LayoutDashboard,
+    color: "var(--primary-light, #6E8EFB)",
+    gradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+    trend: "+2 this week",
+  },
+  {
+    icon: BarChart3,
+    color: "var(--accent-info, #17a2b8)",
+    gradient: "linear-gradient(135deg, #16c79a 0%, #17a2b8 100%)",
+    trend: "+5 this month",
+  },
+  {
+    icon: Users,
+    color: "var(--warning-color, #ffc107)",
+    gradient: "linear-gradient(135deg, #f7971e 0%, #ffd200 100%)",
+    trend: "Active now",
+  },
 ];
 
 const quickLinks = [
@@ -36,16 +50,31 @@ const quickLinks = [
     icon: LayoutDashboard,
     label: "Dashboards",
     path: "/dashboards",
-    color: "#2563eb",
+    gradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
   },
-  { icon: BarChart3, label: "Charts", path: "/charts", color: "#059669" },
-  { icon: FileText, label: "Datasets", path: "/datasets", color: "#d97706" },
-  { icon: Users, label: "Team", path: "#", color: "#7c3aed" },
+  {
+    icon: BarChart3,
+    label: "Charts",
+    path: "/charts",
+    gradient: "linear-gradient(135deg, #16c79a 0%, #17a2b8 100%)",
+  },
+  {
+    icon: FileText,
+    label: "Datasets",
+    path: "/datasets",
+    gradient: "linear-gradient(135deg, #f7971e 0%, #ffd200 100%)",
+  },
+  {
+    icon: Users,
+    label: "Team",
+    path: "#",
+    gradient: "linear-gradient(135deg, #ee0979 0%, #ff6a00 100%)",
+  },
 ];
 
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
-  const { theme } = useTheme();
+  useTheme(); // Ensure theme is loaded
   const dashboards = useSelector(selectDashboards);
   const charts = useSelector(selectCharts);
 
@@ -59,32 +88,37 @@ const HomePage: React.FC = () => {
     )
     .slice(0, 5);
 
-  const recentCharts: Chart[] = [...charts].slice(0, 4);
+  const recentCharts: Chart[] = [...charts].slice(0, 5);
 
   const stats = [
     {
       label: "Dashboards",
       value: totalDashboards,
-      icon: LayoutDashboard,
+      ...statConfig[0],
     },
-    { label: "Charts", value: totalCharts, icon: BarChart3 },
+    {
+      label: "Charts",
+      value: totalCharts,
+      ...statConfig[1],
+    },
     {
       label: "Users",
       value: 1,
-      icon: Users,
+      ...statConfig[2],
     },
   ];
 
-  // Build recent activity from real data
   type ActivityItem = {
     action: string;
     item: string;
     type: string;
     time: string;
     timeDisplay: string;
+    icon: typeof BarChart3;
   };
 
   const recentActivityReal: ActivityItem[] = useMemo(() => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const now = Date.now();
     const fmt = (iso: string): string => {
       const diff = now - new Date(iso).getTime();
@@ -100,6 +134,7 @@ const HomePage: React.FC = () => {
         type: "dashboard",
         time: d.lastModified,
         timeDisplay: fmt(d.lastModified),
+        icon: LayoutDashboard,
       })),
       ...recentCharts.slice(0, 2).map((c) => ({
         action: "Modified",
@@ -107,16 +142,16 @@ const HomePage: React.FC = () => {
         type: "chart",
         time: c.lastModified,
         timeDisplay: fmt(c.lastModified),
+        icon: BarChart3,
       })),
     ];
     return items
       .sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime())
       .slice(0, 4);
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- now is stable per render
   }, [recentlyModified, recentCharts]);
 
   return (
-    <div className={`home-container ${theme === "dark" ? "dark" : ""}`}>
+    <div className="home-container">
       {/* Hero Section */}
       <section className="home-hero">
         <div className="hero-bg-pattern" />
@@ -124,28 +159,31 @@ const HomePage: React.FC = () => {
           <div className="hero-text">
             <div className="hero-badge">
               <Sparkles size={14} />
-              <span>Welcome back</span>
+              <span>Analytics Dashboard</span>
             </div>
             <h1>
-              Your Analytics{" "}
-              <span className="hero-gradient-text">Dashboard</span>
+              Welcome to Your{" "}
+              <span className="hero-gradient-text">Data Hub</span>
             </h1>
             <p>
               Track performance, discover insights, and make data-driven
-              decisions
+              decisions with powerful visualizations
             </p>
           </div>
           <div className="hero-actions">
-            <button className="hero-btn ghost">
-              <Download size={16} />
-              Export Report
+            <button
+              className="hero-btn ghost"
+              onClick={() => navigate("/datasets")}
+            >
+              <FileText size={16} />
+              View Datasets
             </button>
             <button
               className="hero-btn solid"
               onClick={() => navigate("/dashboards/add")}
             >
               <Plus size={16} />
-              Create New
+              Create Dashboard
             </button>
           </div>
         </div>
@@ -153,24 +191,22 @@ const HomePage: React.FC = () => {
 
       {/* Stats Section */}
       <section className="home-stats">
-        {stats.map((stat, i) => {
+        {stats.map((stat) => {
           const Icon = stat.icon;
-          const colors = statColors[i];
           return (
             <div
               key={stat.label}
               className="stat-card-stat"
-              style={{ "--accent": colors.primary } as React.CSSProperties}
+              style={
+                {
+                  "--accent": stat.color,
+                  "--stat-gradient": stat.gradient,
+                } as React.CSSProperties
+              }
             >
               <div className="stat-stat-content">
                 <div className="stat-icon-wrap">
-                  <div
-                    className="stat-icon"
-                    style={{
-                      backgroundColor: colors.bg,
-                      color: colors.primary,
-                    }}
-                  >
+                  <div className="stat-icon">
                     <Icon size={20} />
                   </div>
                 </div>
@@ -179,31 +215,13 @@ const HomePage: React.FC = () => {
                   <span className="stat-value">{stat.value}</span>
                 </div>
               </div>
+              <div className="stat-footer">
+                <TrendingUp size={12} />
+                <span className="stat-trend">{stat.trend}</span>
+              </div>
             </div>
           );
         })}
-      </section>
-
-      {/* Quick Links */}
-      <section className="home-quick-links">
-        <div className="section-heading">
-          <h2>Quick Access</h2>
-        </div>
-        <div className="quick-links-grid">
-          {quickLinks.map((link) => (
-            <button
-              key={link.label}
-              className="quick-link-item"
-              onClick={() => navigate(link.path)}
-            >
-              <div className="link-icon">
-                <link.icon size={18} />
-              </div>
-              <span className="link-name">{link.label}</span>
-              <ExternalLink size={14} className="link-arrow" />
-            </button>
-          ))}
-        </div>
       </section>
 
       {/* Main Content */}
@@ -289,19 +307,32 @@ const HomePage: React.FC = () => {
           </div>
           <div className="panel-body">
             {recentCharts.length > 0 ? (
-              <div className="chart-preview-grid">
+              <div className="table-list">
+                <div className="table-head">
+                  <span className="col-name">Name</span>
+                  <span className="col-owner">Type</span>
+                  <span className="col-time">Created</span>
+                  <span className="col-action" />
+                </div>
                 {recentCharts.map((chart) => (
                   <button
                     key={chart.id}
-                    className="chart-preview-item"
+                    className="table-item-row"
                     onClick={() => navigate("/charts")}
                   >
-                    <div className="chart-icon-area">
-                      <BarChart3 size={22} />
+                    <div className="col-name">
+                      <BarChart3 size={14} />
+                      <span className="name-text">{chart.name}</span>
                     </div>
-                    <div className="chart-details">
-                      <span className="chart-title">{chart.name}</span>
-                      <span className="chart-subtitle">{chart.chartType}</span>
+                    <span className="col-owner">{chart.chartType}</span>
+                    <span className="col-time">
+                      <Clock size={12} />
+                      {chart.lastModified}
+                    </span>
+                    <div className="col-action">
+                      <button className="row-icon-btn">
+                        <Eye size={14} />
+                      </button>
                     </div>
                   </button>
                 ))}
@@ -324,6 +355,33 @@ const HomePage: React.FC = () => {
         </div>
       </section>
 
+      {/* Quick Links */}
+      <section className="home-quick-links">
+        <div className="section-heading">
+          <h2>Quick Access</h2>
+        </div>
+        <div className="quick-links-grid">
+          {quickLinks.map((link) => (
+            <button
+              key={link.label}
+              className="quick-link-item"
+              onClick={() => navigate(link.path)}
+              style={
+                {
+                  "--link-gradient": link.gradient,
+                } as React.CSSProperties
+              }
+            >
+              <div className="link-icon">
+                <link.icon size={18} />
+              </div>
+              <span className="link-name">{link.label}</span>
+              <ExternalLink size={14} className="link-arrow" />
+            </button>
+          ))}
+        </div>
+      </section>
+
       {/* Activity Feed */}
       <section className="home-activity">
         <div className="content-panel activity-panel">
@@ -335,19 +393,27 @@ const HomePage: React.FC = () => {
           </div>
           <div className="panel-body">
             <div className="activity-feed">
-              {recentActivityReal.map((item, i: number) => (
-                <div key={i} className="activity-entry">
-                  <div className="activity-marker" />
-                  <div className="activity-details">
-                    <span className="activity-label">
-                      {item.action}{" "}
-                      <span className="activity-type">{item.type}</span>
+              {recentActivityReal.map((item, i: number) => {
+                const ActivityIcon = item.icon;
+                return (
+                  <div key={i} className="activity-entry">
+                    <div className="activity-marker" />
+                    <div className="activity-icon">
+                      <ActivityIcon size={16} />
+                    </div>
+                    <div className="activity-details">
+                      <span className="activity-label">
+                        {item.action}{" "}
+                        <span className="activity-type">{item.type}</span>
+                      </span>
+                      <span className="activity-item-text">{item.item}</span>
+                    </div>
+                    <span className="activity-timestamp">
+                      {item.timeDisplay}
                     </span>
-                    <span className="activity-item-text">{item.item}</span>
                   </div>
-                  <span className="activity-timestamp">{item.timeDisplay}</span>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>
