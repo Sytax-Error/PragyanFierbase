@@ -1,5 +1,5 @@
-import { Navigate } from "react-router-dom";
 import MainLayout from "@/shared/layouts/MainLayout";
+import HomePage from "@/features/home/HomePage";
 import DashboardsListPage from "@/features/dashboard/DashboardsListPage/DashboardsListPage";
 import AddDashboardPage from "@/features/dashboard/AddDashboardPage/AddDashboardPage";
 import CreateDashboardPage from "@/features/dashboard/CreateDashboardPage/CreateDashboardPage";
@@ -24,7 +24,10 @@ const routes = [
     children: [
       {
         index: true,
-        element: <Navigate to="/dashboards" replace />,
+        element: <HomePage />,
+        handle: {
+          noPadding: true,
+        },
       },
       {
         path: "dashboards",
