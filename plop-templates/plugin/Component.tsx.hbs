@@ -1,14 +1,14 @@
-import React from "react";
 import type { {{pascalCase name}}Props } from "./types";
+import styles from "./{{pascalCase name}}.module.css";
 
-const {{pascalCase name}} = (props: {{pascalCase name}}Props) => {
-  const { data, headerText } = props;
-  return (
-    <div>
-      <h3>{headerText}</h3>
-      <pre>{JSON.stringify(data, null, 2)}</pre>
-    </div>
-  );
+const {{pascalCase name}} = ({ data, headerText, hideHeader = false }: {{pascalCase name}}Props) => {
+return (
+<div className={styles.container}>
+  {!hideHeader && headerText &&
+  <h3 className={styles.title}>{headerText}</h3>}
+  <pre className={styles.dataPreview}>{JSON.stringify(data, null, 2)}</pre>
+</div>
+);
 };
 
 export default {{pascalCase name}};

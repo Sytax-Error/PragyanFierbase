@@ -2,15 +2,16 @@ import type { {{pascalCase name}}Props, TransformPropsOptions } from "../types";
 
 export const transformProps = (options: TransformPropsOptions): {{pascalCase name}}Props => {
     const { dataset, controls } = options;
-    const { dimension, measure ,headerText} = controls;
+    const { dimension, measure, headerText, hideHeader } = controls;
     const data = dataset.map((record) => {
         return {
             name: record[dimension] as string,
             value: record[measure],
         }
     })
-      return {
+    return {
         data,
-        headerText
+        headerText,
+        hideHeader,
     }
 }

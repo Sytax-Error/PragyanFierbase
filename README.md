@@ -16,6 +16,49 @@ File any bugs at https://github.com/firebase/firebase-tools/issues
 
 **Firebase Studio Export Date:** 2026-03-20
 
+## Creating a New Visualization Plugin
+
+This project includes a code generator (using [Plop](https://plopjs.com/)) to quickly scaffold new visualization plugins.
+
+### Usage
+
+Run the following command to create a new plugin:
+
+```bash
+npm run create-plugin
+```
+
+You will be prompted to enter a plugin name (e.g., `bar-chart`, `pie-chart`, `line-chart`). The system will automatically prepend `custom-plugin-` to your input.
+
+### What Gets Generated
+
+Running the command will generate the following structure in `src/features/plugins/custom-plugin-{name}/`:
+
+```
+src/features/plugins/custom-plugin-{name}/
+├── src/
+│   ├── images/
+│   │   └── thumbnail.svg                  # Plugin thumbnail for UI
+│   ├── plugin/
+│   │   ├── controlPanel.ts                # Control panel configuration
+│   │   ├── metadata.ts                    # Plugin metadata (name, description, version)
+│   │   └── transformProps.ts              # Props transformation logic
+│   ├── index.ts                           # Plugin entry point
+│   ├── types.ts                           # TypeScript type definitions
+│   ├── {PluginName}.tsx                   # Main React component
+│   └── {PluginName}.module.css            # CSS module for component styling
+```
+
+The generator will also automatically register the plugin by adding an import statement to `src/core/visualization/pluginload.ts`.
+
+### Example
+
+```bash
+npm run create-plugin
+# Enter: my-chart
+# Generates: src/features/plugins/custom-plugin-my-chart/
+```
+
 
 ---
 

@@ -1,17 +1,19 @@
 export type DataRecord = Record<string, unknown>;
 
-export interface {{pascalCase name}}Props {
+  export interface {{pascalCase name}}Props {
   data: DataRecord[];
   headerText: string;
-}
+  hideHeader?: boolean;
+  }
 
-export interface {{pascalCase name}}PluginConfig {
+  export interface {{pascalCase name}}PluginConfig {
   dimension: string;
   measure: string;
   headerText: string;
-}
+  hideHeader?: boolean;
+  }
 
-export interface TransformPropsOptions {
+  export interface TransformPropsOptions {
   dataset: DataRecord[];
   controls: {{pascalCase name}}PluginConfig;
-}
+  }
